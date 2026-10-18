@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-SillyTavern 世界书 (World Book) 命令行管理工具
-支持创建、编辑、删除、列出条目，输出可导入 SillyTavern 的 JSON 文件。
+SillyTavern World Book command-line management tool
+Supports creating, editing, deleting, and listing entries, and outputs JSON files importable into SillyTavern.
 """
 
 import argparse
@@ -11,13 +11,13 @@ import sys
 import re
 
 POSITION_LABELS = {
-    0: "↑Char",
-    1: "↓Char",
-    2: "↑AT",
-    3: "↓AT",
+    0: "UpChar",
+    1: "DownChar",
+    2: "UpAT",
+    3: "DownAT",
     4: "@D",
-    5: "↑EM",
-    6: "↓EM",
+    5: "UpEM",
+    6: "DownEM",
     7: "Outlet",
 }
 
@@ -33,7 +33,7 @@ def save_json(data, path):
 
 
 def load_existing(path):
-    """加载已有世界书，自动处理有/无 name 顶层字段"""
+    """Load an existing world book, supporting both with/without top-level name field."""
     if os.path.exists(path):
         book = load_json(path)
         entries = book.get("entries", {})
@@ -43,7 +43,7 @@ def load_existing(path):
 
 
 def get_next_uid(entries):
-    """获取下一个可用 UID"""
+    """Get the next available UID."""
     if not entries:
         return 0
     existing = [int(k) for k in entries.keys()]
@@ -51,7 +51,7 @@ def get_next_uid(entries):
 
 
 def get_next_order(entries):
-    """获取下一个 order 值"""
+    """Get the next order value."""
     if not entries:
         return 100
     orders = [e.get("order", 0) for e in entries.values()]
@@ -59,7 +59,7 @@ def get_next_order(entries):
 
 
 def get_next_display_index(entries):
-    """获取下一个 displayIndex"""
+    """Get the next displayIndex value."""
     if not entries:
         return 0
     indices = [e.get("displayIndex", 0) for e in entries.values()]
@@ -67,11 +67,11 @@ def get_next_display_index(entries):
 
 
 def read_content(value):
-    """读取内容：如果是 @filepath 则从文件读取，否则直接返回字符串"""
+    """Read content: if value starts with @filepath, read from file; otherwise return the string."""
     if value.startswith("@"):
         filepath = value[1:]
         if not os.path.exists(filepath):
-            print(f"错误: 文件不存在 - {filepath}", file=sys.stderr)
+            print(f"Error: file does not exist - {filepath}", file=sys.stderr)
             sys.exit(1)
         with open(filepath, "r", encoding="utf-8") as f:
             return f.read()
@@ -79,7 +79,7 @@ def read_content(value):
 
 
 def parse_key_list(value):
-    """解析逗号分隔或数组格式的 key 列表"""
+    """Parse keys from a comma-separated string or list format."""
     if not value:
         return []
     if isinstance(value, list):
@@ -88,14 +88,14 @@ def parse_key_list(value):
 
 
 def _camel_to_snake(name):
-    """camelCase → snake_case。如 preventRecursion → prevent_recursion"""
+    """camelCase -> snake_case, e.g. preventRecursion -> prevent_recursion."""
     s1 = re.sub(r'(.)([A-Z][a-z]+)', r'\1_\2', name)
     return re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
 
 
 class _Args:
-    """把 dict 伪装成 argparse.Namespace，让 build_entry 同时兼容 CLI 和 batch。
-    自动生成 camelCase 和 snake_case 两套属性名，batch JSON 两种写法都支持。
+    """Wrap dict as argparse.Namespace so build_entry supports both CLI and batch input.
+    It auto-generates both camelCase and snake_case attributes, so both batch JSON styles are supported.
     """
     def __init__(self, d):
         for k, v in d.items():
@@ -108,7 +108,7 @@ class _Args:
 
 
 def build_entry(args, uid=None, display_index=None, existing_entry=None):
-    """根据参数构建一个条目。args 可以是 argparse.Namespace 或 _Args(dict)"""
+    """Build an entry from arguments. args can be argparse.Namespace or _Args(dict)."""
     if isinstance(args, dict):
         args = _Args(args)
     if existing_entry:
@@ -160,7 +160,7 @@ def build_entry(args, uid=None, display_index=None, existing_entry=None):
             "characterFilter": {"isExclude": False, "names": [], "tags": []},
         }
 
-    # ---------- 逐字段更新 ----------
+    # ---------- Field-by-field updates ----------
     if args.comment is not None:
         entry["comment"] = args.comment
     if args.content is not None:
@@ -179,7 +179,7 @@ def build_entry(args, uid=None, display_index=None, existing_entry=None):
         entry["order"] = args.order
     if args.position is not None:
         if not (0 <= args.position <= 7):
-            print(f"错误: position 值 {args.position} 超出 0-7 范围，酒馆将静默跳过该条目", file=sys.stderr)
+            print(f"Error: position value {args.position} is outside 0-7 range; SillyTavern will silently skip this entry", file=sys.stderr)
             sys.exit(1)
         entry["position"] = args.position
     if args.outlet_name is not None:
@@ -226,7 +226,7 @@ def build_entry(args, uid=None, display_index=None, existing_entry=None):
     if args.delay is not None:
         entry["delay"] = args.delay
 
-    # ---------- 构造 extensions 镜像 ----------
+    # ---------- Build extensions mirror ----------
     entry["extensions"] = {
         "position": entry["position"],
         "exclude_recursion": entry["excludeRecursion"],
@@ -264,134 +264,134 @@ def build_entry(args, uid=None, display_index=None, existing_entry=None):
     return entry
 
 
-# ============== 主入口 ==============
+# ============== Main entry point ==============
 
 def main():
     parser = argparse.ArgumentParser(
-        description="SillyTavern 世界书管理工具",
+        description="SillyTavern World Book management tool",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-示例:
-  # 新建世界书，添加条目
-  python world-book-create.py my_book.json -n --name "我的世界书" --add \\
-    --comment "规则1" --content "这里写条目内容" --keys 触发词1,触发词2 --depth 2 \\
+Examples:
+  # Create a new world book and add an entry
+  python world-book-create.py my_book.json -n --name "my_worldbook" --add \\
+    --comment "rule_1" --content "entry content goes here" --keys trigger1,trigger2 --depth 2 \\
     --prevent-recursion --exclude-recursion
 
-  # 从文件读取条目内容
+  # Read entry content from file
   python world-book-create.py my_book.json -n --add \\
-    --comment "长篇设定" --content @设定.txt --keys 战斗 --constant \\
+    --comment "long setup" --content @setup.txt --keys combat --constant \\
     --prevent-recursion --exclude-recursion
 
-  # 在已有世界书上追加条目
+  # Append entries to an existing world book
   python world-book-create.py existing_book.json --add \\
-    --comment "新条目" --content "新内容" --keys 关键词 --depth 3 \\
+    --comment "new entry" --content "new content" --keys keyword --depth 3 \\
     --prevent-recursion --exclude-recursion
 
-  # 编辑已有条目 (按 UID)
+  # Edit an existing entry (by UID)
   python world-book-create.py existing_book.json --edit 3 \\
-    --content "修改后的内容" --depth 4
+    --content "updated content" --depth 4
 
-  # 删除条目
+  # Delete an entry
   python world-book-create.py existing_book.json --delete 3
 
-  # 列出所有条目
+  # List all entries
   python world-book-create.py existing_book.json --list
 
-  # 批量操作: 从 JSON 文件批量创建条目
+  # Batch operation: create entries from a JSON file
   python world-book-create.py existing_book.json --batch entries.json
 
-  # 批量编辑: 从 JSON 文件批量修改已有条目 (每个对象必须含 uid)
+  # Batch edit: modify existing entries from JSON (each object must include uid)
   python world-book-create.py existing_book.json --batch-edit edits.json
         """,
     )
 
-    # ---- 文件与模式参数 ----
-    parser.add_argument("output", help="世界书 JSON 文件路径")
+    # ---- File and mode arguments ----
+    parser.add_argument("output", help="Path to world book JSON file")
     parser.add_argument("-n", "--new", action="store_true",
-                        help="强制新建世界书（即使文件已存在则覆盖）")
-    parser.add_argument("--name", help="世界书名称（仅新建时有效）")
+                        help="Force create a new world book (overwrite if file already exists)")
+    parser.add_argument("--name", help="World book name (only used when creating new)")
     parser.add_argument("--list", action="store_true",
-                        help="列出世界书中所有条目（不修改）")
+                        help="List all entries in the world book (read-only)")
     parser.add_argument("--delete", type=int, metavar="UID",
-                        help="删除指定 UID 的条目")
+                        help="Delete the entry with the given UID")
     parser.add_argument("--batch",
-                        help="从 JSON 文件批量添加条目（文件内容为条目对象数组）")
+                        help="Batch add entries from a JSON file (file must contain an array of entry objects)")
     parser.add_argument("--batch-edit",
-                        help="从 JSON 文件批量编辑条目（数组，每个对象必须含 uid）")
+                        help="Batch edit entries from a JSON file (array, each object must contain uid)")
 
-    # ---- 条目操作参数 ----
+    # ---- Entry operation arguments ----
     parser.add_argument("--add", action="store_true",
-                        help="添加新条目")
+                        help="Add a new entry")
     parser.add_argument("--edit", type=int, metavar="UID",
-                        help="编辑指定 UID 的条目")
+                        help="Edit the entry with the given UID")
 
-    # ---- 条目字段参数 ----
-    parser.add_argument("--comment", help="条目标题/备注")
-    parser.add_argument("--content", help="条目正文内容，或 @文件路径 从文件读取")
-    parser.add_argument("--keys", help="主触发词，逗号分隔")
-    parser.add_argument("--keys2", help="辅助触发词，逗号分隔")
-    parser.add_argument("--depth", type=int, help="深度层级 (1-999)")
+    # ---- Entry field arguments ----
+    parser.add_argument("--comment", help="Entry title/comment")
+    parser.add_argument("--content", help="Entry body content, or @file_path to read from file")
+    parser.add_argument("--keys", help="Primary trigger keys, comma-separated")
+    parser.add_argument("--keys2", help="Secondary trigger keys, comma-separated")
+    parser.add_argument("--depth", type=int, help="Depth level (1-999)")
     parser.add_argument("--constant", action="store_true",
-                        help="设为常驻条目（始终激活）")
+                        help="Mark as constant entry (always active)")
     parser.add_argument("--no-constant", action="store_true",
-                        help="取消常驻")
-    parser.add_argument("--order", type=int, help="排序值（越大越靠后）")
+                        help="Unset constant mode")
+    parser.add_argument("--order", type=int, help="Sort order value (larger appears later)")
     parser.add_argument("--position", type=int, choices=[0, 1, 2, 3, 4, 5, 6, 7],
-                        help="注入位置: 0=↑Char 1=↓Char 2=↑AT 3=↓AT 4=@D 5=↑EM 6=↓EM 7=Outlet")
+                        help="Injection position: 0=UpChar 1=DownChar 2=UpAT 3=DownAT 4=@D 5=UpEM 6=DownEM 7=Outlet")
     parser.add_argument("--outlet-name", dest="outlet_name",
-                        help="Outlet 名称（position=7 时使用）")
+                        help="Outlet name (used when position=7)")
     parser.add_argument("--disable", action="store_true",
-                        help="设为禁用状态")
+                        help="Set as disabled")
     parser.add_argument("--enable", action="store_true",
-                        help="设为启用状态")
+                        help="Set as enabled")
     parser.add_argument("--selective", action="store_true",
-                        help="设为选择性激活")
+                        help="Enable selective activation")
     parser.add_argument("--no-selective", action="store_true",
-                        help="取消选择性激活")
+                        help="Disable selective activation")
     parser.add_argument("--selective-logic", type=int, choices=[0, 1],
-                        help="选择性逻辑: 0=AND 1=OR")
+                        help="Selective logic: 0=AND 1=OR")
     parser.add_argument("--probability", type=int,
-                        help="触发概率 (0-100, 默认100)")
+                        help="Trigger probability (0-100, default 100)")
     parser.add_argument("--add-memo", type=lambda x: x.lower() in ("true", "1", "yes"),
-                        help="是否添加到备注 (true/false)")
-    parser.add_argument("--group", help="分组名")
+                        help="Whether to add to memo (true/false)")
+    parser.add_argument("--group", help="Group name")
     parser.add_argument("--group-weight", type=int,
-                        help="分组权重")
+                        help="Group weight")
     parser.add_argument("--group-override", action="store_true",
-                        help="覆盖分组设置")
+                        help="Override group settings")
     parser.add_argument("--role", type=int, choices=[0, 1, 2],
-                        help="角色: 0=System 1=User 2=Assistant")
+                        help="Role: 0=System 1=User 2=Assistant")
     parser.add_argument("--prevent-recursion", action="store_true",
-                        help="不可进一步递归（本条目不触发其他条目）")
+                        help="Cannot recurse further (this entry will not trigger other entries)")
     parser.add_argument("--exclude-recursion", action="store_true",
-                        help="无法被其他条目激活（本条目不被其他条目触发）")
+                        help="Cannot be activated by other entries (other entries cannot trigger this entry)")
     parser.add_argument("--scan-depth", type=int,
-                        help="扫描深度")
+                        help="Scan depth")
     parser.add_argument("--case-sensitive", type=lambda x: x.lower() in ("true", "1", "yes"),
-                        help="大小写敏感 (true/false)")
+                        help="Case-sensitive (true/false)")
     parser.add_argument("--match-whole-words", type=lambda x: x.lower() in ("true", "1", "yes"),
-                        help="全词匹配 (true/false)")
+                        help="Match whole words (true/false)")
     parser.add_argument("--use-group-scoring", action="store_true",
-                        help="使用分组评分")
+                        help="Use group scoring")
     parser.add_argument("--sticky", type=int,
-                        help="粘性值")
+                        help="Sticky value")
     parser.add_argument("--cooldown", type=int,
-                        help="冷却值")
+                        help="Cooldown value")
     parser.add_argument("--delay", type=int,
-                        help="延迟值")
+                        help="Delay value")
 
     args = parser.parse_args()
 
-    # ========== 列表模式 ==========
+    # ========== List mode ==========
     if args.list:
         if not os.path.exists(args.output):
-            print(f"错误: 文件不存在 - {args.output}", file=sys.stderr)
+            print(f"Error: file does not exist - {args.output}", file=sys.stderr)
             sys.exit(1)
         book, entries, name = load_existing(args.output)
-        print(f"世界书: {args.output}")
+        print(f"World book: {args.output}")
         if name:
-            print(f"名称: {name}")
-        print(f"共 {len(entries)} 个条目:\n")
+            print(f"Name: {name}")
+        print(f"Total {len(entries)} entries:\n")
         for k in sorted(entries.keys(), key=int):
             e = entries[k]
             pos_label = POSITION_LABELS.get(e.get("position"), str(e.get("position", "?")))
@@ -399,54 +399,54 @@ def main():
                 f"  UID={e.get('uid', k)}  |  "
                 f"pos={pos_label}  |  "
                 f"depth={e['depth']}  |  "
-                f"常驻={'Y' if e.get('constant') else 'N'}  |  "
+                f"constant={'Y' if e.get('constant') else 'N'}  |  "
                 f"disable={'Y' if e.get('disable') else 'N'}  |  "
                 f"preventRec={'Y' if e.get('preventRecursion') else 'N'}  |  "
                 f"excludeRec={'Y' if e.get('excludeRecursion') else 'N'}  |  "
                 f"order={e.get('order')}  |  "
-                f"触发词={e.get('key', [])}"
+                f"keys={e.get('key', [])}"
             )
-            print(f"    标题: {e.get('comment', '')[:80]}")
+            print(f"    Title: {e.get('comment', '')[:80]}")
             print()
         return
 
-    # ========== 加载 / 新建 ==========
+    # ========== Load / Create ==========
     book, entries, book_name = load_existing(args.output)
 
     if args.new or not os.path.exists(args.output):
-        # 新建
+        # Create new
         book = {}
         entries = {}
         book_name = args.name
-        print(f"创建新的世界书: {args.output}")
+        print(f"Created new world book: {args.output}")
 
     is_modified = False
 
-    # ========== 删除 ==========
+    # ========== Delete ==========
     if args.delete is not None:
         uid_str = str(args.delete)
         if uid_str not in entries:
-            print(f"错误: 未找到 UID={args.delete} 的条目", file=sys.stderr)
+            print(f"Error: UID={args.delete} entry not found", file=sys.stderr)
             sys.exit(1)
         comment = entries[uid_str].get("comment", "")
         del entries[uid_str]
-        print(f"已删除 UID={args.delete}: {comment}")
+        print(f"Deleted UID={args.delete}: {comment}")
         is_modified = True
 
-    # ========== 编辑 ==========
+    # ========== Edit ==========
     if args.edit is not None:
         uid_str = str(args.edit)
         if uid_str not in entries:
-            print(f"错误: 未找到 UID={args.edit} 的条目", file=sys.stderr)
+            print(f"Error: UID={args.edit} entry not found", file=sys.stderr)
             sys.exit(1)
         existing = entries[uid_str]
         new_entry = build_entry(args, uid=args.edit, display_index=existing.get("displayIndex"),
                                 existing_entry=existing)
         entries[uid_str] = new_entry
-        print(f"已编辑 UID={args.edit}: {new_entry.get('comment', '')}")
+        print(f"Edited UID={args.edit}: {new_entry.get('comment', '')}")
         is_modified = True
 
-    # ========== 添加 ==========
+    # ========== Add ==========
     if args.add:
         uid = get_next_uid(entries)
         display_index = get_next_display_index(entries)
@@ -454,14 +454,14 @@ def main():
             args.order = get_next_order(entries)
         new_entry = build_entry(args, uid=uid, display_index=display_index)
         entries[str(uid)] = new_entry
-        print(f"已添加 UID={uid}: {new_entry.get('comment', '')}")
+        print(f"Added UID={uid}: {new_entry.get('comment', '')}")
         is_modified = True
 
-    # ========== 批量 ==========
+    # ========== Batch ==========
     if args.batch:
         batch_data = load_json(args.batch)
         if not isinstance(batch_data, list):
-            print("错误: batch 文件内容必须是一个 JSON 数组", file=sys.stderr)
+            print("Error: batch file content must be a JSON array", file=sys.stderr)
             sys.exit(1)
         for item in batch_data:
             uid = get_next_uid(entries)
@@ -470,23 +470,23 @@ def main():
                 item["order"] = get_next_order(entries)
             new_entry = build_entry(item, uid=uid, display_index=display_index)
             entries[str(uid)] = new_entry
-            print(f"已添加 UID={uid}: {new_entry.get('comment', '')}")
+            print(f"Added UID={uid}: {new_entry.get('comment', '')}")
             is_modified = True
-        print(f"批量完成: 共添加 {len(batch_data)} 个条目")
+        print(f"Batch complete: added {len(batch_data)} entries")
 
-    # ========== 批量编辑 ==========
+    # ========== Batch edit ==========
     if args.batch_edit:
         batch_data = load_json(args.batch_edit)
         if not isinstance(batch_data, list):
-            print("错误: batch-edit 文件内容必须是一个 JSON 数组", file=sys.stderr)
+            print("Error: batch-edit file content must be a JSON array", file=sys.stderr)
             sys.exit(1)
         for item in batch_data:
             if "uid" not in item:
-                print(f"错误: batch-edit 每个对象必须含 uid 字段: {item}", file=sys.stderr)
+                print(f"Error: each object in batch-edit must include a uid field: {item}", file=sys.stderr)
                 sys.exit(1)
             uid_str = str(item["uid"])
             if uid_str not in entries:
-                print(f"错误: 未找到 UID={item['uid']} 的条目", file=sys.stderr)
+                print(f"Error: UID={item['uid']} entry not found", file=sys.stderr)
                 sys.exit(1)
             existing = entries[uid_str]
             # remove uid from item dict so build_entry doesn't try to overwrite it
@@ -494,23 +494,23 @@ def main():
             new_entry = build_entry(edit_item, uid=item["uid"], display_index=existing.get("displayIndex"),
                                     existing_entry=existing)
             entries[uid_str] = new_entry
-            print(f"已编辑 UID={item['uid']}: {new_entry.get('comment', '')}")
+            print(f"Edited UID={item['uid']}: {new_entry.get('comment', '')}")
             is_modified = True
-        print(f"批量编辑完成: 共修改 {len(batch_data)} 个条目")
+        print(f"Batch edit complete: modified {len(batch_data)} entries")
 
-    # ========== 保底检查 ==========
+    # ========== Fallback check ==========
     if not is_modified and not args.list:
-        print("提示: 未执行任何操作。使用 --add / --edit / --delete / --list 指定操作。", file=sys.stderr)
+        print("Notice: no operation was executed. Use --add / --edit / --delete / --list to choose an action.", file=sys.stderr)
         parser.print_help()
         sys.exit(0)
 
-    # ========== 保存 ==========
+    # ========== Save ==========
     book["entries"] = entries
     if book_name:
         book["name"] = book_name
 
     save_json(book, args.output)
-    print(f"已保存至: {os.path.abspath(args.output)}")
+    print(f"Saved to: {os.path.abspath(args.output)}")
 
 
 if __name__ == "__main__":

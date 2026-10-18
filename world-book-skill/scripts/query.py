@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-世界书查询工具
-输出结构兼容 world-book-create.py 的输入格式。
-- 默认模式：输出所有条目摘要（名称、内容预览、长度、触发词、位置等）
-- --uid N：输出指定条目的完整 JSON（与 create.py 写入格式一致，可直接用于 --batch-edit）
-- --search：按关键词搜索条目
-- --resolve：解析条目的 @UID/@名称 嵌套引用
-- --brief：极简模式
+World Book query tool.
+Output structure is compatible with world-book-create.py input format.
+- Default mode: output summary of all entries (name, content preview, length, keys, position, etc.)
+- --uid N: output full JSON for the selected entry (same format written by create.py, can be used for --batch-edit)
+- --search: search entries by keyword
+- --resolve: resolve nested @UID/@name references in entries
+- --brief: minimal mode
 """
 
 import argparse
@@ -16,13 +16,13 @@ import sys
 import re
 
 POSITION_LABELS = {
-    0: "↑Char",
-    1: "↓Char",
-    2: "↑AT",
-    3: "↓AT",
+    0: "UpChar",
+    1: "DownChar",
+    2: "UpAT",
+    3: "DownAT",
     4: "@D",
-    5: "↑EM",
-    6: "↓EM",
+    5: "UpEM",
+    6: "DownEM",
     7: "Outlet",
 }
 
@@ -34,7 +34,7 @@ def load_json(path):
 
 def load_worldbook(path):
     if not os.path.exists(path):
-        print(f"错误: 文件不存在 - {path}", file=sys.stderr)
+        print(f"Error: file does not exist - {path}", file=sys.stderr)
         sys.exit(1)
     book = load_json(path)
     entries = book.get("entries", {})
@@ -90,7 +90,7 @@ def resolve_refs(entries):
         content = entry.get("content", "")
         comment = entry.get("comment", "")
         found_refs = []
-        for match in re.finditer(r'@(\d+|[^\s\n,，。；;、\u3000\]\)]+)', content):
+        for match in re.finditer(r'@(\d+|[^\s\n,\uFF0C\u3002\uFF1B;\u3001\u3000\]\)]+)', content):
             ref = match.group(1)
             if ref.isdigit():
                 ref_uid = int(ref)
@@ -134,32 +134,32 @@ def resolve_refs(entries):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="世界书查询工具 - 输出结构兼容 world-book-create.py 的输入格式",
+        description="World Book query tool - output structure compatible with world-book-create.py input format",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-示例:
-  # 查看所有条目摘要
+Examples:
+  # Show summary of all entries
   python query.py my_book.json
 
-  # 查看指定条目的完整信息（输出可直接用于 --batch-edit）
+  # Show full details for one entry (output can be used directly for --batch-edit)
   python query.py my_book.json --uid 3
 
-  # 搜索关键词
-  python query.py my_book.json --search "林小雨"
+  # Search by keyword
+  python query.py my_book.json --search "Lin Xiaoyu"
 
-  # 解析嵌套引用
+  # Resolve nested references
   python query.py my_book.json --resolve
 
-  # 极简总览（含配置字段）
+  # Minimal overview (including key config fields)
   python query.py my_book.json --brief
         """,
     )
 
-    parser.add_argument("worldbook", help="世界书 JSON 文件路径")
-    parser.add_argument("--uid", type=int, help="查看指定 UID 条目的完整信息")
-    parser.add_argument("--search", help="搜索关键词（匹配标题/内容/触发词）")
-    parser.add_argument("--resolve", action="store_true", help="解析条目的 @UID/@名称 嵌套引用")
-    parser.add_argument("--brief", action="store_true", help="极简模式（含配置字段）：输出 uid/comment/content_length/keys/constant/preventRecursion/excludeRecursion")
+    parser.add_argument("worldbook", help="Path to World Book JSON file")
+    parser.add_argument("--uid", type=int, help="Show complete information for a specific UID entry")
+    parser.add_argument("--search", help="Search keyword (matches title/content/keys)")
+    parser.add_argument("--resolve", action="store_true", help="Resolve nested @UID/@name references in entries")
+    parser.add_argument("--brief", action="store_true", help="Minimal mode (includes config fields): outputs uid/comment/content_length/keys/constant/preventRecursion/excludeRecursion")
 
     args = parser.parse_args()
 
@@ -169,22 +169,22 @@ def main():
         print("[]")
         return
 
-    # --uid 模式：输出指定条目的完整 JSON
+    # --uid mode: output full JSON for one entry
     if args.uid is not None:
         uid_str = str(args.uid)
         if uid_str not in entries:
-            print(f"错误: 未找到 UID={args.uid} 的条目", file=sys.stderr)
+            print(f"Error: entry with UID={args.uid} not found", file=sys.stderr)
             sys.exit(1)
         entry = dict(entries[uid_str])
         entry["uid"] = int(uid_str)
         print(json.dumps(entry, ensure_ascii=False, indent=2))
         return
 
-    # --resolve 模式：解析嵌套引用
+    # --resolve mode: resolve nested references
     if args.resolve:
         refs = resolve_refs(entries)
         if not refs:
-            print("未发现嵌套引用")
+            print("No nested references found")
         else:
             result = {
                 "worldbook": os.path.abspath(args.worldbook),
@@ -194,15 +194,15 @@ def main():
             print(json.dumps(result, ensure_ascii=False, indent=2))
         return
 
-    # --search 模式：搜索并输出摘要
+    # --search mode: search and output summary
     if args.search:
         target_entries = search_entries(entries, args.search)
         if not target_entries:
-            print(f"未找到匹配 '{args.search}' 的条目")
+            print(f"No entries found matching '{args.search}'")
             return
         entries = target_entries
 
-    # 默认 / --search / --brief 模式：输出摘要
+    # default / --search / --brief mode: output summary
     if args.brief:
         summary_list = []
         for uid_str in sorted(entries.keys(), key=int):
