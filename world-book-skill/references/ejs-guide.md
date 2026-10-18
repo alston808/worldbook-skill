@@ -1,302 +1,294 @@
-# EJS 动态内容集成指南
+# EJS dynamic contenttranslated text
 
-> EJS 依赖 MVU 提供变量。MVU 独立运行不需要 EJS，但 EJS 必须有 MVU 变量值才能实现动态控制。本文档教你把静态世界书条目改造成"根据变量值切换内容"的动态条目。
+> EJS Dependencies MVU translated textvariable. MVU translated textneed EJS, translated text EJS musttranslated text MVU variabletranslated text. translated textWorld Bookentrytranslated text"translated textvariabletranslated textcontent"translated textentry. 
 
-## 本文内容
+## This document covers
 
->本文是 EJS 动态内容设计指引。指引根据已有的 MVU 变量系统（好感度、关系状态、信任度等），编写条件判断代码让世界书条目在不同变量值下发送不同内容。本文只讲解了 EJS 代码逻辑，人设内容、调色盘描写等文本由其他阶段完成。
-
----
-
-## 工作流程
-
-### 阶段一：确认 MVU 变量路径
-
-在写任何 EJS 代码前，必须先确认以下信息：
-
-1. **好感度路径**：如 `stat_data.角色名.好感度`
-2. **关系状态路径**：如 `stat_data.角色名.关系状态`
-3. **其他判定变量**：信任度、剧情阶段、日期等所有用于阶段划分的变量
-4. **默认值**：每个变量在用户未设定时的兜底值
-
-> 变量路径写法见 `mvu-guide.md`。核心铁律：EJS 中读取 MVU 变量必须加 `stat_data` 前缀，无需 `[0]` 索引。
-
-#### 阶段判定条件规划
-
-用一张表格明确每个阶段的触发条件：
-
-```
-阶段一（陌生期）：好感度 < 150，关系状态为"陌生人"
-阶段二（熟悉期）：好感度 150–400，关系状态为"熟人"
-阶段三（暧昧期）：好感度 400–700，关系状态非"恋人"
-阶段四（恋人间）：关系状态为"恋人"
-```
-
-**条件边界必须无重叠、无遗漏**。数值用 `<` `>=` `&&` 连接。
+>translated text EJS dynamic contenttranslated text. translated text MVU variable system(Affinity, relationship status, translated text), writetranslated textcodetranslated textWorld Bookentrytranslated textvariabletranslated textcontent. translated text EJS codetranslated text, translated textcontent, translated textphasetranslated text. 
 
 ---
 
-### 阶段二：选条目结构与装饰器
+## workflow
 
-根据控制类型选择结构方案：
+### Phase 1: confirm MVU variablepath
 
-#### 方案 A：控制器 + 禁用阶段条目（推荐用于大量内容）
+translated text EJS codetranslated text, musttranslated textconfirmtranslated text: 
 
-适用于每个阶段内容超过 200 字的情况。结构与多阶段人设系统一致：
+1. **Affinitypath**: translated text `stat_data.Character name.Affinity`
+2. **relationship statuspath**: translated text `stat_data.Character name.relationship status`
+3. **translated textvariable**: translated text, translated textphase, translated textphasetranslated textvariable
+4. **default value**: translated textvariabletranslated text
 
-```
-[控制器条目]     ← 蓝灯常驻，Order 100
-  ├── 读取变量
-  ├── 条件判断
-  └── 用 getwi() 加载阶段条目
+> variablepathtranslated text `mvu-guide.md`. translated texthard rules: EJS translated textread MVU variablemusttranslated text `stat_data` prefix, translated text `[0]` translated text. 
 
-[阶段01条目]     ← 禁用，Order 98
-[阶段02条目]     ← 禁用，Order 98
-[阶段03条目]     ← 禁用，Order 98
-```
-
-控制器通过 `@activate` 装饰器保持蓝灯激活，阶段条目设为 `enabled=false`，由 `getwi()` 按需加载。未命中的阶段内容不会被发送给 AI，节省 token。
-
-#### 方案 B：单条目内 if/else 分块（适用于中小内容）
-
-所有内容写在一个条目中，用 `<%_ _%>` 包裹条件判断：
+#### phasetranslated text phasetranslated text: 
 
 ```
-蓝灯条目，Order 99
-  ├── 变量读取头
-  ├── 阶段一的提示词（if 包裹）
-  ├── 阶段二的提示词（else if 包裹）
-  ├── 阶段三的提示词（else 包裹）
-  └── 通用提示词（if 外面，始终发送）
+Phase 1(translated text): Affinity < 150, relationship statustranslated text"translated text"
+Phase 2(translated text): Affinity 150–400, relationship statustranslated text"translated text"
+Phase 3(translated text): Affinity 400–700, relationship statustranslated text"translated text"
+Phase 4(translated text): relationship statustranslated text"translated text"
 ```
 
-#### 装饰器速查
+**translated textmusttranslated text, translated text**. translated text `<` `>=` `&&` translated text. 
 
-| 装饰器 | 场景 |
+---
+
+### Phase 2: translated textentrytranslated text typetranslated text: 
+
+#### translated text A: controller + disabledphaseentry(recommendedtranslated textcontent)
+
+translated textphasecontenttranslated text 200 translated text. translated textphasetranslated text: 
+
+```
+[controllerentry] ← translated text, Order 100
+ ├── readvariable
+ ├── translated text
+ └── translated text getwi() translated textphaseentry
+
+[phase01entry] ← disabled, Order 98
+[phase02entry] ← disabled, Order 98
+[phase03entry] ← disabled, Order 98
+```
+
+controllertranslated text `@activate` translated text, phaseentrytranslated text `enabled=false`, translated text `getwi()` translated text. translated textmatchtranslated textphasecontenttranslated text AI, translated text token. 
+
+#### translated text B: translated textentrytranslated text if/else translated text(translated textcontent)
+
+translated textcontenttranslated textentrytranslated text, translated text `<%_ _%>` translated text: 
+
+```
+translated textentry, Order 99
+ ├── variablereadtranslated text
+ ├── Phase 1translated textTiptranslated text(if translated text)
+ ├── Phase 2translated textTiptranslated text(else if translated text)
+ ├── Phase 3translated textTiptranslated text(else translated text)
+ └── translated textTiptranslated text(if translated text, translated text)
+```
+
+#### translated text
+
+| translated text | scenario |
 |--------|------|
-| `@activate` | 控制器条目：视为蓝灯常驻 |
-| `@preprocessing` | 动态关键词：处理后激活绿灯条目 |
-| `@private` | 自动包裹作用域，防变量冲突 |
-| `@iframe` | HTML 状态栏：样式隔离不污染全局 |
-| `@if 条件` | 简洁条件：条件成立才发送条目 |
-| `@render_after` | 渲染到消息末尾（不发给 AI） |
-| `@generate_before` | 注入到提示词开头 |
+| `@activate` | controllerentry: translated text |
+| `@preprocessing` | translated text: translated textentry |
+| `@private` | translated text, translated textvariabletranslated text |
+| `@iframe` | HTML status bar: translated text |
+| `@if translated text` | translated text: translated textentry |
+| `@render_after` | translated text(translated text AI) |
+| `@generate_before` | translated textTiptranslated text |
 
 ---
 
-### 阶段三：编写 EJS 代码
+### Phase 3: write EJS code
 
-按以下顺序编写代码块。
+translated textorderwritecodetranslated text. 
 
-#### 步骤 1：写变量读取头
+#### steps 1: translated textvariablereadtranslated text
 
-条目最顶部，读取所有阶段判定变量：
+entrytranslated text, readtranslated textphasetranslated textvariable: 
 
 ```javascript
 <%_
-if (typeof gw === 'undefined') var gw = getvar('stat_data.角色名.好感度', { defaults: 0 });
-if (typeof rel === 'undefined') var rel = getvar('stat_data.角色名.关系状态', { defaults: '陌生人' });
-if (typeof trust === 'undefined') var trust = getvar('stat_data.角色名.信任度', { defaults: 0 });
+if (typeof gw === 'undefined') var gw = getvar('stat_data.Character name.Affinity', { defaults: 0 });
+if (typeof rel === 'undefined') var rel = getvar('stat_data.Character name.relationship status', { defaults: 'translated text' });
+if (typeof trust === 'undefined') var trust = getvar('stat_data.Character name.translated text', { defaults: 0 });
 _%>
 ```
 
-**铁律三条：**
+**hard rulestranslated text: **
 
-1. 必须用 `typeof` 防重复声明。多个条目可能使用同名变量
-2. 必须用 `var` 声明。不可用 `const` / `let`
-3. 路径必须带 `stat_data` 前缀，不需要 `[0]` 索引
+1. musttranslated text `typeof` translated text. translated textentrytranslated textusagetranslated textvariable
+2. musttranslated text `var` translated text. translated text `const` / `let`
+3. pathmusttranslated text `stat_data` prefix, translated textneed `[0]` translated text
 
-#### 步骤 2：写条件判断块
+#### steps 2: translated text
 
-**基础模板：if / else if / else**
+**translated text: if / else if / else**
 
 ```javascript
 <%_ if (gw < 150) { _%>
-此处为初识期 AI 可见的描述
+translated text AI translated textdescription
 <%_ } else if (gw < 400) { _%>
-此处为熟悉期 AI 可见的描述
+translated text AI translated textdescription
 <%_ } else if (gw < 700) { _%>
-此处为暧昧期 AI 可见的描述
+translated text AI translated textdescription
 <%_ } else { _%>
-此处为恋人间 AI 可见的描述
+translated text AI translated textdescription
 <%_ } _%>
 ```
 
-**多变量组合模板：**
+**translated textvariabletranslated text: **
 
 ```javascript
-<%_ if (gw >= 400 && trust >= 30 && rel !== '恋人') { _%>
-好感达标 + 信任足够 + 尚未交往 → 暧昧期表现
+<%_ if (gw >= 400 && trust >= 30 && rel !== 'translated text') { _%>
+translated text + translated text + translated text → translated text
 <%_ } _%>
 
-<%_ if (rel === '恋人') { _%>
-关系确认后 → 恋人专属内容
+<%_ if (rel === 'translated text') { _%>
+relationshipconfirmtranslated text → translated textcontent
 <%_ } _%>
 ```
 
-**嵌套条件模板（二层判断）：**
+**translated text(translated text): **
 
 ```javascript
-<%_ if (rel !== '恋人') { _%>
-  <%_ if (gw < 400) { _%>
-  非恋人 + 低好感 → 保持距离
-  <%_ } else { _%>
-  非恋人 + 高好感 → 亲近但未表白
-  <%_ } _%>
+<%_ if (rel !== 'translated text') { _%>
+ <%_ if (gw < 400) { _%>
+ translated text + translated text → translated text
+ <%_ } else { _%>
+ translated text + translated text → translated text
+ <%_ } _%>
 <%_ } else { _%>
-恋人 → 亲密无间
+translated text → translated text
 <%_ } _%>
 ```
 
-#### 步骤 3：用 getwi() 加载阶段条目（方案 A 专用）
+#### steps 3: translated text getwi() translated textphaseentry(translated text A translated text)
 
-控制器蓝图：
+controllertranslated text: 
 
 ```javascript
 <%_
-if (typeof gw === 'undefined') var gw = getvar('stat_data.角色名.好感度', { defaults: 0 });
-if (typeof rel === 'undefined') var rel = getvar('stat_data.角色名.关系状态', { defaults: '陌生人' });
+if (typeof gw === 'undefined') var gw = getvar('stat_data.Character name.Affinity', { defaults: 0 });
+if (typeof rel === 'undefined') var rel = getvar('stat_data.Character name.relationship status', { defaults: 'translated text' });
 _%>
 
 <%_ if (gw < 150) { _%>
-<%- await getwi('角色名_阶段01_初识') %>
+<%- await getwi('Character name_phase01_translated text') %>
 <%_ } else if (gw < 400) { _%>
-<%- await getwi('角色名_阶段02_熟悉') %>
-<%_ } else if (rel === '恋人') { _%>
-<%- await getwi('角色名_阶段04_恋人') %>
-<%- await getwi('角色名_扩展内容') %>
+<%- await getwi('Character name_phase02_translated text') %>
+<%_ } else if (rel === 'translated text') { _%>
+<%- await getwi('Character name_phase04_translated text') %>
+<%- await getwi('Character name_translated textcontent') %>
 <%_ } else { _%>
-<%- await getwi('角色名_阶段03_暧昧') %>
+<%- await getwi('Character name_phase03_translated text') %>
 <%_ } _%>
 ```
 
-**getwi() 铁律：**
-- 必须加 `await`：`<%- await getwi('条目名') %>`
-- 等价写法：`<%_ print(await getwi('条目名')); _%>`
-- 传递数据：`await getwi('条目名', { key: value })`
-- 阶段条目必须设为禁用状态（`enabled=false`），不能同时设为蓝灯
+**getwi() hard rules: **
+- musttranslated text `await`: `<%- await getwi('entrytranslated text') %>`
+- translated text: `<%_ print(await getwi('entrytranslated text')); _%>`
+- translated text: `await getwi('entrytranslated text', { key: value })`
+- phaseentrymusttranslated textdisabledstatus(`enabled=false`), translated text
 
-#### 步骤 4：放通用内容
+#### steps 4: translated textcontent
 
-不需要条件判断的通用内容直接写在所有 `if` 块外面：
+translated textneedtranslated textcontenttranslated text `if` translated text: 
 
 ```
-此处为始终发送的描述，不受阶段影响
+translated textdescription, translated textphasetranslated text
 ```
 
-#### 步骤 5：写 print() 风格代码块（可选）
+#### steps 5: translated text print() translated textcodetranslated text(optional)
 
-当内容全部是动态推导时，用 `print()` 避免频繁切换 `<%_ _%>`：
+translated textcontentalltranslated text, translated text `print()` translated text `<%_ _%>`: 
 
 ```javascript
 <%_
 if (gw < 150) {
-  print('当前阶段：初识。角色对你很陌生，态度疏远。');
+ print('translated textphase: translated text. charactertranslated text, translated text. ');
 } else if (gw < 400) {
-  print('当前阶段：熟悉。角色开始习惯你的存在。');
+ print('translated textphase: translated text. charactertranslated text. ');
 } else {
-  print('当前阶段：亲近。角色对你很放心。');
+ print('translated textphase: translated text. charactertranslated text. ');
 }
 _%>
 ```
 
 ---
 
-### 阶段四：配置与测试
+### Phase 4: configurationtranslated text
 
-#### 条目配置速查
+#### entryconfigurationtranslated text
 
-| 条目角色 | 激活方式 | Order | 状态 | 递归 |
+| entrycharacter | translated text | Order | status | recursion |
 |---------|----------|-------|------|------|
-| 控制器（含 getwi） | `@activate` 蓝灯 | 100 | enabled=true | 防递归 |
-| 阶段条目（被 getwi 加载） | 禁用 | 98–800 | enabled=false | 防递归 |
-| 单条目 if/else 型 | 蓝灯 | 99 | enabled=true | 防递归 |
-| @preprocessing 词条 | `@preprocessing` 蓝灯 | 100 | enabled=true | 防递归 |
-| 被词条激活的绿灯条目 | 绿灯 | 按需 | enabled=true | 防递归 |
-| @iframe 状态栏 | `@render_after` 蓝灯 | 按需 | enabled=true | 防递归 |
+| controller(translated text getwi) | `@activate` translated text | 100 | enabled=true | anti-recursion |
+| phaseentry(translated text getwi translated text) | disabled | 98–800 | enabled=false | anti-recursion |
+| translated textentry if/else translated text | translated text | 99 | enabled=true | anti-recursion |
+| @preprocessing translated text | `@preprocessing` translated text | 100 | enabled=true | anti-recursion |
+| translated textentry | translated text | translated text | enabled=true | anti-recursion |
+| @iframe status bar | `@render_after` translated text | translated text | enabled=true | anti-recursion |
 
-#### 制作与测试的关键开关
+#### translated text
 
-输入框上方有"启用/禁用提示词模板"按钮：
+inputtranslated text"enabled/disabledTiptranslated text"translated text: 
 
-- **制作阶段**：关闭开关 → AI 看到原始 EJS 代码（方便检查逻辑是否正确）
-- **测试/游玩阶段**：打开开关 → AI 看到处理后的结果（如具体数值代替 `<%= getvar(...) %>`）
+- **translated textphase**: translated text → AI translated text EJS code(translated textcorrect)
+- **translated text/translated textphase**: translated text → AI translated text(translated text `<%= getvar(...) %>`)
 
-#### 调试方法
+#### translated text
 
 ```javascript
-<%_ console.info('当前好感度:', gw); _%>   // F12 Console 查看
-<%_ toastr.info('已触发阶段二'); _%>        // 右上角弹通知
-<%_ debugger; _%>                           // F12 打开后暂停，可查看所有变量
+<%_ console.info('translated textAffinity:', gw); _%> // F12 Console translated text
+<%_ toastr.info('translated textPhase 2'); _%> // translated text
+<%_ debugger; _%> // F12 translated text, translated textvariable
 ```
 
-通过输入框左下角魔棒 → 提示词查看器，可查看 EJS 处理后实际发送给 AI 的完整内容。
+translated textinputtranslated text → Tiptranslated text, translated text EJS translated text AI translated textcompletecontent. 
 
 ---
 
-## 详细规范
+## detailed specification
 
-### 标签类型速查
+### translated texttypetranslated text
 
-| 标签 | 执行 | 输出 | 说明 |
+| translated text | translated text | output | description |
 |------|------|------|------|
-| `<%_ _%>` | ✅ | ❌ | 执行代码，去除空白（推荐） |
-| `<%= %>` | ❌ | ✅ 转义 | 输出变量值，HTML 转义 |
-| `<%- %>` | ❌ | ✅ 原样 | 输出值，不转义（getwi 专用） |
-| `<%# %>` | ❌ | ❌ | 注释，不处理 |
+| `<%_ _%>` | ✅ | ❌ | translated textcode, translated text(recommended) |
+| `<%= %>` | ❌ | ✅ translated text | outputvariabletranslated text, HTML translated text |
+| `<%- %>` | ❌ | ✅ translated text | outputtranslated text, translated text(getwi translated text) |
+| `<%# %>` | ❌ | ❌ | translated text, translated text |
 
-### 变量读取关键规则
+### variablereadtranslated textrules
 
 ```javascript
-/* 读取数值，不存在时用默认值 */
-getvar('stat_data.角色名.好感度', { defaults: 0 })
+/* readtranslated text, translated textdefault value */
+getvar('stat_data.Character name.Affinity', { defaults: 0 })
 
-/* 判断变量是否存在 */
-getvar('stat_data.角色名.好感度') !== undefined
+/* translated textvariabletranslated text */
+getvar('stat_data.Character name.Affinity') !== undefined
 
-/* 文本相等判断必须用 === */
-getvar('stat_data.天气') === '晴天'
+/* translated textmusttranslated text === */
+getvar('stat_data.translated text') === 'translated text'
 
-/* 文本不等用 !== */
-getvar('stat_data.关系状态') !== '恋人'
+/* translated text !== */
+getvar('stat_data.relationship status') !== 'translated text'
 
-/* 模糊匹配 */
-getvar('stat_data.日期', { defaults: '' }).includes('10月25日')
+/* translated text */
+getvar('stat_data.translated text', { defaults: '' }).includes('10translated text25translated text')
 ```
 
-### 内容注入前缀
+### contenttranslated textprefix
 
-在条目**标题（comment）**中添加前缀，将内容注入到指定位置：
+translated textentry**translated text(comment)**translated textprefix, translated textcontenttranslated textposition: 
 
-| 前缀 | 注入位置 |
+| prefix | translated textposition |
 |------|---------|
-| `[GENERATE:BEFORE]` | 发送给 AI 的提示词开头 |
-| `[GENERATE:AFTER]` | 发送给 AI 的提示词末尾 |
-| `[RENDER:BEFORE]` | 消息渲染开头（不发给 AI） |
-| `[RENDER:AFTER]` | 消息渲染末尾（不发给 AI） |
+| `[GENERATE:BEFORE]` | translated text AI translated textTiptranslated text |
+| `[GENERATE:AFTER]` | translated text AI translated textTiptranslated text |
+| `[RENDER:BEFORE]` | translated text(translated text AI) |
+| `[RENDER:AFTER]` | translated text(translated text AI) |
 
-### @preprocessing 动态关键词
-
-将条目内容作为关键词来源，动态激活绿灯条目：
+### @preprocessing translated text entrycontenttranslated textsource, translated textentry: 
 
 ```javascript
 @preprocessing
 <%_
-if (typeof evt === 'undefined') var evt = getvar('stat_data.事件.当前事件', { defaults: '' });
+if (typeof evt === 'undefined') var evt = getvar('stat_data.translated text.translated text', { defaults: '' });
 _%>
 
-<%_ if (evt === '学园祭') { _%>
-学园祭活动 摊位 演出
-<%_ } else if (evt === '修学旅行') { _%>
-修学旅行 合宿 观光
-<%_ } _%>
+<%_ if (evt === 'translated text') { _%>
+translated text <%_ } else if (evt === 'translated text') { _%>
+translated text <%_ } _%>
 ```
 
-处理后条目内容变为对应关键词，激活以此为关键词的绿灯条目。要求 SillyTavern 1.13.4+。
+translated textentrycontenttranslated text, translated textentry. translated text SillyTavern 1.13.4+. 
 
-注意：`@preprocessing` 不能与 `@generate_before` / `@generate_after` 同时使用。
+Note: `@preprocessing` translated text `@generate_before` / `@generate_after` translated textusage. 
 
-### @iframe 隔离状态栏
+### @iframe translated textstatus bar
 
 ```javascript
 @render_after
@@ -306,277 +298,269 @@ _%>
 <head></head>
 <body>
 <div>
-好感度：<%- variables.stat_data.角色名.好感度 %>
+Affinity: <%- variables.stat_data.Character name.Affinity %>
 </div>
 </body>
 </html>
 ```
 
-在角色楼层末尾渲染 HTML，样式不污染全局。`@iframe` 后加标题文字可折叠。
+translated textcharactertranslated text HTML, translated text. `@iframe` translated text. 
 
-### @@if 简洁条件
-
-单条件简写，不写完整 `<%_ _%>` 块：
+### @@if translated text , do not writecomplete `<%_ _%>` translated text: 
 
 ```
-@if variables.stat_data.角色名.好感度 >= 90
-角色对你非常信任
+@if variables.stat_data.Character name.Affinity >= 90
+charactertranslated text
 ```
 
 ```
-@if variables.stat_data.角色名.好感度 > 50 && variables.stat_data.角色名.好感度 < 90
-角色视你为朋友
+@if variables.stat_data.Character name.Affinity > 50 && variables.stat_data.Character name.Affinity < 90
+charactertranslated text
 ```
 
-### 多阶段调色盘 EJS 结构
-
-将手写好的多阶段调色盘整合为一条 EJS 条目的完整骨架：
+### translated textphasetranslated text EJS translated text phasetranslated text EJS entrytranslated textcompletetranslated text: 
 
 ```
 <%_
-if (typeof gw === 'undefined') var gw = getvar('stat_data.角色名.好感度', { defaults: 0 });
-if (typeof rel === 'undefined') var rel = getvar('stat_data.角色名.关系状态', { defaults: '陌生人' });
+if (typeof gw === 'undefined') var gw = getvar('stat_data.Character name.Affinity', { defaults: 0 });
+if (typeof rel === 'undefined') var rel = getvar('stat_data.Character name.relationship status', { defaults: 'translated text' });
 _%>
 
-性格调色盘：人的性格就像调色盘，由多种性格衍生组合而成才是活生生的人
+personalitytranslated text: translated textpersonalitytranslated text, translated textpersonalitytranslated text
 
 <%_ if (gw < 150) { _%>
-底色：初识期底色
-主色调：初识期主色调
-性格点缀：初识期点缀
+translated text: translated text : translated text
+personalitytranslated text: translated text
 <%_ } else if (gw < 400) { _%>
-底色：熟悉期底色
-主色调：熟悉期主色调
-性格点缀：熟悉期点缀
+translated text: translated text : translated text
+personalitytranslated text: translated text
 <%_ } else { _%>
-底色：亲近期底色
-主色调：亲近期主色调
-性格点缀：亲近期点缀
+translated text: translated text : translated text
+personalitytranslated text: translated text
 <%_ } _%>
 
 <%_ if (gw < 150) { _%>
-初识期专属衍生一：...
-初识期专属衍生二：...
+translated text: ...
+translated text: ...
 <%_ } _%>
 
 <%_ if (gw >= 150 && gw < 400) { _%>
-熟悉期专属衍生一：...
-熟悉期专属衍生二：...
+translated text: ...
+translated text: ...
 <%_ } _%>
 
-<%_ if (gw >= 400 && rel !== '恋人') { _%>
-暧昧期专属衍生一：...
-暧昧期专属衍生二：...
+<%_ if (gw >= 400 && rel !== 'translated text') { _%>
+translated text: ...
+translated text: ...
 <%_ } _%>
 
-<%_ if (rel === '恋人') { _%>
-恋人专属衍生一：...
-恋人专属衍生二：...
+<%_ if (rel === 'translated text') { _%>
+translated text: ...
+translated text: ...
 <%_ } _%>
 
-跨阶段通用衍生一：...（始终发送）
-跨阶段通用衍生二：...
+translated textphasetranslated text: ...(translated text)
+translated textphasetranslated text: ...
 
-对角色的理解与思考:
+translated textcharactertranslated text:
 
 <%_ if (gw < 150) { _%>
-  关于初识期行为的注释：
-    ...
+ translated text: 
+ ...
 <%_ } _%>
 
 <%_ if (gw >= 150 && gw < 400) { _%>
-  关于熟悉期行为的注释：
-    ...
+ translated text: 
+ ...
 <%_ } _%>
 
-  关于通用衍生的注释：（不用 if 包裹）
-    ...
+ translated text: (translated text if translated text)
+ ...
 
-  总结：这就是[角色名]的性格调色盘...
+ translated text: translated text[Character name]translated textpersonalitytranslated text...
 ```
 
-条目配置：蓝灯常驻，position=after_char，order=99，防递归。
+entryconfiguration: translated text, position=after_char, order=99, anti-recursion. 
 
-### 多阶段人设系统控制器模板
+### translated textphasetranslated textcontrollertranslated text
 
 ```javascript
 <%_
-if (typeof gw === 'undefined') var gw = getvar('stat_data.角色名.好感度', { defaults: 0 });
-if (typeof rel === 'undefined') var rel = getvar('stat_data.角色名.关系状态', { defaults: '陌生人' });
-if (typeof trust === 'undefined') var trust = getvar('stat_data.角色名.信任度', { defaults: 0 });
+if (typeof gw === 'undefined') var gw = getvar('stat_data.Character name.Affinity', { defaults: 0 });
+if (typeof rel === 'undefined') var rel = getvar('stat_data.Character name.relationship status', { defaults: 'translated text' });
+if (typeof trust === 'undefined') var trust = getvar('stat_data.Character name.translated text', { defaults: 0 });
 _%>
 
 <%_ if (gw < 150) { _%>
-<%- await getwi('角色名_阶段01_初识') %>
+<%- await getwi('Character name_phase01_translated text') %>
 <%_ } else if (gw < 400) { _%>
-<%- await getwi('角色名_阶段02_熟悉') %>
-<%_ } else if (gw < 700 && rel !== '恋人') { _%>
-<%- await getwi('角色名_阶段03_暧昧') %>
-<%_ } else if (rel === '恋人') { _%>
-<%- await getwi('角色名_阶段04_恋人') %>
+<%- await getwi('Character name_phase02_translated text') %>
+<%_ } else if (gw < 700 && rel !== 'translated text') { _%>
+<%- await getwi('Character name_phase03_translated text') %>
+<%_ } else if (rel === 'translated text') { _%>
+<%- await getwi('Character name_phase04_translated text') %>
 <%_ } else { _%>
-<%- await getwi('角色名_阶段03_暧昧') %>
+<%- await getwi('Character name_phase03_translated text') %>
 <%_ } _%>
 ```
 
-### 常见阶段判定模式
+### translated textphasetranslated text
 
-**纯数值分段：**
+**translated text: **
 
 ```javascript
-<%_ if (gw < 150) { _%>   // 初识
-<%_ } else if (gw < 400) { _%>   // 熟悉
-<%_ } else if (gw < 700) { _%>   // 暧昧
-<%_ } else { _%>   // 恋人
+<%_ if (gw < 150) { _%> // translated text
+<%_ } else if (gw < 400) { _%> // translated text
+<%_ } else if (gw < 700) { _%> // translated text
+<%_ } else { _%> // translated text
 <%_ } _%>
 ```
 
-**数值 + 文本组合：**
+**translated text + translated text: **
 
 ```javascript
-<%_ if (gw >= 400 && trust >= 30 && rel !== '恋人') { _%>
-// 好感高 + 信任足 + 非恋人 = 暧昧期
+<%_ if (gw >= 400 && trust >= 30 && rel !== 'translated text') { _%>
+// translated text + translated text + translated text = translated text
 <%_ } _%>
 ```
 
-**日期事件判定：**
+**translated text: **
 
 ```javascript
 <%_
-if (typeof date === 'undefined') var date = getvar('stat_data.世界信息.当前日期', { defaults: '' });
+if (typeof date === 'undefined') var date = getvar('stat_data.translated text.translated text', { defaults: '' });
 _%>
-<%_ if (date.includes('12月24日') || date.includes('12月25日')) { _%>
-圣诞活动专属内容
+<%_ if (date.includes('12translated text24translated text') || date.includes('12translated text25translated text')) { _%>
+translated textcontent
 <%_ } _%>
 ```
 
 ---
 
-## 自查清单
+## self-checklist
 
-- [ ] 所有变量使用 `typeof` 防重复声明 + `var` 声明
-- [ ] 所有变量路径带 `stat_data` 前缀，无 `[0]` 索引
-- [ ] `<%_ _%>` 格式正确，大括号成对闭合
-- [ ] `getwi()` 前有 `await`
-- [ ] 条件边界无重叠（同一好感度不会同时命中两个阶段）
-- [ ] 条件边界无遗漏（任意好感度值都能命中某个阶段）
-- [ ] 通用内容（跨阶段不变的内容）放在所有 `if` 块外面
-- [ ] 每个阶段的二次解释（作者注释）的 if 条件与对应衍生条件一致
-- [ ] 控制器条目：蓝灯常驻，order=100，防递归
-- [ ] 阶段条目（被 getwi 加载的）：禁用状态，order 98–800，防递归
-- [ ] 单条目型：蓝灯，order=99，防递归
-- [ ] `@preprocessing` 条目不与 `@generate_before` / `@generate_after` 同时使用
-- [ ] 制作时关闭提示词模板查看原始代码，测试时打开查看处理结果
-- [ ] 文件内容自身不含禁词（叙事禁词/比喻禁词/描写禁律）
+- [ ] translated textvariableusage `typeof` translated text + `var` translated text
+- [ ] translated textvariablepathtranslated text `stat_data` prefix, translated text `[0]` translated text
+- [ ] `<%_ _%>` formatcorrect, translated text
+- [ ] `getwi()` translated text `await`
+- [ ] translated text(translated textAffinitytranslated textmatchtranslated textphase)
+- [ ] translated text(translated textAffinitytranslated textmatchtranslated textphase)
+- [ ] translated textcontent(translated textphasetranslated textcontent)translated text `if` translated text
+- [ ] translated textphasetranslated textsecondary interpretation(translated text)translated text if translated text
+- [ ] controllerentry: translated text, order=100, anti-recursion
+- [ ] phaseentry(translated text getwi translated text): disabledstatus, order 98–800, anti-recursion
+- [ ] translated textentrytranslated text: translated text, order=99, anti-recursion
+- [ ] `@preprocessing` entrytranslated text `@generate_before` / `@generate_after` translated textusage
+- [ ] translated textTiptranslated textcode, translated text
+- [ ] filecontenttranslated textforbidden words(narrative forbidden words/metaphor forbidden words/translated text)
 
 ---
 
-## 常见错误示例
+## common error examples
 
-### 错误 1：getwi 忘记 await
+### error 1: getwi translated text await
 
 ```javascript
-/* ❌ 错误：缺少 await，条目不会加载 */
-<%- getwi('角色_阶段01') %>
+/* ❌ error: translated text await, entrytranslated text */
+<%- getwi('character_phase01') %>
 
-/* ✅ 正确 */
-<%- await getwi('角色_阶段01') %>
+/* ✅ correct */
+<%- await getwi('character_phase01') %>
 ```
 
-### 错误 2：变量路径缺少 stat_data 前缀
+### error 2: variablepathtranslated text stat_data prefix
 
 ```javascript
-/* ❌ 错误：缺少 stat_data 前缀，读不到值 */
-const gw = getvar('角色.好感度', { defaults: 0 });
+/* ❌ error: translated text stat_data prefix, translated text */
+const gw = getvar('character.Affinity', { defaults: 0 });
 
-/* ✅ 正确 */
-const gw = getvar('stat_data.角色.好感度', { defaults: 0 });
+/* ✅ correct */
+const gw = getvar('stat_data.character.Affinity', { defaults: 0 });
 ```
 
-### 错误 3：使用 const/let 声明变量
+### error 3: usage const/let translated textvariable
 
 ```javascript
-/* ❌ 错误：const/let 在多个条目中会导致重复声明报错 */
-const gw = getvar('stat_data.角色.好感度', { defaults: 0 });
+/* ❌ error: const/let translated textentrytranslated text */
+const gw = getvar('stat_data.character.Affinity', { defaults: 0 });
 
-/* ✅ 正确：var + typeof 防重复 */
-if (typeof gw === 'undefined') var gw = getvar('stat_data.角色.好感度', { defaults: 0 });
+/* ✅ correct: var + typeof translated text */
+if (typeof gw === 'undefined') var gw = getvar('stat_data.character.Affinity', { defaults: 0 });
 ```
 
-### 错误 4：条件边界重叠
+### error 4: translated text
 
 ```javascript
-/* ❌ 错误：好感度 400 同时命中两个条件 */
+/* ❌ error: Affinity 400 translated textmatchtranslated text */
 if (gw < 400) { ... }
-else if (gw <= 400) { ... }   // 400 时两个都成立
+else if (gw <= 400) { ... } // 400 translated text
 
-/* ✅ 正确：用 < 和 >= 分割，边界唯一归属 */
+/* ✅ correct: translated text < translated text >= translated text, translated text */
 if (gw < 400) { ... }
-else if (gw < 700) { ... }    // 400 单独归属第二阶段
+else if (gw < 700) { ... } // 400 translated textphase
 ```
 
-### 错误 5：条件边界遗漏
+### error 5: translated text
 
 ```javascript
-/* ❌ 错误：好感度 ≥ 400 时落在所有条件外面 */
+/* ❌ error: Affinity ≥ 400 translated text */
 if (gw < 200) { ... }
 else if (gw < 400) { ... }
 
-/* ✅ 正确：用 else 兜底 */
+/* ✅ correct: translated text else translated text */
 if (gw < 200) { ... }
 else if (gw < 400) { ... }
-else { ... }    // ≥ 400 的情况
+else { ... } // ≥ 400 translated text
 ```
 
-### 错误 6：阶段条目同时开启蓝灯
+### error 6: phaseentrytranslated text
 
 ```javascript
-/* ❌ 错误：阶段条目设了蓝灯，导致所有阶段内容同时发送，失去动态控制意义 */
+/* ❌ error: phaseentrytranslated text, translated textphasecontenttranslated text, translated text */
 /*
-条目A（控制器）：@activate, enabled=true  → 正确
-条目B（阶段01）：@activate, enabled=true  → 错误！应设为 enabled=false
+entryA(controller): @activate, enabled=true → correct
+entryB(phase01): @activate, enabled=true → error！translated text enabled=false
 */
 
-/* ✅ 正确：阶段条目设为禁用，由控制器通过 getwi 按需加载 */
+/* ✅ correct: phaseentrytranslated textdisabled, translated textcontrollertranslated text getwi translated text */
 ```
 
-### 错误 7：@preprocessing 与注入装饰器冲突
+### error 7: @preprocessing translated text
 
 ```javascript
-/* ❌ 错误：两个装饰器互斥，preprocessing 会被忽略 */
+/* ❌ error: translated text, preprocessing translated text */
 @preprocessing
 @generate_before
-内容...
+content...
 
-/* ✅ 正确：只保留 @preprocessing */
+/* ✅ correct: translated text @preprocessing */
 @preprocessing
-内容...
+content...
 ```
 
-### 错误 8：通用内容误放在 if 块内
+### error 8: translated textcontenttranslated text if translated text
 
 ```javascript
-/* ❌ 错误：通用特征只在高好感度时出现 */
+/* ❌ error: translated texttraitstranslated textAffinitytranslated text */
 <%_ if (gw >= 400) { _%>
-角色说话声音很轻
-跨阶段通用特征 xxx
+charactertranslated text phasetranslated texttraits xxx
 <%_ } _%>
 
-/* ✅ 正确：通用内容放在所有 if 外面 */
-角色说话声音很轻
+/* ✅ correct: translated textcontenttranslated text if translated text */
+charactertranslated text
 <%_ if (gw < 400) { _%>
-初识期专属特征
+translated texttraits
 <%_ } else { _%>
-亲近期专属特征
+translated texttraits
 <%_ } _%>
 ```
 
-### 错误 9：字符串相等用 == 而非 ===
+### error 9: translated text == rather than ===
 
 ```javascript
-/* ❌ 错误：== 可能因类型转换导致误判 */
-getvar('stat_data.关系状态') == '恋人'
+/* ❌ error: == translated texttypetranslated text */
+getvar('stat_data.relationship status') == 'translated text'
 
-/* ✅ 正确 */
-getvar('stat_data.关系状态') === '恋人'
+/* ✅ correct */
+getvar('stat_data.relationship status') === 'translated text'
 ```

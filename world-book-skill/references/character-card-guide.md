@@ -1,571 +1,545 @@
-# 角色卡编写指南
+# Character Cardwritetranslated text
 
-> 本文档规范角色卡世界书条目和开场白的编写方法。description 字段为空。角色全部信息（基本档案、外貌、背景、关系、性格）均写入世界书条目。
-
----
-
-## 本文内容
-
->本文指引角色卡的世界书条目和开场白编写。指引规范角色卡完整结构（所有角色信息塞入世界书条目 + 开场白另行编写），开场白遵循五步锚点（时间地点→角色状态→user处境→互动契机→开放式结尾），并提供 MVU/EJS/HTML 美化的集成入口。角色条目结构由 character-guide.md 规定，世界观设计由 world-building-guide.md 负责。
+> translated textCharacter CardWorld Bookentrytranslated textgreetingtranslated textwritetranslated text. description fieldtranslated text. characteralltranslated text(basic profile, appearance, background, relationship, personality)translated textWorld Bookentry. 
 
 ---
 
-## 工作流程
+## This document covers
 
-### 阶段一：信息确认
+>translated textCharacter Cardtranslated textWorld Bookentrytranslated textgreetingwrite. translated textCharacter Cardcompletetranslated text(translated textcharactertranslated textWorld Bookentry + greetingtranslated textwrite), greetingtranslated text(translated text→characterstatus→usertranslated text→translated text→open ending), translated text MVU/EJS/HTML beautificationtranslated text. characterentrytranslated text character-guide.md translated text, Worldviewtranslated text world-building-guide.md translated text. 
 
-在动笔前，确认以下信息：
+---
 
-1. 角色的基础档案：姓名、年龄、性别、身份、与 user 的关系定位
-2. 角色的特征性外貌（不是美感，是特征）
-3. 角色的关键背景事件（哪些事让角色变成了现在的样子）
-4. 角色与 user 的关系（如何认识的、现在的互动方式、特殊设定）
-5. 开场需要的氛围和场景方向（日常/战斗/初遇/重逢等）
+## workflow
 
-不需要的信息：性格细节（属于 character-guide.md）、世界观细节（属于 world-building-guide.md）。
+### Phase 1: translated textconfirm
 
-### 阶段二：编写世界书角色条目
+translated text, confirmtranslated text: 
 
-角色全部信息放入世界书条目，description 字段为空。按以下结构编写人物设定条目（XML包裹YAML）：
+1. charactertranslated text: translated text, age, gender, identity, translated text user translated textrelationshiptranslated text
+2. charactertranslated texttraitstranslated textappearance(is nottranslated text, translated texttraits)
+3. charactertranslated textbackgroundtranslated text(translated textcharactertranslated text)
+4. charactertranslated text user translated textrelationship(translated text, translated text, translated text)
+5. translated textneedtranslated textscenariotranslated text(translated text/translated text/translated text/translated text)
+
+translated textneedtranslated text: personalitytranslated text(translated text character-guide.md), Worldviewtranslated text(translated text world-building-guide.md). 
+
+### Phase 2: writeWorld Bookcharacterentry
+
+characteralltranslated textWorld Bookentry, description fieldtranslated text. translated textwritecharactertranslated textentry(XMLtranslated textYAML): 
 
 ```
 <character>
-name: 中文名
+name: translated text
 name_en: English Name
-age: 年龄 + 身份定位
-gender: 性别
-nicknames: 昵称1、昵称2、昵称3
+age: age + identitytranslated text
+gender: gender
+nicknames: nickname1, nickname2, nickname3
 appearance:
-  height: 身高
-  hair: 发型
-  eyes: 瞳色
-  ...
+ height: translated text
+ hair: translated text
+ eyes: translated text
+ ...
 background: |
-  关键事件叙述
+ key eventstranslated text
 relationships:
-  - name: 角色名
-    detail: 关系具体画面
+ - name: Character name
+ detail: relationshiptranslated text
 </character>
 ```
 
-完整模板和字段规范见 `character-guide.md`。编写完成后必须逐条做外貌差异化检查。
+completetranslated textfieldtranslated text `character-guide.md`. writetranslated textmusttranslated textappearancetranslated text. 
 
-### 阶段三：编写开场白
+### Phase 3: writegreeting
 
-按结构锚点编写 2-4 个可选开场。每个开场覆盖不同的时间、氛围或互动方式。
+translated textwrite 2-4 translated textoptionaltranslated text. translated text, translated text. 
 
-结构锚点：
-1. 时间 + 地点 + 环境氛围（从 user 的感官出发，写 user 能看到的、听到的、感觉到的）
-2. 角色状态（user 观察到的角色正在做什么、呈现什么状态）
-3. user 的处境和感受（user 此时的位置、状态、与角色的空间关系）
-4. 互动契机（角色的动作或话语引起 user 注意，开启互动）
-5. 开放式结尾（等待 user 决定下一步。不替 user 行动，不替 user 说话）
-6. 若启用了 MVU 系统，末尾添加 `<StatusPlaceHolderImpl/>` 占位符
+translated text: 
+1. translated text + translated text + translated text(translated text user translated text, translated text user translated text, translated text, translated text)
+2. characterstatus(user translated textcharactertranslated text, translated textstatus)
+3. user translated text(user translated textposition, status, translated textcharactertranslated textrelationship)
+4. translated text(charactertranslated text user Note, translated text)
+5. open ending(translated text user translated text. translated text user translated text, translated text user translated text)
+6. translated textenabledtranslated text MVU translated text, translated text `<StatusPlaceHolderImpl/>` translated text "greetingtranslated text". 
 
-各开场的具体规范见下方「开场白规范」。
+### Phase 4: self-check
 
-### 阶段四：自查
+translated text: 
 
-逐项运行以下检查：
-
-1. 禁词扫描：参考 writing-optimization-guide.md 的禁词清单，逐词搜索 description 和所有开场白
-2. 外貌差异化：遮住名字能识别角色吗
-3. 白描纯度：每句话都在写场景/动作/环境，没有心理活动解释
-4. 开放式结尾：每个开场都没有替 user 做任何决定
-5. 不预设 user：开场中没有写 user 的外貌、房间、性格、性别等特征
+1. forbidden-word scan: reference writing-optimization-guide.md translated textforbidden wordstranslated text, translated text description translated textgreeting
+2. appearancetranslated text: translated textcharactertranslated text
+3. translated text: translated textscenario/translated text/translated text, translated text
+4. open ending: translated text user translated text
+5. translated text user: translated text user translated textappearance, translated text, personality, gendertranslated texttraits
 
 ---
 
-## 详细规范
+## detailed specification
 
-### 一、角色卡完整结构
+### translated text, Character Cardcompletetranslated text
 
-角色卡由三个独立部分组成，description 为空：
+Character Cardtranslated text, description translated text: 
 
-| 部分 | 内容 | 负责文件 |
+| translated text | content | translated textfile |
 |------|------|----------|
-| 世界书角色条目 | 基本档案、外貌、背景、关系、性格 | character-guide.md + 本文件 |
-| 世界观设定 | 世界背景、规则、势力 | world-building-guide.md + world-book-guide.md |
-| 开场白 | 初始场景、多版本可选开场 | 本文件 |
+| World Bookcharacterentry | basic profile, appearance, background, relationship, personality | character-guide.md + translated textfile |
+| Worldviewtranslated text | translated textbackground, rules, faction | world-building-guide.md + world-book-guide.md |
+| greeting | translated textscenario, translated textoptionaltranslated text | translated textfile |
 
-description 字段为空。角色所有信息（人物设定 + 性格）均为世界书条目。性格必须从人物设定中分离为独立条目。
+description fieldtranslated text. charactertranslated text(charactertranslated text + personality)translated textWorld Bookentry. personalitymusttranslated textcharactertranslated textentry. 
 
-### 二、世界书角色条目编写规范
+### translated text, World Bookcharacterentrywritetranslated text
 
-角色全部信息写入世界书条目，每条独立配置。人物设定条目负责"这个人是谁"（基本档案），性格条目负责"这个人是什么样的人"（行为特征）。两者必须分条目存储。
+characteralltranslated textWorld Bookentry, translated textconfiguration. charactertranslated textentrytranslated text"translated text"(basic profile), personalityentrytranslated text"translated text"(translated texttraits). translated textmusttranslated textentrytranslated text. 
 
-#### 2.1 基本信息
+#### 2.1 translated text , translated text: 
 
-填表即可，不展开：
-
-| 字段 | 说明 |
+| field | description |
 |------|------|
-| 姓名 | 角色全名 |
-| 年龄 | 数字 + 附带单位（如"17岁"） |
-| 性别 | 男/女/其他 |
-| 身份 | 学生/上班族/冒险者等，可附带简短修饰 |
-| 与{{user}}关系 | 一句话定位（"同班同学""乐队搭档""邻居"），不展开 |
+| translated text | characterfull name |
+| age | translated text + translated text(translated text"17translated text") |
+| gender | translated text/translated text/translated text |
+| identity | translated text/translated text/translated text, translated text |
+| translated text{{user}}relationship | translated text("translated text""translated text""translated text"), translated text |
 
-"与{{user}}关系"只写一句话定位。具体的关系展开放在"关系设定"子部分里。
+"translated text{{user}}relationship"translated text. translated textrelationshiptranslated text"relationshiptranslated text"translated text. 
 
-#### 2.2 外貌特征。只写特征，不写美感
+#### 2.2 appearance traits. translated texttraits, do not writetranslated text
 
-外貌写的不是"美"，是"特征"。特征的意思是：只有这个角色才有的东西。
+appearancetranslated textis not"translated text", translated text"traits". traitstranslated text: translated textcharactertranslated text. 
 
-**写什么：**
-- 偏离数据库默认认知的身体特征（异色瞳、疤痕、纹身、义肢、特殊发色）
-- 标志性装扮（特定校服、制服、饰品、惯常发型）
-- 体型上的显著特点（特别高/矮/壮/瘦；"普通身材"不用写）
-- 能被记住的细节（习惯戴的东西、特殊的穿衣风格）
+**what to write: **
+- translated textdefaulttranslated texttraits(translated text, translated text, translated text, translated text, translated text)
+- translated text(translated text, translated text, translated text, translated text)
+- translated text(translated text/translated text/translated text/translated text; "translated text"translated text)
+- translated text(translated text, translated text)
 
-**不写什么：**
-- 数据库默认值。该种族/国籍/年龄的标准外貌（中国人的黑发黑眼、日本人的黑发、18岁的年轻、精灵的尖耳）
-- 万能美人描写。精致、白皙、好看等放在谁身上都行的词
-- 过度细节。每个五官写一遍，占 token 又分散注意力
-- 意象比喻。用与外貌无关的意象描述五官和肤色，是修辞不是信息
-- "感觉"类描写。"气质优雅""动作利落"是性格在往外貌里跑
+**what not to write: **
+- translated textdefault value. translated text/translated text/agetranslated textappearance(translated text, translated text, 18translated text, translated text)
+- translated text. translated text, translated text, translated text
+- translated text. translated text, translated text token translated textNotetranslated text
+- translated text. translated textappearancetranslated textdescriptiontranslated text, translated textis nottranslated text
+- "translated text"translated text. "translated text""translated text"translated textpersonalitytranslated textappearancetranslated text
 
-**判断标准：** 遮住名字，能不能靠这些特征认出是谁？能 → 写得好。不能 → 那写的不是特征，是废话。
+**translated text: ** translated text, translated texttraitstranslated text？translated text → translated text. translated text → translated textis nottraits, translated text. 
 
-#### 2.3 背景设定。只写关键事件
+#### 2.3 background setting. translated textkey events
 
-只写"让角色变成现在这个样子"的事，不写流水账。
+translated text"translated textcharactertranslated text"translated text, do not writetranslated text. 
 
-**写什么：**
-- 家庭背景。但只写影响了角色的部分
-- 经济状况。如果它对角色有实际影响
-- 关键经历。改变角色的事件、转折点、创伤
-- 社交关系。角色在什么圈子里，和什么人来往
+**what to write: **
+- translated textbackground. translated textcharactertranslated text
+- translated text. translated textcharactertranslated text
+- translated text. translated textcharactertranslated text, translated text, translated text
+- translated textrelationship. charactertranslated text, translated text
 
-**不写什么：**
-- 每个年龄段发生了什么（除非那件事改变了角色）
-- 和角色当前状态无关的童年琐事
-- 无信息量的评价（"她小时候很可爱""学习成绩不错"）
+**what not to write: **
+- translated textagetranslated text(translated textcharacter)
+- translated textcharactertranslated textstatustranslated text
+- translated text("translated text""translated text")
 
-**测试方法：** 删掉这条，角色会不会变？不会 → 删掉。
+**translated text: ** translated text, charactertranslated text？translated text → translated text. 
 
-#### 2.4 关系设定。用具体画面，不写抽象形容
+#### 2.4 relationshiptranslated text. translated text, do not writetranslated text : charactertranslated text user translated text, translated text, translated text. 
 
-回答：角色和 user 是怎么认识的，现在怎么相处的，有什么特殊的地方。
+**translated text: ** translated text, is nottranslated text. 
 
-**怎么写：** 具体的画面和事件，不是抽象的形容。
+do not write"translated text"→ translated text: 
+- translated text: translated text, translated text
+- translated text: translated text, translated text
+- translated text: translated text(translated text, translated text, translated text)
 
-不写"他们之间有着深厚的感情"→ 写具体的事实：
-- 认识过程：在哪里认识、什么契机
-- 互动方式：现在怎么相处，有什么惯例或模式
-- 特殊设定：只属于他们之间的东西（交换的信物、专属的称呼、约定的暗号）
+"translated text"translated text"translated text"translated text. translated text, translated text. 
 
-"有记忆起就在一起"比"从小就是最好的朋友"强十倍。前者是具体事实，后者是空泛形容。
+"translated text user translated text, translated text user translated text, translated text". translated text, translated text, translated text. translated textneedtranslated text"translated text", translated textbackgroundtranslated text, translated text. 
 
-"以前是她拉着 user 到处跑，后来则是 user 偶尔来敲门，她安静地待在一起"。两个画面，一句话，变化全出来了。不需要解释"因为生病所以变了"，放在背景后面读，读者自己就能理解。
+### translated text, greetingtranslated text
 
-### 三、开场白规范
+greetingtranslated text user translated textcharactertranslated text. translated text user translated text. greetingtranslated textCharacter Cardtranslated text. forbidden wordstranslated text, translated text. 
 
-开场白是 user 进入角色世界的第一段文字。它的质量直接决定了 user 的初始代入感。开场白是所有角色卡文本中最严格的部分。禁词零容忍，白描零妥协。
+#### 4.1 translated text greetingtranslated textordertranslated text. translated text, translated text: 
 
-#### 4.1 结构锚点
+**translated text: translated text + translated text + translated text**
 
-每个开场白按以下顺序构建。五步，缺一不可：
+translated text user translated text, translated text user translated textscenariotranslated text: 
+- translated text(translated text, translated text, translated text)
+- translated text(translated text, translated text/translated text)
+- translated text(user translated textposition, translated text)
+- translated text/translated text(translated textscenariotranslated text)
 
-**第一步：时间 + 地点 + 环境氛围**
+do not write"translated text""translated text"translated text. translated text. 
 
-从 user 的感官出发，写 user 进入场景时能感知到的东西：
-- 光线（日光灯的嗡嗡声、夕阳的角度、路灯的颜色）
-- 声音（周围的环境声、什么人/什么东西发出的声音）
-- 空间（user 在什么位置、周围有什么）
-- 温度/气味（如果它对场景重要）
+**translated text: characterstatus**
 
-不写"氛围静谧""气氛紧张"这类作者总结。让环境自己说话。
+user translated textcharactertranslated text, translated textstatus: 
+- charactertranslated textposition(translated text, translated text, translated text)
+- charactertranslated text(translated text, translated text)
+- charactertranslated text(translated text, translated textstatustranslated text, is notappearancetranslated text)
 
-**第二步：角色状态**
+translated text user translated text. do not writecharactertranslated text. do not write"translated text". translated text. 
 
-user 观察到的角色正在做什么、呈现什么状态：
-- 角色的位置（坐在哪里、靠在什么上面、站在什么旁边）
-- 角色的动作（正在做的事情，具体的）
-- 角色的外观在这个时刻的体现（服饰动态、头发状态等，不是外貌清单）
+**translated text: user translated text**
 
-只写 user 在此刻能看到的东西。不写角色的心理活动。不写"她看起来很难过"。写她做了什么让人判断出这一点。
+user translated textposition, status, translated textcharactertranslated textrelationship: 
+- user translated text(translated text, translated text, translated text)
+- user translated textcharactertranslated textrelationship
+- user translated text(translated text, translated text, translated text, translated text. translated text, do not writetranslated text)
 
-**第三步：user 的处境和感受**
+translated text user translated texttraits. do not write user translated textappearance, gender, personality, translated text. user translated text user translated text. 
 
-user 此刻的位置、状态、与角色的空间关系：
-- user 从哪里来（刚推门进来、刚拐过街角、刚坐下）
-- user 和角色之间的距离和空间关系
-- user 此刻的直接感受（热、冷、累、放松。写身体感受，不写复杂心理）
+**translated text: translated text**
 
-不预设 user 的任何特征。不写 user 的外貌、性别、性格、房间布置等。user 是什么样的人由 user 自己决定。
+charactertranslated text user Note, translated text: 
+- charactertranslated text(translated text)
+- charactertranslated text(translated text, translated textposition, translated text)
 
-**第四步：互动契机**
+translated textcharactertranslated text. translated textcharactertranslated text user translated text. user translated textneed"translated text", charactertranslated text. 
 
-角色的动作或话语引起 user 注意，开启互动：
-- 角色的第一句话（对白）
-- 角色的第一个动作（递东西、让位置、抬头看过来）
+**translated text: open ending**
 
-互动契机是角色主动的。是角色在邀请 user 进入对话。user 不需要"找话"，角色已经把话递过来了。
+translated text user translated text. translated text user translated text, translated text user translated textcharactertranslated text, translated text user translated text. translated textcharactertranslated text, translated text, translated text user translated text. 
 
-**第五步：开放式结尾**
+**translated text(MVU enabledtranslated text): ** translated text `<StatusPlaceHolderImpl/>`
 
-等待 user 决定下一步。不替 user 行动，不替 user 回答角色的话，不替 user 做任何选择。结尾停在角色的动作或话语之后，对话悬在那里，等 user 接。
+#### 4.2 translated text
 
-**第六步（MVU 启用时）：** 末尾添加 `<StatusPlaceHolderImpl/>`
+**translated text. ** translated textscenario, translated text, translated text. do not writetranslated text. translated text. translated text → translated text → translated text. 
 
-#### 4.2 核心原则
+**scenariotranslated text. ** translated text. translated text, translated text, translated text. is not"translated text", translated text"translated text, translated text". 
 
-**白描。** 写场景、动作、环境。不写心理活动解释。不附加作者评论。遮住所有修饰词后句子的信息量不变 → 修饰词是冗余的 → 删除。
+**user translated text. ** translated text user translated text. user translated text, translated text, translated text. charactertranslated text user translated text. do not write. 
 
-**场景化。** 每个开场都有具体的时空锚点。某个时间、某个地点、某种光线和声音。不是"有一天发生了什么"，而是"在排练室的灯光下，她在调琴"。
+**open ending. ** translated text user translated text. translated text"translated text user translated text"translated textposition. translated text, translated text, translated text user translated text. 
 
-**user 视角。** 所有描写从 user 的感官出发。user 看到了什么、听到了什么、感觉到了什么。角色的内心世界 user 看不到。不写。
+**translated text user. ** translated textdo not write user translated texttraits. appearance, personality, gender, translated text, translated text. user translated text user translated text. translated textcharactertranslated text user translated textscenariotranslated text. 
 
-**开放式结尾。** 不替 user 决定下一步行动。结尾停在一个"现在轮到 user 了"的位置。对话悬空，动作暂停，等着 user 接上去。
+**translated textcharacter. ** greetingtranslated text"charactertranslated textscenariotranslated text user translated text, translated text". charactertranslated text, translated text, translated textposition. translated textgreetingtranslated textcontent. user translated text. 
 
-**不预设 user。** 开场中不写 user 的任何特征。外貌、性格、性别、居住环境、过去的经历。user 是什么样的人由 user 自己定义。你只写角色对 user 的反应和场景的变化。
+#### 4.3 greetingtranslated text filetranslated textforbidden wordstranslated text. translated textforbidden wordstranslated text writing-optimization-guide.md translated text. translated textgreetingtranslated texthard rules: 
 
-**专注角色。** 开场白的重点是"角色在什么场景下对 user 做了什么、说了什么"。角色的行为、语言、环境中的位置。这些是开场白的内容。user 只是一个在场的观察者和被招呼的对象。
+1. **do not writetranslated textcharactertranslated text/translated text. ** charactertranslated text, translated text"translated text". "translated text"translated text, "translated text"translated text. translated text → translated text. 
+2. **translated text. ** "translated text, translated text". "translated text"translated text. translated text, translated text"translated text"translated text. translated text → translated text. 
+3. **translated text. ** scenariotranslated text. charactertranslated text. user translated text. translated text, translated text. user translated text. 
 
-#### 4.3 开场白禁律
+translated textforbidden words(translated text, translated text, translated text, translated text, translated text, translated text)translated text writing-optimization-guide.md. greetingwritetranslated textmusttranslated textfiletranslated textforbidden wordstranslated text. 
 
-本文件不重复定义禁词清单。所有禁词和禁律由 writing-optimization-guide.md 统一管理。此处仅强调开场白特有的三条铁律：
+#### 4.4 translated textoptionaltranslated text Character Cardtranslated text 2-4 translated text alternate_greetings. translated text: 
 
-1. **不写作者视角对角色动作/神态进行解释性修饰。** 角色低头就是低头，不附加"她看起来很难过"。"低头"是白描，"看起来很难过"是解释。解释 → 删除。
-2. **不用解释性比喻补充白描。** "她的手在发抖，像一片落叶"。"像一片落叶"是比喻补充。写了动作就够了，不用再加比喻去"增强"它。比喻 → 删除。
-3. **不描写不存在的事物。** 场景中此刻没有的东西不能出现。角色此刻没在想的东西不能写。user 没看到的东西不能写。窗外有没有月亮、巷子里有没有猫。user 没看到就不能写。
-
-所有禁词（量子词、感知词、对比词、八股微表情、语气声线标签、极端情绪词等）详见 writing-optimization-guide.md。开场白编写完成后必须用该文件的禁词清单逐项扫描。
-
-#### 4.4 多个可选开场
-
-为每个角色卡提供 2-4 个 alternate_greetings。每个开场覆盖不同的情境：
-
-| 维度 | 变化方向 |
+| translated text | translated text |
 |------|----------|
-| 时间 | 清晨/午后/深夜/黄昏 |
-| 氛围 | 日常平静/紧张冲突/安静独处/热闹场合 |
-| 互动方式 | 角色主动招呼/角色沉浸在自己的事里/角色与 user 并肩/角色在远处 |
-| 空间关系 | user 刚进入角色的空间/角色刚进入 user 的空间/两人许久未见/两人已经待在一起 |
+| translated text | translated text/translated text/translated text/translated text |
+| translated text | translated text/translated text/translated text/translated text |
+| translated text | charactertranslated text/charactertranslated text/charactertranslated text user translated text/charactertranslated text |
+| translated textrelationship | user translated textcharactertranslated text/charactertranslated text user translated text/translated text/translated text |
 
-各开场之间的差异应明显。不要只是换了几个形容词，而是真正换了场景、事件和互动。
+translated text. translated text, translated textscenario, translated text. 
 
-#### 4.5 开场白模板
-
-以下是符合结构锚点的开场白模板。用实际内容替换 `[...]` 中的占位符：
+#### 4.5 greetingtranslated text greetingtranslated text. translated textcontenttranslated text `[...]` translated text: 
 
 ```
-[具体时间]。[具体地点]，[环境光线/声音/温度——user 可感知的具体元素]。
+[translated text]. [translated text], [translated text/translated text/translated text——user translated text]. 
 
-[角色名][位置]，[动作——正在做什么]。[user 可以看到的细节——环境中的、角色身上的]。
+[Character name][position], [translated text——translated text]. [user translated text——translated text, charactertranslated text]. 
 
-你[user 的动作/状态/位置——从哪来、在做什么、与角色的空间关系]。
+translated text[user translated text/status/position——translated text, translated text, translated textcharactertranslated textrelationship]. 
 
-[角色对 user 的第一个动作或第一句话——互动契机]。
+[charactertranslated text user translated text——translated text]. 
 
-[角色的后续动作或话语，停在等待 user 回应的地方——开放式结尾]。[若启用MVU，接] <StatusPlaceHolderImpl/>
+[charactertranslated text, translated text user translated text——open ending]. [translated textenabledMVU, translated text] <StatusPlaceHolderImpl/>
 ```
 
 ---
 
-## 五、MVU / EJS / HTML 集成（简述）
+## translated text, MVU / EJS / HTML translated text(translated text)
 
-以下功能由各自独立的 reference 文件负责详细指导。本文件仅做入口说明：
+translated text reference filetranslated text. translated textfiletranslated textdescription: 
 
-| 需求 | 负责文件 | 说明 |
+| translated text | translated textfile | description |
 |------|----------|------|
-| 用户要求 MVU 变量系统 | 读 mvu-guide.md | 变量定义、初始化、更新命令 |
-| 用户要求 EJS 动态模板 | 读 ejs-guide.md | EJS 条件渲染、阶段控制、依赖 MVU |
-| 用户要求 HTML 美化界面 | 读 html-beautify-guide.md | 开场选择的 HTML 前端、正则替换 |
+| user request MVU variable system | translated text mvu-guide.md | variabletranslated text, translated text, updatetranslated text |
+| user request EJS translated text | translated text ejs-guide.md | EJS translated text, phasetranslated text, Dependencies MVU |
+| user request HTML beautificationtranslated text | translated text html-beautify-guide.md | translated text HTML translated text, translated text |
 
-当用户明确要求上述功能时，切换到对应的 reference 文件进行详细操作。
-
----
-
-## 自查清单
-
-### 世界书角色条目检查
-
-- [ ] description 字段是否为空（不写入任何内容）
-- [ ] 所有角色信息是否全部放入世界书条目
-- [ ] 人物设定条目与性格条目是否分条目存储
-
-### 开场白检查
-
-- [ ] 每个开场是否包含完整的五步结构锚点
-- [ ] 时间、地点、环境是否具体，从 user 感官出发
-- [ ] 角色状态是否是 user 此刻能看到的具体行为
-- [ ] 是否没有预设 user 的任何特征（外貌、性别、性格等）
-- [ ] 互动契机是否是角色主动递出的
-- [ ] 结尾是否是开放式的，没有替 user 做决定
-- [ ] 是否没有作者视角的解释性修饰
-- [ ] 是否没有解释性比喻补充白描
-- [ ] 是否没有描写场景中不存在的事物
-
-### 禁词检查（逐词搜索）
-
-- [ ] 量子词（见 writing-optimization-guide.md）：命中为 0
-- [ ] 感知词：命中为 0
-- [ ] 对比词：命中为 0
-- [ ] 八股微表情：命中为 0
-- [ ] 语气声线标签：命中为 0
-- [ ] 极端情绪词：命中为 0
-- [ ] 比喻禁词（详见 writing-optimization-guide.md 比喻禁词表）：命中为 0
-- [ ] 模糊词（详见 writing-optimization-guide.md 八股词表速查）：命中为 0
-- [ ] 否定转折句式（详见 writing-optimization-guide.md 叙事禁词表）：命中为 0
-- [ ] 作者视角解释角色动作/神态：全文无命中
-- [ ] 对角色语气/眼神/腔调/视线进行比喻描写：全文无命中
-- [ ] 对白中出现精确数值或数字：全文无命中
-
-### 整体检查
-
-- [ ] 是否提供了 2-4 个可选开场
-- [ ] 各开场之间的时间/氛围/互动方式是否有明显差异
-- [ ] 若启用 MVU，开场末尾是否含 `<StatusPlaceHolderImpl/>`
-- [ ] 文件自身是否不含任何禁词
+translated text, translated text reference filetranslated text. 
 
 ---
 
-## 常见错误示例
+## self-checklist
 
-### 世界书角色条目错误
+### World Bookcharacterentrytranslated text
 
-**错误 1：外貌写成万能美人**
+- [ ] description fieldtranslated text(do not writetranslated textcontent)
+- [ ] translated textcharactertranslated textalltranslated textWorld Bookentry
+- [ ] charactertranslated textentrytranslated textpersonalityentrytranslated textentrytranslated text
 
-```
-外貌特征:
-  面容: 精致的脸蛋，白皙的皮肤，桃花眼，柳叶眉
-  身材: 身材匀称，亭亭玉立
-  气质: 温婉优雅
-```
-问题：五个描写，零个有用信息。放在任何角色身上都成立。
+### greetingtranslated text
 
-正确：
-```
-外貌特征:
-  发型: 棕色短发，碎发，不怎么打理
-  瞳色: 猫眼，笑起来眼睛弯起来
-  穿着: 羽丘学院校服，领带从不系好
-  特征: 左手食指和中指有弹吉他磨出的茧
-```
+- [ ] translated textincludecompletetranslated text
+- [ ] translated text, translated text, translated text, translated text user translated text
+- [ ] characterstatustranslated text user translated text
+- [ ] translated text user translated texttraits(appearance, gender, personalitytranslated text)
+- [ ] translated textcharactertranslated text
+- [ ] translated text, translated text user translated text
+- [ ] translated text
+- [ ] translated text
+- [ ] translated textscenariotranslated text
 
-**错误 2：外貌用意象比喻代替特征**
+### forbidden wordstranslated text(translated text)
 
-```
-瞳色: 明澄天青双眸，瞳孔深处有金色微光
-肤色: 运动后双颊泛红
-```
-问题：比喻不是信息。写出具体特征即可。
+- [ ] translated text(translated text writing-optimization-guide.md): matches are 0
+- [ ] translated text: matches are 0
+- [ ] translated text: matches are 0
+- [ ] translated text: matches are 0
+- [ ] translated text: matches are 0
+- [ ] translated text: matches are 0
+- [ ] metaphor forbidden words(translated text writing-optimization-guide.md metaphor forbidden wordstranslated text): matches are 0
+- [ ] translated text(translated text writing-optimization-guide.md translated text): matches are 0
+- [ ] translated text(translated text writing-optimization-guide.md narrative forbidden wordstranslated text): matches are 0
+- [ ] translated textcharactertranslated text/translated text: no matches in full text
+- [ ] translated textcharactertranslated text/translated text/translated text/translated text: no matches in full text
+- [ ] translated text: no matches in full text
 
-正确：
-```
-瞳色: 天青色
-肤色: 偏白
-```
+### translated text
 
-**错误 3：关系用抽象形容**
+- [ ] translated text 2-4 translated textoptionaltranslated text
+- [ ] translated text/translated text/translated text
+- [ ] translated textenabled MVU, translated text `<StatusPlaceHolderImpl/>`
+- [ ] filetranslated textforbidden words
 
-```
-与user关系: 两人感情深厚，是最好的朋友
-```
-问题：全是空泛形容，没有具体内容。
+---
 
-正确：
-```
-与user关系:
-  认识过程: user在街头听到她solo后主动搭话
-  互动方式: 排练时是最佳搭档，私下话不多但总在附近
-  特殊设定: 交换吉他拨片——她的在user那里，user的在她那里
-```
+## common error examples
 
-**错误 4：背景写流水账**
+### World Bookcharacterentryerror
+
+**error 1: appearancetranslated text**
 
 ```
-背景: 她从小就喜欢音乐，学过钢琴、小提琴和吉他。学习成绩一直很好，
-在班级里名列前茅。她有很多爱好，比如画画、看书、跑步。她还有一个
-哥哥和一个妹妹，家庭和睦。
+appearance traits:
+ translated text: translated text, translated text, translated text, translated text : translated text, translated text : translated text
 ```
-问题：每条删掉角色都不会变。全是流水账。
+issues: translated text, translated text. translated textcharactertranslated text. 
 
-正确：
+correct: 
 ```
-背景:
-  家庭: 父母常年在外，大部分时间独居
-  关键经历:
-    - 小学因打架被转学
-    - 初中接触摇滚，组建乐队
-    - 学校必须维持"品学兼优"的大小姐形象
+appearance traits:
+ translated text: translated text, translated text, translated text : translated text, translated text : translated text, translated text
+ traits: translated text
 ```
 
-**错误 5：人物设定条目中混入性格**
+**error 2: appearancetranslated texttraits**
 
 ```
-# ❌ 人物设定条目
+translated text: translated text, translated text : translated text
+```
+issues: translated textis nottranslated text. translated texttraitstranslated text. 
+
+correct: 
+```
+translated text: translated text : translated text
+```
+
+**error 3: relationshiptranslated text**
+
+```
+translated textuserrelationship: translated text, translated text
+```
+issues: translated text, translated textcontent. 
+
+correct: 
+```
+translated textuserrelationship:
+ translated text: usertranslated textsolotranslated text : translated text, translated text : translated text——translated textusertranslated text, usertranslated text
+```
+
+**error 4: backgroundtranslated text**
+
+```
+background: translated text, translated text, translated text. translated text, 
+translated text. translated text, translated text, translated text, translated text. translated text , translated text. 
+```
+issues: translated textcharactertranslated text. translated text. 
+
+correct: 
+```
+background:
+ translated text: translated text, translated text :
+ - translated text
+ - translated text, translated text
+ - translated textmusttranslated text"translated text"translated text
+```
+
+**error 5: charactertranslated textentrytranslated textpersonality**
+
+```
+# ❌ charactertranslated textentry
 <character>
-name: 秋明月
+name: Qiu Mingyue
 personality:
-  mbti: ISTP
-  traits:
-    - 表面冷漠，实则护短
+ mbti: ISTP
+ traits:
+ - translated text, translated text
 </character>
 ```
-问题：性格写在了人物设定条目里。两个条目必须分开。
+issues: personalitytranslated textcharactertranslated textentrytranslated text. translated textentrymusttranslated text. 
 
-正确：将性格放在独立的 `<秋明月_personality>` 条目中（见 character-guide.md 第四节），人物设定条目中不写性格内容。
+correct: translated textpersonalitytranslated text `<Qiu Mingyue_personality>` entrytranslated text(translated text character-guide.md translated text), charactertranslated textentrytranslated textdo not writepersonalitycontent. 
 
-### 开场白错误
+### greetingerror
 
-**错误 1：预设 user 特征**
-
-```
-你从衣柜里拿出校服，对着镜子整理了一下头发。作为一个刚转学来的新生，
-你心里有些忐忑。
-```
-问题：写了 user 的衣柜、照镜子的动作、转学生的身份、忐忑的心情。这些全都不是你可以决定的。
-
-正确：不写 user 的居住环境、外貌、身份、情绪。只写角色和场景。
-
-**错误 2：替 user 行动和说话**
+**error 1: translated text user traits**
 
 ```
-秋明月把吉他递给你，说："该你了。"
-你接过吉他，弹了一首她从未听过的曲子。她睁大了眼睛。
+translated text, translated text. translated text, 
+translated text. 
 ```
-问题："你接过吉他"替 user 做了动作。"弹了一首曲子"替 user 做了创作。user 可能不想接吉他，可能不会弹。
+issues: translated text user translated text, translated text, translated textidentity, translated text. translated textis nottranslated text. 
 
-正确：停在角色主动递出互动契机的瞬间，等 user 自己决定下一步。
+correct: do not write user translated text, appearance, identity, translated text. translated textcharactertranslated textscenario. 
 
-**错误 3：用解释性比喻补充白描**
-
-```
-她坐在音箱上，手指拨过琴弦，声音像碎冰落进玻璃杯。
-```
-问题："像碎冰落进玻璃杯"是比喻补充。琴声就是琴声，不需要用另一个意象来"翻译"。
-
-正确：
-```
-她坐在音箱上，手指拨过琴弦。音一个接一个地跳出来。
-```
-
-**错误 4：作者视角解释角色神态**
+**error 2: translated text user translated text**
 
 ```
-她抬头看了你一眼，像是在确认你是不是那个人。她的表情里带着
-一种等待了很久才终于等到的复杂情绪。
+Qiu Mingyuetranslated text, translated text: "translated text. "
+translated text, translated text. translated text. 
 ```
-问题："像是在确认你是不是那个人"是作者在替角色解释行为。"等待了很久"的心理活动是作者视角，不是 user 视角。
+issues: "translated text"translated text user translated text. "translated text"translated text user translated text. user translated text, translated text. 
 
-正确：
-```
-她抬头看了你一眼。盯了两秒，又垂下眼睛去看手上的拨片。
-```
+correct: translated textcharactertranslated text, translated text user translated text. 
 
-**错误 5：以抽象氛围代替具体环境**
+**error 3: translated text**
 
 ```
-午后的阳光透过窗户洒进房间，空气中有一种说不清的紧张感。
+translated text, translated text, translated text. 
 ```
-问题："说不清的紧张感"是作者直接告诉 user 应该感受什么。把环境写具体，氛围自然就有了。
+issues: "translated text"translated text. translated text, translated textneedtranslated text"translated text". 
 
-正确：
+correct: 
 ```
-窗外的太阳斜到天花板上。墙上的时钟咔咔走了四下。她手里的拨片转了两圈。
+translated text, translated text. translated text. 
 ```
 
-**错误 6：替角色的内心活动做注解**
+**error 4: translated textcharactertranslated text**
 
 ```
-她递过吉他拨片的时候手在抖，但她咬住嘴唇，不让内心的慌乱表现出来。
+translated text, translated textconfirmtranslated textis nottranslated text. translated text . 
 ```
-问题："不让内心的慌乱表现出来"是作者在解读角色的行为。你写了她手在抖就够了，不需要再替她解释为什么要咬住嘴唇。
+issues: "translated textconfirmtranslated textis nottranslated text"translated textcharactertranslated text. "translated text"translated text, is not user translated text. 
 
-正确：
+correct: 
 ```
-她把手伸过来，摊开手指，掌心躺着一片拨片。
-她没看你，看着拨片。
-手在抖。
+translated text. translated text, translated text. 
+```
+
+**error 5: translated text**
+
+```
+translated text, translated text. 
+```
+issues: "translated text"translated text user translated text. translated text, translated text. 
+
+correct: 
+```
+translated text. translated text. translated text. 
+```
+
+**error 6: translated textcharactertranslated text**
+
+```
+translated text, translated text, translated text. 
+```
+issues: "translated text"translated textcharactertranslated text. translated text, translated textneedtranslated text. 
+
+correct: 
+```
+translated text, translated text, translated text. 
+translated text, translated text. 
+translated text. 
 ```
 
 ---
 
-## 角色卡完整输出示例
+## Character Cardcompleteoutputexample
 
-以下是角色卡的世界书条目和开场白输出示例。角色复用秋明月，所有信息在世界书条目中。
+translated textCharacter Cardtranslated textWorld Bookentrytranslated textgreetingoutputexample. charactertranslated textQiu Mingyue, translated textWorld Bookentrytranslated text. 
 
-### 世界书条目
+### World Bookentry
 
 ```yaml
 <character>
-name: 秋明月
+name: Qiu Mingyue
 name_en: Qiu Mingyue
-age: 17岁·高二学生·摇滚乐队吉他手
-gender: 女性
-nicknames: 明月、秋姐、阿月
+age: 17translated text·translated text·translated text
+gender: translated text
+nicknames: translated text, translated text, translated text
 appearance:
-  height: 168cm
-  hair: 棕色短发，碎发，不怎么打理
-  eyes: 猫眼，笑起来眼睛弯成缝，不笑时带冷感
-  skin: 偏小麦色——常在街头演出晒的
-  clothing:
-    校内: 羽丘学院校服，领带从来系不好
-    校外: 宽松T恤、牛仔裤、挂着吉他拨片项链
-  distinguishing: 左手食指和中指有弹吉他磨出的厚茧、拨片项链从不取下、领带永远歪的
+ height: 168cm
+ hair: translated text, translated text, translated text
+ eyes: translated text, translated text, translated text
+ skin: translated text——translated text
+ clothing:
+ translated text: translated text, translated text : translated textTtranslated text, translated text, translated text
+ distinguishing: translated text, translated text, translated text
 background: |
-  秋家企业继承人之女，父母常年在外。小学因打架被转学后学会扮演乖学生。初中接触摇滚后组建第一支乐队。在学校维持秋家大小姐形象，双重身份撕裂至今。高中认识{{user}}。
+ translated text, translated text. translated text. translated text. translated text, translated textidentitytranslated text. translated text{{user}}. 
 relationships:
-  - name: "{{user}}"
-    detail: 街头solo时主动搭话的陌生人→乐队搭档→唯一能让她放下戒备的人。交换拨片是她说"你很重要"的方式
-  - name: 乐队成员
-    detail: 三年前组建的队友，学校之外唯一的社交圈
+ - name: "{{user}}"
+ detail: translated textsolotranslated text→translated text→translated text. translated text"translated text"translated text
+ - name: translated text
+ detail: translated text, translated text
 </character>
 ```
 
-性格条目见 `character-guide.md` 第四节模板。
+personalityentrytranslated text `character-guide.md` translated text. 
 
-### 开场白
+### greeting
 
-**开场 1 。 午后排练室**
+**translated text 1 . translated text**
 
 ```
-下午三点半的排练室。天花板上的日光灯在嗡嗡响，第三根灯管闪了两下。
+translated text. translated text, translated text. 
 
-秋明月坐在音箱上，低头调弦。左手拧弦钮，右手拨弦，听。再拧，再拨。脚边堆着几个效果器，线缠成一团。
+Qiu Mingyuetranslated text, translated text. translated text, translated text, translated text. translated text, translated text. translated text, translated text. 
 
-你推开门。门轴拖了一声长音。
+translated text. translated text. 
 
-她抬头看你，手里的拨片翻了一面。"贝斯的线我给你理好了。"琴盒边上靠着你的贝斯，线绕成了整齐的圈。
+translated text, translated text. "translated text. "translated text, translated text. 
 
 <StatusPlaceHolderImpl/>
 ```
 
-**开场 2 。 演出结束后的后台**
+**translated text 2 . translated text**
 
 ```
-演出结束。台上灯灭了，下面的人走了一半。
+translated text. translated text, translated text. 
 
-秋明月坐在后台的墙角，吉他在腿边靠着。她拧开一瓶水，仰头喝了半瓶，然后把瓶子递给你。
+Qiu Mingyuetranslated text, translated text. translated text, translated text, translated text. 
 
-头发在往下滴水，肩膀那块T恤深了一大片。她伸手把湿头发往后拨，拨到一半卡在耳后。
+translated text, translated textTtranslated text. translated text, translated text. 
 
-"第二首的solo我进快了。"
+"translated textsolotranslated text. "
 
-她没看你，从脚边捡起一片磨得发白的拨片，拇指在边缘来回擦。
+translated text, translated text, translated text. 
 
 <StatusPlaceHolderImpl/>
 ```
 
-**开场 3 。 深夜街头**
+**translated text 3 . translated text**
 
 ```
-十点二十的商业街。店铺全关了，卷帘门拉到底。路灯在地上打了一片黄光，蚊虫在光里乱飞。
+translated text. translated text, translated text. translated text, translated text. 
 
-秋明月一个人坐在奶茶店门口的台阶上。膝盖上横着一把木吉他，没接电。弦声小到只有坐在旁边的人才听得见。
+Qiu Mingyuetranslated text. translated text, translated text. translated text. 
 
-你拐过街角的时候她没停。她弹完了一整个段落，手指张开压在弦上，切掉了尾音。
+translated text. translated text, translated text, translated text. 
 
-"你每次都走这条路。"
+"translated text. "
 
-手还按在弦上，她歪着头看你。
+translated text, translated text. 
 
 <StatusPlaceHolderImpl/>
 ```
 
 ---
 
-> **交叉引用：** 世界书条目编写完成后 → 用 writing-optimization-guide.md 逐词禁词扫描 → world-building-guide.md 编写世界观条目 → config-guide.md 配置世界书 → card-generator-guide.md 生成 JSON。若需 MVU/EJS/HTML 功能，分别参考 mvu-guide.md、ejs-guide.md、html-beautify-guide.md。
+> **translated text: ** World Bookentrywritetranslated text → translated text writing-optimization-guide.md translated textforbidden-word scan → world-building-guide.md writeWorldviewentry → config-guide.md configurationWorld Book → card-generator-guide.md generate JSON. translated text MVU/EJS/HTML translated text, translated textreference mvu-guide.md, ejs-guide.md, html-beautify-guide.md. 

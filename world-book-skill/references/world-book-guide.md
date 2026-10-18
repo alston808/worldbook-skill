@@ -1,57 +1,53 @@
-# 世界书条目编写规范
+# World Bookentrywritetranslated text
 
-> 将世界观设计转化为可写入酒馆世界书的具体条目。本文是落地执行层。设计构思由 world-building-guide.md 负责，本文件负责把设计变成条目并配置。
+> translated textWorldviewtranslated textWorld Booktranslated textentry. translated text. translated text world-building-guide.md translated text, translated textfiletranslated textentrytranslated textconfiguration. 
 
-## 本文内容
+## This document covers
 
->本文指引世界书条目的插入层级。指引将世界观设计阶段的产出（总纲文档、人物设定、场景描述等）逐一转化为世界书条目，包括条目内容、触发策略（蓝灯/绿灯）、位置配置、递归设置。不做世界观设计，只做落地转化与配置。每写完一个条目必须执行 query.py 验证。
+>translated textWorld Bookentrytranslated text. translated textWorldviewtranslated textphasetranslated text(translated text, charactertranslated text, scenariodescriptiontranslated text)translated textWorld Bookentry, translated textentrycontent, translated text(translated text/translated text), positionconfiguration, recursiontranslated text. translated textWorldviewtranslated text, translated textconfiguration. translated textentrymusttranslated text query.py validate. 
 
->**脚本用法详见 `references/card-generator-guide.md`。任何写入操作必须阅读`references/card-generator-guide.md`，不允许任何形式的自行写入，任何写入操作必须参照文档内的Config.json格式，使用脚本写入世界书。**
+>**scripttranslated text `references/card-generator-guide.md`. translated textmusttranslated text`references/card-generator-guide.md`, translated text, translated textmusttranslated textConfig.jsonformat, usagescripttranslated textWorld Book. **
 
 ---
 
-## 工作流程
+## workflow
 
-### 阶段一：规划 — 判断卡型并列出条目表
+### Phase 1: translated text — translated textentrytranslated text : translated textcompletetranslated textWorldviewtranslated text(translated text, charactertranslated text, scenariotranslated text), translated text. 
 
-前置条件：已有完整的世界观设计文档（总纲、角色设定、场景等），或用户提供了足够的创作素材。
+#### steps1: translated texttype
 
-#### 步骤1：判断卡片类型
+translated textcharacterquantitytranslated text. translated textcharactertranslated textentry(translated text/appearance/personality/background/abilitytranslated text)translated textcharacter. 
 
-根据核心角色数量判断。同一角色的拆分条目（基础/外貌/性格/背景/能力等）不等于多个角色。
-
-| 类型 | 判定标准 | 蓝绿灯策略 |
+| type | translated text | translated text |
 |------|---------|------------|
-| 单角色卡 | 只有1个核心角色，即使拆成多个条目 | 该角色所有条目蓝灯常驻 |
-| 多角色卡 | 有2个及以上核心角色 | 角色速览蓝灯 + 各角色详情绿灯 |
+| translated textCharacter Card | translated text1translated textcharacter, translated textentry | translated textcharactertranslated textentrytranslated text |
+| translated textCharacter Card | translated text2translated textcharacter | charactertranslated text + translated textcharactertranslated text |
 
-#### 步骤2：列出条目规划表
+#### steps2: translated textentrytranslated text ordertranslated text, outputtranslated textconfirm. entrytranslated textmusttranslated textorder. 
 
-按以下顺序规划，输出表格供用户确认。条目创建必须严格按照此顺序。
-
-| order | 条目类型 | position | constant | 说明 |
+| order | entrytype | position | constant | description |
 |-------|---------|----------|----------|------|
-| 1 | 世界观总纲 | 0 (before_char) | true | 世界框架，始终存在 |
-| 4 | 角色速览 | 1 (after_char) | true | 多角色卡必写，单角色卡可跳过 |
-| 10-35 | 人物设定条目 | 1 (after_char) | 视卡型 | 每角色一条，XML结构；单卡蓝灯，多卡绿灯 |
-| 35-45 | 性格条目 | 1 (after_char) | 视卡型 | 每角色一条独立条目；单卡蓝灯，多卡绿灯 |
-| 50-98 | 物品/能力/场景/事件 | 1 (after_char) | false | 绿灯关键词触发，scanDepth=2 |
-| 99 | 角色详情补充 | 1 (after_char) | 视卡型 | 多卡绿灯 |
-| 100 | NPC/其他 | 1 (after_char) | false | 绿灯关键词触发 |
+| 1 | worldview outline | 0 (before_char) | true | translated text, translated text |
+| 4 | charactertranslated text | 1 (after_char) | true | translated textCharacter Cardtranslated text, translated textCharacter Cardtranslated text |
+| 10-35 | charactertranslated textentry | 1 (after_char) | translated text | translated textcharactertranslated text, XMLtranslated text; translated text, translated text |
+| 35-45 | personalityentry | 1 (after_char) | translated text | translated textcharactertranslated textentry; translated text, translated text |
+| 50-98 | item/ability/scenario/translated text | 1 (after_char) | false | translated text, scanDepth=2 |
+| 99 | charactertranslated text | 1 (after_char) | translated text | translated text |
+| 100 | NPC/translated text | 1 (after_char) | false | translated text |
 
-确认后方可进入下一阶段。
+confirmtranslated textphase. 
 
 ---
 
-### 阶段二：总纲 — 写入世界观总纲条目
+### Phase 2: translated text — translated textworldview outlineentry
 
-前置条件：条目规划表已确认。
+translated text: entrytranslated textconfirm. 
 
-#### 步骤1：写入总纲内容
+#### steps1: translated textcontent
 
-总纲是世界观最核心的压缩描述，包含：世界类型、时代背景、核心规则/机制、势力格局。用自然段压缩，通常300-500字。不使用XML结构，直接以自然语言YAML段落形式书写。
+translated textWorldviewtranslated textdescription, include: translated texttype, translated textbackground, translated textrules/translated text, factiontranslated text. translated text, translated text300-500translated text. do not useXMLtranslated text, translated textYAMLtranslated text. 
 
-#### 步骤2：配置总纲条目
+#### steps2: configurationtranslated textentry
 
 ```
 position: 0 (before_char)
@@ -61,19 +57,17 @@ prevent_recursion: true
 exclude_recursion: true
 ```
 
-写入后人工核对配置项（position/constant/recursion），进入下一阶段。
+translated textconfiguration items(position/constant/recursion), translated textphase. 
 
 ---
 
-### 阶段三：展开 — 逐条按规划表顺序写入
+### Phase 3: translated text — translated textordertranslated text : translated textconfirm. 
 
-前置条件：总纲已写入并确认。
+#### steps1: charactertranslated textentry(translated textCharacter Card)
 
-#### 步骤1：角色速览条目（仅多角色卡）
+contenttranslated textcharactertranslated text. translated text, identity, translated texttraits. translated textcharactertranslated text. 
 
-内容为所有核心角色的关键信息摘要。姓名、身份、一句话特征。每个角色不超过两行。
-
-配置：
+configuration: 
 ```
 position: 1 (after_char)
 order: 4
@@ -82,11 +76,11 @@ prevent_recursion: true
 exclude_recursion: true
 ```
 
-#### 步骤2：人物设定条目
+#### steps2: charactertranslated textentry
 
-每个角色一条，使用 `<character>` XML 结构。**完整模板和字段写法规格见 `character-guide.md`**。
+translated textcharactertranslated text, usage `<character>` XML translated text. **completetranslated textfieldtranslated text `character-guide.md`**. 
 
-配置（单角色卡）：
+configuration(translated textCharacter Card): 
 ```
 position: 1 (after_char)
 order: 10
@@ -95,82 +89,82 @@ prevent_recursion: true
 exclude_recursion: true
 ```
 
-配置（多角色卡）：
+configuration(translated textCharacter Card): 
 ```
 position: 1 (after_char)
-order: 10（按角色依次递增）
+order: 10(translated textcharactertranslated text)
 constant: false
-keys: 角色全名,昵称,外号（英文逗号分隔）
+keys: characterfull name,nickname,translated text(translated text)
 prevent_recursion: true
 exclude_recursion: true
 ```
 
-#### 步骤3：性格条目
+#### steps3: personalityentry
 
-从人物设定中独立出一条纯性格条目，内容为 `<personality>` 块。必须独立：基本信息是"她是谁"，性格是"她怎么行为"。混在一起会导致AI在读取基本信息时错误调用性格标签。
+translated textcharactertranslated textpersonalityentry, contenttranslated text `<personality>` translated text. musttranslated text: translated text"translated text", personalitytranslated text"translated text". translated textAItranslated textreadtranslated texterrortranslated textpersonalitytranslated text. 
 
-配置同步骤2中的人物设定条目。
+configurationtranslated textsteps2translated textcharactertranslated textentry. 
 
-#### 步骤4：物品/能力条目
+#### steps4: item/abilityentry
 
 ```yaml
 <item>
-name: 物品名
-type: 类型标签
-description: 简要说明——让AI了解这是什么，不写成产品说明书
+name: itemtranslated text
+type: typetranslated text
+description: translated textdescription——translated textAItranslated textWhat is this, do not writetranslated textdescriptiontranslated text
 </item>
 ```
 
-**特殊物品写作规范（重要）：**
+**translated textitemtranslated text(translated text): **
 
-| 物品类型 | 写什么 | 不写什么 |
+| itemtype | what to write | what not to write |
 |---------|--------|---------|
-| 服装 | 外观、材质、剪裁、颜色 | 优点、缺点、穿着感受 |
-| 性玩具 | 外形特征、玩法方式、结构描述 | 精确长度尺寸、直径数值 |
-| 刀具/枪械 | 类型、口径、使用弹种、基本参数 | 威力评价、"特种部队最爱"等形容词 |
+| translated text | translated text, translated text, translated text, translated text | translated text, translated text, translated text |
+| translated text | translated texttraits, translated text, translated textdescription | translated text, translated text |
+| translated text/translated text | type, translated text, usagetranslated text, translated textparameters | translated text, "translated text"translated text |
 
-配置：
+configuration: 
 ```
 position: 1 (after_char)
 order: 50-70
 constant: false
-keys: 物品名,相关词,别称（英文逗号分隔）
+keys: itemtranslated text,translated text,translated text(translated text)
 scanDepth: 2
 prevent_recursion: true
 exclude_recursion: true
 ```
 
-#### 步骤5：场景/事件条目
+#### steps5: scenario/translated textentry
 
 ```yaml
 <scene>
-name: 场景名
-location: 地理位置
-description: 场景描述——氛围、特征、与角色的关联
+name: scenariotranslated text
+location: geographyposition
+description: scenariodescription——translated text, traits, translated textcharactertranslated text
 </scene>
 ```
 
-配置：
+configuration: 
 ```
 position: 1 (after_char)
 order: 80-98
 constant: false
-keys: 场景名,地点名,相关词（英文逗号分隔）
+keys: scenariotranslated text,translated text,translated text(translated text)
 scanDepth: 2
 prevent_recursion: true
 exclude_recursion: true
 ```
 
-#### 步骤6：故事/章节条目
+#### steps6: story/chapterentry
 
-每条对应一个故事阶段或章节摘要。格式灵活，可用纯文本。
+translated textstoryphasetranslated textchaptertranslated text. formattranslated text, translated text. 
 
-配置：
+configuration: 
 ```
 position: 1 (after_char)
 order: 100
 constant: false
-keys: 章节关键词（英文逗号分隔）
+keys: chaptertranslated text(translated text)
 scanDepth: 2
 prevent_recursion: true
 exclude_recursion: true
@@ -178,161 +172,159 @@ exclude_recursion: true
 
 ---
 
-### 阶段四：验证 — 收尾自查
+### Phase 4: validate — finalizationself-check
 
-全部条目写入完成后逐条人工核对：
+allentrytranslated text: 
 
-- 双递归是否全部开启（preventRecursion=true, excludeRecursion=true）
-- 单角色卡的条目是否全部蓝灯（constant=true）
-- 多角色卡的详情条目是否设为绿灯（constant=false）且关键词完整
-- D1及以上深度（@D depth>=1）是否没有任何条目
-- 内容中是否包含禁词。读 writing-optimization-guide.md 逐条扫描
+- translated textrecursiontranslated textalltranslated text(preventRecursion=true, excludeRecursion=true)
+- translated textCharacter Cardtranslated textentrytranslated textalltranslated text(constant=true)
+- translated textCharacter Cardtranslated textentrytranslated text(constant=false)translated textcomplete
+- D1translated text(@D depth>=1)translated textentry
+- contenttranslated textincludeforbidden words. translated text writing-optimization-guide.md translated text
 
-> 任何写入操作前，**必须先读 `references/card-generator-guide.md`**，了解完整参数、config.json 格式和酒馆兼容性约束。任何写入操作都必须通过脚本进行。
+> translated text, **musttranslated text `references/card-generator-guide.md`**, translated textcompleteparameters, config.json formattranslated text. translated textmusttranslated textscripttranslated text. 
 
 ---
 
-## 详细规范
+## detailed specification
 
-### 条目分类与顺序总表
+### entrytranslated textordertranslated text
 
-| order | 条目类型 | position | constant | 递归 | 备注 |
+| order | entrytype | position | constant | recursion | notes |
 |-------|---------|----------|----------|------|------|
-| 1 | 世界观总纲 | 0 (before_char) | true | 双开 | 世界框架 |
-| 4 | 角色速览 | 1 (after_char) | true | 双开 | 多角色卡必写；单角色卡跳过 |
-| 10+ | 人物设定条目 | 1 (after_char) | 视卡型 | 双开 | XML结构，参考 character-guide.md |
-| 35+ | 性格条目 | 1 (after_char) | 视卡型 | 双开 | 独立条目 |
-| 50-70 | 物品/能力条目 | 1 (after_char) | false | 双开 | 关键词触发 |
-| 80-98 | 场景/事件条目 | 1 (after_char) | false | 双开 | 关键词触发，scanDepth=2 |
-| 99 | 角色详情补充 | 1 (after_char) | 视卡型 | 双开 | 多卡绿灯 |
-| 100 | NPC/故事/其他 | 1 (after_char) | false | 双开 | 关键词触发 |
+| 1 | worldview outline | 0 (before_char) | true | enable both | translated text |
+| 4 | charactertranslated text | 1 (after_char) | true | enable both | translated textCharacter Cardtranslated text; translated textCharacter Cardtranslated text |
+| 10+ | charactertranslated textentry | 1 (after_char) | translated text | enable both | XMLtranslated text, reference character-guide.md |
+| 35+ | personalityentry | 1 (after_char) | translated text | enable both | translated textentry |
+| 50-70 | item/abilityentry | 1 (after_char) | false | enable both | translated text |
+| 80-98 | scenario/translated textentry | 1 (after_char) | false | enable both | translated text, scanDepth=2 |
+| 99 | charactertranslated text | 1 (after_char) | translated text | enable both | translated text |
+| 100 | NPC/story/translated text | 1 (after_char) | false | enable both | translated text |
 
-### 蓝绿灯决策规则
+### translated textrules
 
 ```
-单角色卡
-  └─ 该角色所有条目 → constant=true（蓝灯，无论拆成多少个条目）
+translated textCharacter Card
+ └─ translated textcharactertranslated textentry → constant=true(translated text, translated textentry)
 
-多角色卡
-  ├─ 角色速览 → constant=true（蓝灯）
-  ├─ 各角色详情 → constant=false + keys覆盖所有称呼
-  └─ 各角色性格 → constant=false + keys覆盖所有称呼
+translated textCharacter Card
+ ├─ charactertranslated text → constant=true(translated text)
+ ├─ translated textcharactertranslated text → constant=false + keystranslated text
+ └─ translated textcharacterpersonality → constant=false + keystranslated text
 
-世界观条目
-  └─ constant=true（蓝灯）
+Worldviewentry
+ └─ constant=true(translated text)
 
-NPC / 场景 / 事件 / 物品 / 能力
-  └─ constant=false + scanDepth=2
+NPC / scenario / translated text / item / ability
+ └─ constant=false + scanDepth=2
 ```
 
-### 位置配置
+### positionconfiguration
 
-| position 值 | 含义 | 适合放什么 |
+| position translated text | translated text | translated text |
 |-------------|------|-----------|
-| 0 (before_char) | 角色定义之前 | 宏观世界观。设定、机制、历史 |
-| 1 (after_char) | 角色定义之后 | 角色详情、物品、场景、NPC |
-| 4 (at_depth) | D齿轮深度0 | 仅放对AI的行为指导（二次解释等） |
+| 0 (before_char) | charactertranslated text | translated textWorldview. translated text, translated text, history |
+| 1 (after_char) | charactertranslated text | charactertranslated text, item, scenario, NPC |
+| 4 (at_depth) | Dtranslated text0 | translated textAItranslated text(secondary interpretationtranslated text) |
 
-D1及以上深度不放任何内容。预设把聊天记录框起来告诉AI"这是互动历史"，在中间插入设定会破坏完整性，导致AI理解混乱。
+D1translated textcontent. translated textAI"translated texthistory", translated textcompletetranslated text, translated textAItranslated text. 
 
-### XML包裹YAML格式规范
+### XMLtranslated textYAMLformattranslated text
 
-条目内容统一使用 XML 标签包裹 YAML 的格式：
+entrycontenttranslated textusage XML translated text YAML translated textformat: 
 
-**必须遵守的三条规则：**
-1. XML标签独占一行，不与其他内容混在一起
-2. 标签内的内容缩进展开（2空格或4空格）
-3. 禁止纯XML格式。所有XML标签不闭合在同一行，标签必须换行
+**musttranslated textrules: **
+1. XMLtranslated text, translated textcontenttranslated text
+2. translated textcontenttranslated text(2translated text4translated text)
+3. translated textXMLformat. translated textXMLtranslated text, translated textmusttranslated text
 
-**正确示例：**
+**correctexample: **
 
 ```
 <character>
-  姓名: 张三
-  年龄: 20
-  外貌:
-    身高: 175cm
-    发色: 黑色短发
-  性格:
-    - 直率
-    - 冲动
+ translated text: translated text
+ age: 20
+ appearance:
+ translated text: 175cm
+ translated text: translated text
+ personality:
+ - translated text
+ - translated text
 </character>
 ```
 
-**错误示例（禁止）：**
+**errorexample(translated text): **
 
 ```
-<character><name>张三</name><age>20</age></character><!-- 纯XML，标签不换行 -->
-<character>姓名: 张三 年龄: 20 外貌: 身高175cm</character><!-- 内容挤压单行 -->
+<character><name>translated text</name><age>20</age></character><!-- translated textXML, translated text -->
+<character>translated text: translated text age: 20 appearance: translated text175cm</character><!-- contenttranslated text -->
 ```
 
-### 递归设置
+### recursiontranslated text entrymusttranslated textrecursiontranslated text, translated text: 
 
-所有条目必须同时开启两个递归选项，无论蓝灯还是绿灯：
+- **translated textrecursion**(prevent_recursion / prevent_outgoing): translated textentrycontenttranslated textentry
+- **translated textrecursion**(exclude_recursion / prevent_incoming): translated textentrycontenttranslated textentry
 
-- **不可递归**（prevent_recursion / prevent_outgoing）：本条目内容不触发其他条目
-- **防止进一步递归**（exclude_recursion / prevent_incoming）：其他条目内容不触发本条目
+translated texttokentranslated text. translated textusagetranslated textconsequences. 
 
-这是防止绿灯链式触发导致token爆炸的关键防线。忘了开任何一个都会在实际使用中造成严重后果。
+### translated text
 
-### 关键词设计
-
-- 关键词之间用英文逗号 `,` 分隔，禁用中文逗号、空格、分号
-- 覆盖所有可能被提及的称呼：
-  - 角色条目：全名,昵称,外号（如：秋明月,明月,秋姐）
-  - NPC条目：全名,昵称,外号,职务（如：王老师,王静,班主任）
-  - 场景条目：场景名,所在区域,别称（如：图书馆,主楼三层,自习室）
-  - 物品条目：物品名,简称,相关词（如：秋水剑,秋水,佩剑）
+- translated text `,` translated text, disabledtranslated text, translated text, translated text
+- translated text: 
+ - characterentry: full name,nickname,translated text(translated text: Qiu Mingyue,translated text,translated text)
+ - NPCentry: full name,nickname,translated text,position(translated text: translated text,translated text,translated text)
+ - scenarioentry: scenariotranslated text,translated text,translated text(translated text: translated text,translated text,translated text)
+ - itementry: itemtranslated text,translated text,translated text(translated text: translated text,translated text,translated text)
 
 ---
 
-## 自查清单
+## self-checklist
 
-- [ ] 是否先判断了单角色卡还是多角色卡？
-- [ ] 条目规划表是否已列出并和用户确认？
-- [ ] 总纲条目是否最先写入且已确认？
-- [ ] 所有角色条目是否使用了 `<character>` XML 结构（参考 character-guide.md）？
-- [ ] 性格是否从人物设定中独立成单独的条目？
-- [ ] 单角色卡的所有条目是否全部设为蓝灯？
-- [ ] 多角色卡的详情条目是否全部设为绿灯且关键词覆盖所有称呼？
-- [ ] 服装条目是否只写了外观和材质，没写优缺点和穿着感受？
-- [ ] 性玩具条目是否只写了外形和玩法，没写精确长度直径？
-- [ ] 武器条目是否写了类型/口径/弹种，没写成军火评测？
-- [ ] **运行脚本前是否已阅读 `card-generator-guide.md`？**
-- [ ] 每写完一条是否执行了 `query.py --brief` 验证？
-- [ ] 所有条目的双递归（不可递归 + 防止进一步递归）是否都已开启？
-- [ ] D1及以上深度是否没有任何条目？
-- [ ] XML标签是否独立成行，内容是否缩进展开？
-- [ ] 关键词是否使用英文逗号分隔？
-- [ ] 文件自身是否包含禁词？
+- [ ] translated textCharacter Cardtranslated textCharacter Card？
+- [ ] entrytranslated textconfirm？
+- [ ] translated textentrytranslated textconfirm？
+- [ ] translated textcharacterentrytranslated textusagetranslated text `<character>` XML translated text(reference character-guide.md)？
+- [ ] personalitytranslated textcharactertranslated textentry？
+- [ ] translated textCharacter Cardtranslated textentrytranslated textalltranslated text？
+- [ ] translated textCharacter Cardtranslated textentrytranslated textalltranslated text？
+- [ ] translated textentrytranslated text, translated text？
+- [ ] translated textentrytranslated text, translated text？
+- [ ] translated textentrytranslated texttype/translated text/translated text, translated text？
+- [ ] **translated textscripttranslated text `card-generator-guide.md`？**
+- [ ] translated text `query.py --brief` validate？
+- [ ] translated textentrytranslated textrecursion(translated textrecursion + translated textrecursion)translated text？
+- [ ] D1translated textentry？
+- [ ] XMLtranslated text, contenttranslated text？
+- [ ] translated textusagetranslated text？
+- [ ] filetranslated textincludeforbidden words？
 
 ---
 
-## 常见错误示例
+## common error examples
 
-❌ 错误：单角色卡拆了5个条目，其中性格条目设成了绿灯
-✅ 正确：单角色卡所有条目全部蓝灯常驻，无论拆成多少个条目
+❌ error: translated textCharacter Cardtranslated text5translated textentry, translated textpersonalityentrytranslated text
+✅ correct: translated textCharacter Cardtranslated textentryalltranslated text, translated textentry
 
-❌ 错误：条目内容写"面料的触感柔软舒适，版型修身显瘦，缺点是不耐洗"
-✅ 正确：写"米白色棉麻衬衫，宽松剪裁，七分袖"
+❌ error: entrycontenttranslated text"translated text, translated text, translated text"
+✅ correct: translated text"translated text, translated text, translated text"
 
-❌ 错误：性玩具条目写"长18厘米，直径3.5厘米，医用硅胶材质"
-✅ 正确：写"弯曲造型，表面有螺旋纹路，底部有吸盘可固定"
+❌ error: translated textentrytranslated text"translated text18translated text, translated text3.5translated text, translated text"
+✅ correct: translated text"translated text, translated text, translated text"
 
-❌ 错误：武器条目写"威力巨大，精准度极高，是特种部队最爱的主战装备"
-✅ 正确：写"9mm口径半自动手枪，使用9×19mm帕拉贝鲁姆弹，15发弹匣"
+❌ error: translated textentrytranslated text"translated text, translated text, translated textequipment"
+✅ correct: translated text"9mmtranslated text, usage9×19mmtranslated text, 15translated text"
 
-❌ 错误：写了5个条目检查了4个，漏了一个没开双递归
-✅ 正确：所有条目逐条检查，双递归全开
+❌ error: translated text5translated textentrytranslated text4translated text, translated textrecursion
+✅ correct: translated textentrytranslated text, translated textrecursiontranslated text
 
-❌ 错误：content 为纯XML标签一长串不换行
-✅ 正确：XML标签独立成行，内容缩进展开
+❌ error: content translated textXMLtranslated text
+✅ correct: XMLtranslated text, contenttranslated text
 
-❌ 错误：先写了角色详情条目，回头再补总纲
-✅ 正确：总纲必须第一个写，确认后再展开其他条目
+❌ error: translated textcharactertranslated textentry, translated text
+✅ correct: translated textmusttranslated text, confirmtranslated textentry
 
-❌ 错误：场景条目的keys用中文逗号：图书馆，自习室，主楼
-✅ 正确：场景条目的keys用英文逗号：图书馆,自习室,主楼
+❌ error: scenarioentrytranslated textkeystranslated text: translated text, translated text, translated text
+✅ correct: scenarioentrytranslated textkeystranslated text: translated text,translated text,translated text
 
-❌ 错误：D齿轮深度1放了场景设定条目
-✅ 正确：D1及以上不放任何东西，场景条目放在after_char位置
+❌ error: Dtranslated text1translated textscenariotranslated textentry
+✅ correct: D1translated text, scenarioentrytranslated textafter_charposition
