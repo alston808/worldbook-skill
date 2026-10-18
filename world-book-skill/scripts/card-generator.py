@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-SillyTavern chara_card_v3 角色卡生成器
+SillyTavern chara_card_v3 character card generator
 ========================================
-支持：从JSON配置生成 / 交互式创建 / 从现有角色卡提取模板 / 验证角色卡
+Supports: generate from JSON config / interactive creation / extract template from existing card / validate card
 
-用法：
+Usage:
   python card-generator.py --config config.json --output card.json
   python card-generator.py --interactive
   python card-generator.py --extract existing.json --output template.json
   python card-generator.py --validate card.json
   python card-generator.py --help
 
-依赖：Python 3.8+ (仅标准库)
+Dependencies: Python 3.8+ (standard library only)
 """
 
 import argparse
@@ -23,11 +23,11 @@ import uuid
 from datetime import datetime, timezone
 
 # ============================================================
-# 工具函数
+# Utility functions
 # ============================================================
 
 def parse_key_list(value):
-    """将逗号分隔的触发词字符串拆分为数组，兼容已拆分的数组"""
+    """Split comma-separated trigger keyword strings into a list, while supporting already-split lists."""
     if not value:
         return []
     if isinstance(value, list):
@@ -43,39 +43,39 @@ def parse_key_list(value):
     return []
 
 def gen_uuid():
-    """生成UUID v4"""
+    """Generate UUID v4."""
     return str(uuid.uuid4())
 
 def gen_id(prefix="id"):
-    """生成带前缀的时间戳ID"""
+    """Generate a timestamp-based ID with prefix."""
     return f"{prefix}_{int(datetime.now().timestamp() * 1000)}_{abs(hash(str(uuid.uuid4()))) % 100000}"
 
 def now_iso():
-    """返回ISO 8601格式的当前UTC时间"""
+    """Return current UTC time in ISO 8601 format."""
     return datetime.now(timezone.utc).isoformat()
 
 def escape_regex_body(text):
-    """转义正则体内的 / 字符. 参照 EasyVibeCard buildFindRegexString."""
+    """Escape / inside regex body. Refer to EasyVibeCard buildFindRegexString."""
     normalized = str(text).replace("\\/", "/")
     return normalized.replace("/", "\\/")
 
 def build_find_regex(pattern, flags="gs"):
-    """构建 slash风格的 findRegex 字符串"""
+    """Build slash-style findRegex string."""
     return f"/{escape_regex_body(pattern)}/{flags}"
 
 def clamp(value, min_val, max_val):
-    """限制数值范围"""
+    """Clamp numeric value to range."""
     return max(min_val, min(value, max_val))
 
 def first(*values):
-    """返回第一个非空值"""
+    """Return the first non-empty value."""
     for v in values:
         if v is not None and v != "":
             return v
     return ""
 
 # ============================================================
-# 默认模板
+# Default templates
 # ============================================================
 
 DEFAULT_MVU_BUNDLE = (
@@ -83,20 +83,20 @@ DEFAULT_MVU_BUNDLE = (
 )
 
 DEFAULT_MVU_BUTTONS = [
-    {"name": "重新处理变量", "visible": True},
-    {"name": "重新读取初始变量", "visible": True},
-    {"name": "清除旧楼层变量", "visible": False},
-    {"name": "快照楼层", "visible": False},
-    {"name": "重演楼层", "visible": False},
-    {"name": "重试额外模型解析", "visible": False},
+    {"name": "Reprocess variables", "visible": True},
+    {"name": "Reload initial variables", "visible": True},
+    {"name": "Clear old floor variables", "visible": False},
+    {"name": "Snapshot floor", "visible": False},
+    {"name": "Replay floor", "visible": False},
+    {"name": "Retry extra model parsing", "visible": False},
 ]
 
 # ============================================================
-# CardBuilder: 核心构建器
+# CardBuilder: Core builder
 # ============================================================
 
 class CardBuilder:
-    """SillyTavern chara_card_v3 角色卡构建器"""
+    """SillyTavern chara_card_v3 character card builder."""
 
     def __init__(self):
         self._init_empty()
@@ -145,7 +145,7 @@ class CardBuilder:
             "create_date": now_iso(),
         }
 
-    # === 基本信息 ===
+    # === Basic info ===
     def set_name(self, name):
         self.card["name"] = name
         self.card["data"]["name"] = name
@@ -174,7 +174,7 @@ class CardBuilder:
         self.card["data"]["extensions"]["talkativeness"] = v
         return self
 
-    # === 开场 ===
+    # === Openings ===
     def set_first_message(self, text):
         self.card["first_mes"] = text
         self.card["data"]["first_mes"] = text
@@ -184,7 +184,7 @@ class CardBuilder:
         self.card["data"]["alternate_greetings"].append(text)
         return self
 
-    # === 世界书 ===
+    # === World book ===
     def _make_extensions(self, *, position_num=1, depth=4, role=0,
                          prevent_recursion=True, exclude_recursion=True,
                          display_index=0, probability=100,
@@ -258,19 +258,19 @@ class CardBuilder:
         self.card["data"]["character_book"]["entries"].append(entry)
         return self
 
-    # === MVU 变量组件 ===
+    # === MVU variable components ===
     def add_initvar_entry(self, yaml_content, enabled=False):
-        """添加 [initvar] 变量初始化条目（before_char, 内容包裹<initvar>标签）"""
+        """Add [initvar] variable initialization entry (before_char, content wrapped in <initvar> tags)."""
         wrapped = f"<initvar>\n{yaml_content}\n</initvar>"
         return self.add_worldbook_entry(
-            comment="[initvar]变量初始化勿开",
+            comment="[initvar]Variable initialization (do not enable)",
             content=wrapped,
             constant=True, position="before_char", position_num=0,
             order=14720, enabled=enabled,
         )
 
     def add_variable_list_entry(self, var_path="stat_data", depth=0):
-        """添加变量列表条目（@D depth=0）"""
+        """Add variable list entry (@D depth=0)."""
         content = (
             "---\n"
             "<status_current_variable>\n"
@@ -278,57 +278,57 @@ class CardBuilder:
             "</status_current_variable>"
         )
         return self.add_worldbook_entry(
-            comment="变量列表",
+            comment="Variable list",
             content=content,
             constant=True, position="at_depth", position_num=4,
             order=14720, depth=depth,
         )
 
     def add_variable_update_rules(self, yaml_content):
-        """添加 [mvu_update] 变量更新规则条目（at_depth D0）"""
+        """Add [mvu_update] variable update rules entry (at_depth D0)."""
         return self.add_worldbook_entry(
-            comment="[mvu_update]变量更新规则",
+            comment="[mvu_update]Variable update rules",
             content=yaml_content,
             constant=True, position="at_depth", position_num=4,
             order=14720, depth=0,
         )
 
     def add_variable_output_format(self, content=None):
-        """添加变量输出格式条目（@D depth=0）"""
+        """Add variable output format entry (@D depth=0)."""
         if content is None:
             content = (
                 "---\n"
-                "变量输出格式:\n"
+                "Variable output format:\n"
                 "  rule:\n"
-                "    - 你必须在回复末尾输出更新分析和实际的更新命令\n"
-                "    - 更新命令遵循JSON Patch (RFC 6902)标准\n"
-                "    - 支持操作: replace/delta/insert/remove\n"
-                "    - 不要更新以_开头的只读变量\n"
+                "    - You must output update analysis and the actual update command at the end of your reply\n"
+                "    - Update commands must follow the JSON Patch (RFC 6902) standard\n"
+                "    - Supported operations: replace/delta/insert/remove\n"
+                "    - Do not update read-only variables that start with _\n"
                 "  format: |-\n"
                 "    <UpdateVariable>\n"
-                "    <Analysis>$(按英文输出，不超过80词)\n"
-                "    - ${计算经过的时间: ...}\n"
-                "    - ${判断是否允许戏剧性变化: 是/否}\n"
-                "    - ${基于check分析每个变量: ...}\n"
+                "    <Analysis>$(Output in English, no more than 80 words)\n"
+                "    - ${Compute elapsed time: ...}\n"
+                "    - ${Determine whether dramatic changes are allowed: yes/no}\n"
+                "    - ${Analyze each variable based on checks: ...}\n"
                 "    </Analysis>\n"
                 "    <JSONPatch>\n"
                 "    [\n"
-                "      { \"op\": \"replace\", \"path\": \"${路径}\", \"value\": \"${新值}\" },\n"
-                "      { \"op\": \"delta\", \"path\": \"${数值路径}\", \"value\": ${变动值} },\n"
-                "      { \"op\": \"insert\", \"path\": \"${对象路径/新键}\", \"value\": \"${新值}\" },\n"
-                "      { \"op\": \"remove\", \"path\": \"${对象路径/键}\" }\n"
+                "      { \"op\": \"replace\", \"path\": \"${path}\", \"value\": \"${new_value}\" },\n"
+                "      { \"op\": \"delta\", \"path\": \"${numeric_path}\", \"value\": ${delta_value} },\n"
+                "      { \"op\": \"insert\", \"path\": \"${object_path/new_key}\", \"value\": \"${new_value}\" },\n"
+                "      { \"op\": \"remove\", \"path\": \"${object_path/key}\" }\n"
                 "    ]\n"
                 "    </JSONPatch>\n"
                 "    </UpdateVariable>"
             )
         return self.add_worldbook_entry(
-            comment="[mvu_update]变量输出格式",
+            comment="[mvu_update]Variable output format",
             content=content,
             constant=True, position="at_depth", position_num=4,
             order=14720, depth=0,
         )
 
-    # === 正则脚本 ===
+    # === Regex scripts ===
     def _ensure_regex_scripts(self):
         d = self.card["data"]["extensions"]
         if "regex_scripts" not in d:
@@ -364,8 +364,8 @@ class CardBuilder:
         self.card["data"]["extensions"]["regex_scripts"].append(script)
         return self
 
-    def add_statusbar_regex(self, html_template, name="[界面]状态栏"):
-        """添加状态栏美化正则（HTML由调用方提供）"""
+    def add_statusbar_regex(self, html_template, name="[UI]Status bar"):
+        """Add status bar beautification regex (HTML provided by caller)."""
         return self.add_regex_script(
             name=name,
             find_pattern="<StatusPlaceHolderImpl/>",
@@ -375,17 +375,17 @@ class CardBuilder:
         )
 
     def add_statusbar_hide_regex(self):
-        """添加状态栏隐藏正则（不发送给AI）"""
+        """Add status bar hide regex (not sent to AI)."""
         return self.add_regex_script(
-            name="[不发送]界面占位符",
+            name="[NoSend]UI placeholder",
             find_pattern="<StatusPlaceHolderImpl/>",
             replace_string="",
             markdown_only=False, prompt_only=True,
             placement=[2], run_on_edit=True,
         )
 
-    def add_mvu_hide_regex(self, name="[不发送]去除变量更新", min_depth=4):
-        """添加变量更新隐藏正则"""
+    def add_mvu_hide_regex(self, name="[NoSend]Remove variable updates", min_depth=4):
+        """Add variable update hide regex."""
         return self.add_regex_script(
             name=name,
             find_pattern="<UpdateVariable>(.*?)<\\/UpdateVariable>",
@@ -396,26 +396,26 @@ class CardBuilder:
         )
 
     def add_mvu_beautify_full_regex(self):
-        """添加完整变量更新美化正则"""
+        """Add beautify regex for complete variable updates."""
         return self.add_regex_script(
-            name="[美化]完整变量更新",
+            name="[Beautify]Complete variable update",
             find_pattern="<UpdateVariable>(.*?)<\\/UpdateVariable>",
             find_flags="gis",
-            replace_string="<details><summary>变量更新完成</summary>\n$1\n</details>",
+            replace_string="<details><summary>Variable update complete</summary>\n$1\n</details>",
             markdown_only=True, placement=[2],
         )
 
     def add_mvu_beautify_partial_regex(self):
-        """添加不完整变量更新提示正则"""
+        """Add notice regex for incomplete variable updates."""
         return self.add_regex_script(
-            name="[美化]变量更新中",
+            name="[Beautify]Variable update in progress",
             find_pattern="<updatevariable>(?!.*<\\/updatevariable>)\\s*(.*)\\s*$",
             find_flags="gsi",
-            replace_string="<details><summary>变量更新中...</summary>\n$1\n</details>",
+            replace_string="<details><summary>Variable update in progress...</summary>\n$1\n</details>",
             markdown_only=True, placement=[2],
         )
 
-    # === 酒馆助手脚本 ===
+    # === Tavern helper scripts ===
     def _ensure_tavern_helper(self):
         d = self.card["data"]["extensions"]
         if "tavern_helper" not in d:
@@ -442,26 +442,26 @@ class CardBuilder:
         return self
 
     def add_mvu_core_script(self):
-        """添加MVU核心脚本"""
+        """Add MVU core script."""
         return self.add_tavern_script(
             name="MVU",
             content=DEFAULT_MVU_BUNDLE,
             buttons=DEFAULT_MVU_BUTTONS,
         )
 
-    def add_mvu_schema_script(self, schema_js, name="变量结构"):
-        """添加MVU ZOD变量结构脚本"""
+    def add_mvu_schema_script(self, schema_js, name="Variable schema"):
+        """Add MVU ZOD variable schema script."""
         return self.add_tavern_script(
             name=name,
             content=schema_js,
             buttons=[],
         )
 
-    # === 输出 ===
+    # === Output ===
     def build(self):
-        """构建并返回完整的角色卡JSON dict"""
+        """Build and return the full character card JSON dict."""
         self.card["create_date"] = now_iso()
-        # 确保顶层字段镜像
+        # Ensure top-level field mirrors
         data = self.card["data"]
         self.card["name"] = data["name"]
         self.card["description"] = data["description"]
@@ -478,11 +478,11 @@ class CardBuilder:
 
 
 # ============================================================
-# CardConfig: JSON配置文件加载
+# CardConfig: JSON config loading
 # ============================================================
 
 class CardConfig:
-    """从JSON配置文件加载角色卡定义并应用到CardBuilder"""
+    """Load character card definition from JSON config and apply it to CardBuilder."""
 
     def __init__(self, config_dict):
         self.cfg = config_dict
@@ -493,17 +493,17 @@ class CardConfig:
             return cls(json.load(f))
 
     def apply_to(self, builder: CardBuilder):
-        """将配置应用到CardBuilder"""
+        """Apply config to CardBuilder."""
         c = self.cfg
         if not isinstance(c, dict):
-            raise ValueError("配置必须是一个JSON对象")
+            raise ValueError("Config must be a JSON object")
 
-        # === 输入校验 ===
+        # === Input validation ===
         card = c.get("card", {}) or {}
         if not card.get("name"):
-            raise ValueError("缺少必填字段: card.name")
+            raise ValueError("Missing required field: card.name")
 
-        # MVU 风格冲突检测
+        # MVU style conflict detection
         mvu = c.get("mvu", {})
         if mvu.get("enabled"):
             schema = mvu.get("schema_script", "")
@@ -511,19 +511,19 @@ class CardConfig:
             has_beta_style = any(kw in schema for kw in ["_.add(", "_.set(", "getvar("])
             if has_zod_style and has_beta_style:
                 raise ValueError(
-                    "MVU 风格冲突：schema_script 同时包含 MVU zod（registerMvuSchema）"
-                    "和 MVU beta（_.add/_.set/getvar）的代码。"
-                    "两种风格不兼容，请统一为一种。"
+                    "MVU style conflict: schema_script contains both MVU zod (registerMvuSchema) "
+                    "and MVU beta (_.add/_.set/getvar) code. "
+                    "The two styles are incompatible; please use only one."
                 )
 
             first_mes = card.get("first_mes", "")
             if first_mes and "<StatusPlaceHolderImpl/>" not in first_mes:
-                print("[WARN] MVU ep 用但 default opening (first_mes) missing <StatusPlaceHolderImpl/>")
+                print("[WARN] MVU is enabled but default opening (first_mes) is missing <StatusPlaceHolderImpl/>")
             for i, g in enumerate(card.get("alternate_greetings", [])):
                 if g and "<StatusPlaceHolderImpl/>" not in g:
                     print(f"[WARN] alternate_greeting #{i+2} missing <StatusPlaceHolderImpl/>")
 
-        # === 基本信息 ===
+        # === Basic info ===
         if card:
             builder.set_card_info(
                 name=card.get("name"),
@@ -537,18 +537,18 @@ class CardConfig:
                 version=card.get("character_version", "1.0"),
             )
 
-        # === 扩展 ===
+        # === Extensions ===
         ext = c.get("extensions", {})
         if ext.get("talkativeness"):
             builder.set_talkativeness(ext["talkativeness"])
 
-        # === 开场 ===
+        # === Openings ===
         if card.get("first_mes"):
             builder.set_first_message(card["first_mes"])
         for g in card.get("alternate_greetings", []):
             builder.add_alternate_greeting(g)
 
-        # === 世界书 ===
+        # === World book ===
         wb = c.get("worldbook", {})
         if wb.get("name"):
             builder.set_worldbook_name(wb["name"])
@@ -567,7 +567,7 @@ class CardConfig:
                 depth=entry.get("extensions", {}).get("depth", 4),
             )
 
-        # === 正则脚本 ===
+        # === Regex scripts ===
         for rs in c.get("regex_scripts", []):
             builder.add_regex_script(
                 name=rs.get("name", rs.get("scriptName", "")),
@@ -582,7 +582,7 @@ class CardConfig:
                 substitute_regex=rs.get("substituteRegex", 0),
             )
 
-        # === 酒馆助手脚本 ===
+        # === Tavern helper scripts ===
         th = c.get("tavern_helper", {})
         for script in th.get("scripts", []):
             builder.add_tavern_script(
@@ -592,7 +592,7 @@ class CardConfig:
                 buttons=script.get("buttons", []),
             )
 
-        # === MVU专用（快捷配置） ===
+        # === MVU specific (quick config) ===
         mvu = c.get("mvu", {})
         if mvu.get("enabled"):
             if mvu.get("schema_script"):
@@ -615,12 +615,12 @@ class CardConfig:
                 builder.add_mvu_beautify_full_regex()
                 builder.add_mvu_beautify_partial_regex()
 
-        # === 状态栏 ===
+        # === Status bar ===
         statusbar = c.get("statusbar", {})
         if statusbar.get("enabled"):
             html = statusbar.get("html", "")
             if not html:
-                raise ValueError("statusbar.enabled=true 但未提供 statusbar.html")
+                raise ValueError("statusbar.enabled=true but statusbar.html was not provided")
             builder.add_statusbar_regex(html)
             if statusbar.get("hide_regex", True):
                 builder.add_statusbar_hide_regex()
@@ -629,18 +629,18 @@ class CardConfig:
 
 
 # ============================================================
-# CardConfig: JSON配置文件加载
+# CardConfig: JSON config loading
 # ============================================================
 
 def _position_str_to_num(pos_str):
-    """位置字符串转数字"""
+    """Convert position string to number."""
     mapping = {"before_char": 0, "after_char": 1, "at_depth": 4}
     return mapping.get(pos_str, 1)
-# InteractiveCLI: 交互式创建
+# InteractiveCLI: Interactive creation
 # ============================================================
 
 class InteractiveCLI:
-    """命令行交互式角色卡创建"""
+    """Interactive character card creation in CLI."""
 
     def __init__(self):
         self.builder = CardBuilder()
@@ -658,7 +658,7 @@ class InteractiveCLI:
         return val == "y" or val == "yes"
 
     def _input_multiline(self, prompt):
-        print(f"{prompt} (输入空行结束):")
+        print(f"{prompt} (enter an empty line to finish):")
         lines = []
         while True:
             line = input()
@@ -668,55 +668,55 @@ class InteractiveCLI:
         return "\n".join(lines)
 
     def run(self):
-        print("\n=== SillyTavern 角色卡生成器 (交互模式) ===\n")
+        print("\n=== SillyTavern Character Card Generator (Interactive Mode) ===\n")
 
-        # 1. 角色名
-        name = self._input("角色卡名称")
+        # 1. Character name
+        name = self._input("Character card name")
         self.builder.set_name(name)
 
-        # 2. 作者
-        creator = self._input("作者名", "")
+        # 2. Author
+        creator = self._input("Author name", "")
         if creator:
             self.builder.set_card_info(creator=creator)
 
-        # 3. 角色描述
-        desc = self._input_multiline("角色描述 (YAML格式)")
+        # 3. Character description
+        desc = self._input_multiline("Character description (YAML format)")
         if desc:
             self.builder.set_card_info(description=desc)
 
-        # 4. 人格
-        personality = self._input("人格/性格简述 (可选)", "")
+        # 4. Personality
+        personality = self._input("Personality summary (optional)", "")
         if personality:
             self.builder.set_card_info(personality=personality)
 
-        # 5. 世界书
-        if self._input_yn("是否需要世界书"):
-            wb_name = self._input("世界书名称", f"{name}_worldbook")
+        # 5. World book
+        if self._input_yn("Do you need a world book?"):
+            wb_name = self._input("World book name", f"{name}_worldbook")
             self.builder.set_worldbook_name(wb_name)
-            print("  (稍后可在JSON配置中批量添加条目)")
+            print("  (You can batch-add entries later in JSON config)")
 
         # 6. MVU
-        if self._input_yn("是否需要MVU ZOD变量系统"):
-            print("  MVU复杂度: (1)简单好感度 (2)完整游戏系统")
-            choice = self._input("  选择", "1")
+        if self._input_yn("Do you need the MVU ZOD variable system?"):
+            print("  MVU complexity: (1) Simple affinity (2) Full game system")
+            choice = self._input("  Select", "1")
             self._setup_mvu(choice)
 
-        # 7. 美化
-        if self._input_yn("是否需要HTML美化"):
+        # 7. Beautification
+        if self._input_yn("Do you need HTML beautification?"):
             self._setup_beautify()
 
-        # 8. 开场
+        # 8. Openings
         self._setup_openings()
 
-        # 9. 保存
-        out_name = self._input("输出文件名", f"{name}.json")
+        # 9. Save
+        out_name = self._input("Output filename", f"{name}.json")
         if not out_name.endswith(".json"):
             out_name += ".json"
         self.builder.save(out_name)
-        print(f"\n 角色卡已生成: {out_name}")
+        print(f"\n Character card generated: {out_name}")
 
     def _setup_mvu(self, choice):
-        # MVU核心脚本
+        # MVU core script
         self.builder.add_mvu_core_script()
 
         if choice == "1":
@@ -724,68 +724,68 @@ class InteractiveCLI:
                 "import { registerMvuSchema } from "
                 "'https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/util/mvu_zod.js';\n\n"
                 "export const Schema = z.object({\n"
-                "  角色: z.object({\n"
-                "    好感度: z.coerce.number().transform(v => _.clamp(v, 0, 100)).prefault(20),\n"
-                "    心情: z.string().prefault('平静'),\n"
+                "  Character: z.object({\n"
+                "    Affinity: z.coerce.number().transform(v => _.clamp(v, 0, 100)).prefault(20),\n"
+                "    Mood: z.string().prefault('Calm'),\n"
                 "  }),\n"
                 "});\n\n"
                 "$(() => { registerMvuSchema(Schema); });"
             )
             self.builder.add_mvu_schema_script(schema)
             self.builder.add_initvar_entry(
-                "角色:\n  好感度: 20\n  心情: 平静\n")
+                "Character:\n  Affinity: 20\n  Mood: Calm\n")
             self.builder.add_variable_list_entry()
             self.builder.add_variable_update_rules(
-                "---\n变量更新规则:\n  角色:\n    好感度:\n      type: number\n      range: 0~100\n      check:\n        - 根据互动调整 ±(3~6)\n    心情:\n      check:\n        - 根据剧情氛围更新\n")
+                "---\nVariable update rules:\n  Character:\n    Affinity:\n      type: number\n      range: 0~100\n      check:\n        - Adjust by +/- (3~6) based on interaction\n    Mood:\n      check:\n        - Update based on scene atmosphere\n")
             self.builder.add_variable_output_format()
         else:
-            # 完整游戏系统提供框架，用户自行填充
-            print("  (完整游戏系统的Schema请自行编辑JSON配置文件)")
+            # Full game system provides a framework; user fills in details.
+            print("  (Please edit the JSON config file yourself for full game system schema)")
 
         self.builder.add_mvu_hide_regex()
         self.builder.add_mvu_beautify_full_regex()
         self.builder.add_mvu_beautify_partial_regex()
 
     def _setup_beautify(self):
-        # 交互模式：用纯文本显示变量值。HTML美化请通过JSON配置提供。
+        # Interactive mode uses plain text to show variable values. Provide HTML beautification through JSON config.
         html = ("<style>body{margin:0;padding:8px;background:transparent;font-family:sans-serif;"
                 "display:flex;justify-content:center;color:#ccc;font-size:13px}"
                 ".s{background:rgba(26,26,46,.7);border-radius:10px;padding:10px 14px;"
                 "border:1px solid rgba(255,182,193,.15)}"
                 ".r{display:flex;justify-content:space-between;padding:3px 0}</style>"
                 "<div class='s'>"
-                "<div class='r'><span>好感度</span><span>"
-                "{{" + "format_message_variable::stat_data.角色.好感度" + "}}</span></div>"
-                "<div class='r'><span>心情</span><span>"
-                "{{" + "format_message_variable::stat_data.角色.心情" + "}}</span></div>"
+                "<div class='r'><span>Affinity</span><span>"
+                "{{" + "format_message_variable::stat_data.Character.Affinity" + "}}</span></div>"
+                "<div class='r'><span>Mood</span><span>"
+                "{{" + "format_message_variable::stat_data.Character.Mood" + "}}</span></div>"
                 "</div>")
         self.builder.add_statusbar_regex(html)
         self.builder.add_statusbar_hide_regex()
 
     def _setup_openings(self):
-        n = int(self._input("开场数量 (1-5)", "3"))
+        n = int(self._input("Number of openings (1-5)", "3"))
         default_opening = (
-            f"【2026年】【清晨】\n\n"
-            f"新的一天开始了。\n\n"
+            f"[2026][Morning]\n\n"
+            f"A new day has begun.\n\n"
             f"<StatusPlaceHolderImpl/>"
         )
-        opening = self._input_multiline("默认开场（可稍后在JSON中编辑）")
+        opening = self._input_multiline("Default opening (can be edited later in JSON)")
         self.builder.set_first_message(opening if opening else default_opening)
 
         for i in range(n):
-            print(f"\n  开场 {i+2}:")
-            text = self._input_multiline(f"  内容 (或按回车跳过)")
+            print(f"\n  Opening {i+2}:")
+            text = self._input_multiline(f"  Content (or press Enter to skip)")
             if text:
                 text += "\n<StatusPlaceHolderImpl/>"
                 self.builder.add_alternate_greeting(text)
 
 
 # ============================================================
-# 提取模式：从现有角色卡提取配置模板
+# Extract mode: extract config template from existing character card
 # ============================================================
 
 def extract_template(card_path, output_path):
-    """从现有角色卡JSON提取为可编辑的配置模板"""
+    """Extract editable config template from an existing character card JSON."""
     with open(card_path, "r", encoding="utf-8") as f:
         card = json.load(f)
 
@@ -830,7 +830,7 @@ def extract_template(card_path, output_path):
         "mvu": {"enabled": False},
     }
 
-    # 正则脚本
+    # Regex scripts
     for rs in ext.get("regex_scripts", []):
         template["regex_scripts"].append({
             "name": rs.get("scriptName", ""),
@@ -843,7 +843,7 @@ def extract_template(card_path, output_path):
             "runOnEdit": rs.get("runOnEdit", False),
         })
 
-    # 酒馆助手
+    # Tavern helper
     th = ext.get("tavern_helper", [])
     if isinstance(th, list) and len(th) > 0 and isinstance(th[0], list) and len(th[0]) > 1:
         for s in th[0][1]:
@@ -858,11 +858,11 @@ def extract_template(card_path, output_path):
 
 
 # ============================================================
-# 验证模式
+# Validation mode
 # ============================================================
 
 def validate_card(card_path):
-    """验证角色卡JSON的合法性"""
+    """Validate character card JSON."""
     errors = []
     warnings = []
 
@@ -870,60 +870,60 @@ def validate_card(card_path):
         with open(card_path, "r", encoding="utf-8") as f:
             card = json.load(f)
     except (json.JSONDecodeError, FileNotFoundError) as e:
-        return [f"无法读取文件: {e}"], []
+        return [f"Unable to read file: {e}"], []
 
-    # 基础结构检查
+    # Basic structure checks
     if "spec" not in card:
-        errors.append("缺少 spec 字段")
+        errors.append("Missing spec field")
     if card.get("spec") != "chara_card_v3":
-        warnings.append(f"spec 不是 chara_card_v3: {card.get('spec')}")
+        warnings.append(f"spec is not chara_card_v3: {card.get('spec')}")
     if "data" not in card:
-        errors.append("缺少 data 对象")
+        errors.append("Missing data object")
 
     data = card.get("data", {})
     if "name" not in data:
-        errors.append("缺少 data.name")
+        errors.append("Missing data.name")
     if "extensions" not in data:
-        errors.append("缺少 data.extensions")
+        errors.append("Missing data.extensions")
 
-    # 检查世界书条目
+    # Check world book entries
     wb = data.get("character_book", {})
     entries = wb.get("entries", [])
     if entries is None:
         entries = []
     for i, e in enumerate(entries):
         if not e.get("content") or not str(e.get("content", "")).strip():
-            errors.append(f"世界书条目 {i} ({e.get('comment','')}) content为空")
+            errors.append(f"World book entry {i} ({e.get('comment','')}) has empty content")
         ext = e.get("extensions", {})
         if not ext.get("prevent_recursion"):
-            warnings.append(f"世界书条目 {i} ({e.get('comment','')}) prevent_recursion=false")
+            warnings.append(f"World book entry {i} ({e.get('comment','')}) prevent_recursion=false")
         if not ext.get("exclude_recursion"):
-            warnings.append(f"世界书条目 {i} ({e.get('comment','')}) exclude_recursion=false")
-        # 位置合法性检查（酒馆position范围 0-7，无效值会被switch default静默跳过）
+            warnings.append(f"World book entry {i} ({e.get('comment','')}) exclude_recursion=false")
+        # Position validity check (SillyTavern position range is 0-7; invalid values are silently skipped by switch default)
         pos = ext.get("position", e.get("position", -1))
         if isinstance(pos, str):
             pos = {"before_char": 0, "after_char": 1, "at_depth": 4}.get(pos, -1)
         if isinstance(pos, (int, float)) and (pos < 0 or pos > 7):
-            errors.append(f"世界书条目 {i} ({e.get('comment','')}) position={pos} 超出0-7范围，酒馆将静默跳过该条目")
-        # keys格式检查（中文逗号/空格分隔会导致关键词匹配失败）
+            errors.append(f"World book entry {i} ({e.get('comment','')}) position={pos} is out of 0-7 range; SillyTavern will silently skip this entry")
+        # keys format check (Chinese punctuation or separators can cause keyword matching failures)
         for k in e.get("keys", []):
-            if isinstance(k, str) and ('，' in k or '、' in k):
-                warnings.append(f"世界书条目 {i} ({e.get('comment','')}) keys含中文标点：'{k}'，酒馆用英文逗号分隔关键词")
+            if isinstance(k, str) and ('\\uFF0C' in k or '\\u3001' in k):
+                warnings.append(f"World book entry {i} ({e.get('comment','')}) keys contain Chinese punctuation: '{k}'; use English commas to separate keywords in SillyTavern")
 
     ext = data.get("extensions", {})
     for i, rs in enumerate(ext.get("regex_scripts", [])):
         if not rs.get("findRegex"):
-            warnings.append(f"正则 {i} ({rs.get('scriptName','')}) findRegex为空")
+            warnings.append(f"Regex {i} ({rs.get('scriptName','')}) has empty findRegex")
 
     return errors, warnings
 
 
 # ============================================================
-# Decompile: 从角色卡解包为配置JSON
+# Decompile: unpack character card into config JSON
 # ============================================================
 
 def _detect_mvu_config(card):
-    """从角色卡JSON检测MVU配置"""
+    """Detect MVU config from character card JSON."""
     data = card.get("data", {})
     wb = data.get("character_book", {})
     ext = data.get("extensions", {})
@@ -961,11 +961,11 @@ def _detect_mvu_config(card):
             if inner.strip().endswith("</initvar>"):
                 inner = inner[:inner.rindex("</initvar>")]
             mvu["initvar"] = inner.strip()
-        if "变量列表" in comment or ("format_message_variable" in content and "status_current_variable" in content):
+        if "Variable list" in comment or ("format_message_variable" in content and "status_current_variable" in content):
             mvu["variable_list_path"] = "stat_data"
-        if "[mvu_update]" in comment and ("规则" in comment or "rule" in comment.lower()):
+        if "[mvu_update]" in comment and ("rules" in comment.lower() or "rule" in comment.lower()):
             mvu["update_rules"] = content
-        if "[mvu_update]" in comment and ("格式" in comment or "format" in comment.lower()):
+        if "[mvu_update]" in comment and "format" in comment.lower():
             mvu["output_format"] = content
 
     mvu["hide_regex"] = False
@@ -982,7 +982,7 @@ def _detect_mvu_config(card):
 
 
 def _detect_statusbar_config(card):
-    """从角色卡JSON检测状态栏配置"""
+    """Detect status bar config from character card JSON."""
     ext = card.get("data", {}).get("extensions", {})
     statusbar = {"enabled": False}
 
@@ -1000,7 +1000,7 @@ def _detect_statusbar_config(card):
 
 
 def decompile_card(card_path, output_path):
-    """从角色卡JSON解包为完整的可编辑配置JSON（与--config输入格式兼容）"""
+    """Unpack character card JSON into a complete editable config JSON (compatible with --config input format)."""
     with open(card_path, "r", encoding="utf-8") as f:
         card = json.load(f)
 
@@ -1041,11 +1041,11 @@ def decompile_card(card_path, output_path):
     def _is_mvu_entry(comment, content):
         if "[initvar]" in comment:
             return True
-        if "变量列表" in comment or ("format_message_variable" in content and "status_current_variable" in content):
+        if "Variable list" in comment or ("format_message_variable" in content and "status_current_variable" in content):
             return True
-        if "[mvu_update]" in comment and ("规则" in comment or "rule" in comment.lower()):
+        if "[mvu_update]" in comment and ("rules" in comment.lower() or "rule" in comment.lower()):
             return True
-        if "[mvu_update]" in comment and ("格式" in comment or "format" in comment.lower()):
+        if "[mvu_update]" in comment and "format" in comment.lower():
             return True
         return False
 
@@ -1102,7 +1102,7 @@ def decompile_card(card_path, output_path):
             "buttons": buttons,
         })
 
-    # 清理：MVU/Statusbar的脚本和正则已在专用节中，从通用列表中排除
+    # Cleanup: MVU/Statusbar scripts and regex are already captured in dedicated sections, so exclude them from generic lists
     if template["mvu"].get("enabled"):
         mvu_bundle_patterns = ["bundle.js", "MagVarUpdate"]
         mvu_schema_pattern = "registerMvuSchema"
@@ -1127,14 +1127,14 @@ def decompile_card(card_path, output_path):
 
 
 # ============================================================
-# Edit: 原位编辑角色卡
+# Edit: in-place character card editing
 # ============================================================
 
 def edit_card(card_path, *, name=None, description=None, personality=None,
               scenario=None, first_mes=None, creator_notes=None, creator=None,
               talkativeness=None, add_greeting=None, enable_mvu=None,
               enable_statusbar=None):
-    """原位编辑角色卡JSON文件的字段"""
+    """Edit fields in-place in a character card JSON file."""
     with open(card_path, "r", encoding="utf-8") as f:
         card = json.load(f)
 
@@ -1170,24 +1170,24 @@ def edit_card(card_path, *, name=None, description=None, personality=None,
         if enable_mvu:
             builder.card = card
             builder.add_mvu_core_script()
-            scheme_type = input("MVU复杂度 (1=简单好感度 2=完整游戏系统) [1]: ").strip() or "1"
+            scheme_type = input("MVU complexity (1=Simple affinity 2=Full game system) [1]: ").strip() or "1"
             if scheme_type == "1":
                 schema_js = (
                     "import { registerMvuSchema } from "
                     "'https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/util/mvu_zod.js';\n\n"
                     "export const Schema = z.object({\n"
-                    "  角色: z.object({\n"
-                    "    好感度: z.coerce.number().transform(v => _.clamp(v, 0, 100)).prefault(20),\n"
-                    "    心情: z.string().prefault('平静'),\n"
+                    "  Character: z.object({\n"
+                    "    Affinity: z.coerce.number().transform(v => _.clamp(v, 0, 100)).prefault(20),\n"
+                    "    Mood: z.string().prefault('Calm'),\n"
                     "  }),\n"
                     "});\n\n"
                     "$(() => { registerMvuSchema(Schema); });"
                 )
                 builder.add_mvu_schema_script(schema_js)
-                builder.add_initvar_entry("角色:\n  好感度: 20\n  心情: 平静\n")
+                builder.add_initvar_entry("Character:\n  Affinity: 20\n  Mood: Calm\n")
                 builder.add_variable_list_entry()
                 builder.add_variable_update_rules(
-                    "---\n变量更新规则:\n  角色:\n    好感度:\n      type: number\n      range: 0~100\n      check:\n        - 根据互动调整 ±(3~6)\n    心情:\n      check:\n        - 根据剧情氛围更新\n")
+                    "---\nVariable update rules:\n  Character:\n    Affinity:\n      type: number\n      range: 0~100\n      check:\n        - Adjust by +/- (3~6) based on interaction\n    Mood:\n      check:\n        - Update based on scene atmosphere\n")
                 builder.add_variable_output_format()
             builder.add_mvu_hide_regex()
             builder.add_mvu_beautify_full_regex()
@@ -1198,7 +1198,7 @@ def edit_card(card_path, *, name=None, description=None, personality=None,
         builder = CardBuilder()
         builder.card = card
         if enable_statusbar:
-            name_val = data.get("name", "角色")
+            name_val = data.get("name", "Character")
             html = (
                 "<style>body{margin:0;padding:8px;background:transparent;font-family:'Noto Sans SC',sans-serif;"
                 "display:flex;justify-content:center;color:#e0e0e0;font-size:13px}"
@@ -1210,9 +1210,9 @@ def edit_card(card_path, *, name=None, description=None, personality=None,
                 ".fill{height:100%;background:linear-gradient(90deg,#ff6b9d,#c44dff);border-radius:3px;"
                 "transition:width .5s ease}</style>"
                 f"<div class='s'>"
-                f"<div class='r'><span>好感度</span><div class='bar'><div class='fill' style='width:{{{{format_message_variable::stat_data.{name_val}.好感度}}}}%'></div></div>"
-                f"<span>{{{{format_message_variable::stat_data.{name_val}.好感度}}}}/100</span></div>"
-                f"<div class='r'><span>心情</span><span>{{{{format_message_variable::stat_data.{name_val}.心情}}}}</span></div>"
+                f"<div class='r'><span>Affinity</span><div class='bar'><div class='fill' style='width:{{{{format_message_variable::stat_data.{name_val}.Affinity}}}}%'></div></div>"
+                f"<span>{{{{format_message_variable::stat_data.{name_val}.Affinity}}}}/100</span></div>"
+                f"<div class='r'><span>Mood</span><span>{{{{format_message_variable::stat_data.{name_val}.Mood}}}}</span></div>"
                 f"</div>"
             )
             builder.add_statusbar_regex(html)
@@ -1226,11 +1226,11 @@ def edit_card(card_path, *, name=None, description=None, personality=None,
 
 
 # ============================================================
-# List: 角色卡概要
+# List: character card summary
 # ============================================================
 
 def list_card(card_path):
-    """列出角色卡的关键信息概要"""
+    """List key summary information for a character card."""
     with open(card_path, "r", encoding="utf-8") as f:
         card = json.load(f)
 
@@ -1238,34 +1238,34 @@ def list_card(card_path):
     ext = data.get("extensions", {})
     wb = data.get("character_book", {})
 
-    print(f"角色卡: {os.path.abspath(card_path)}")
-    print(f"  名称: {data.get('name', '')}")
-    print(f"  版本: {data.get('character_version', '')}")
-    print(f"  作者: {data.get('creator', '')}")
-    print(f"  描述长度: {len(data.get('description', ''))} chars")
-    print(f"  默认开场长度: {len(data.get('first_mes', ''))} chars")
-    print(f"  可选开场: {len(data.get('alternate_greetings', []))} 个")
-    print(f"  世界名: {ext.get('world', '')}")
+    print(f"Character card: {os.path.abspath(card_path)}")
+    print(f"  Name: {data.get('name', '')}")
+    print(f"  Version: {data.get('character_version', '')}")
+    print(f"  Author: {data.get('creator', '')}")
+    print(f"  Description length: {len(data.get('description', ''))} chars")
+    print(f"  Default opening length: {len(data.get('first_mes', ''))} chars")
+    print(f"  Alternate openings: {len(data.get('alternate_greetings', []))}")
+    print(f"  World name: {ext.get('world', '')}")
     print()
 
     entries = wb.get("entries", [])
-    print(f"  世界书: {wb.get('name', '')} (共 {len(entries)} 条)")
+    print(f"  World book: {wb.get('name', '')} (total {len(entries)} entries)")
     for i, e in enumerate(entries):
-        pos_map = {"before_char": "↑Char", "after_char": "↓Char", "at_depth": "@D"}
+        pos_map = {"before_char": "UpChar", "after_char": "DownChar", "at_depth": "@D"}
         pos_label = pos_map.get(e.get("position", ""), e.get("position", "?"))
-        light = "蓝灯" if e.get("constant") else "绿灯"
-        status = "禁用" if not e.get("enabled", True) else "启用"
+        light = "Blue light" if e.get("constant") else "Green light"
+        status = "Disabled" if not e.get("enabled", True) else "Enabled"
         entry_ext = e.get("extensions", {})
         print(f"    [{i}] {e.get('comment', '')[:50]} | pos={pos_label} | {light} | {status} | "
               f"preventRec={entry_ext.get('prevent_recursion', False)} | "
               f"excludeRec={entry_ext.get('exclude_recursion', False)}")
 
     regex_scripts = ext.get("regex_scripts", [])
-    print(f"\n  正则脚本: {len(regex_scripts)} 个")
+    print(f"\n  Regex scripts: {len(regex_scripts)}")
     for i, rs in enumerate(regex_scripts):
-        md = "美化" if rs.get("markdownOnly") else ""
-        pt = "隐藏" if rs.get("promptOnly") else ""
-        tags = "/".join(filter(None, [md, pt])) or "通用"
+        md = "Beautify" if rs.get("markdownOnly") else ""
+        pt = "Hidden" if rs.get("promptOnly") else ""
+        tags = "/".join(filter(None, [md, pt])) or "General"
         print(f"    [{i}] {rs.get('scriptName', '')[:40]} | {tags} | placement={rs.get('placement')}")
 
     th = ext.get("tavern_helper", [])
@@ -1274,87 +1274,87 @@ def list_card(card_path):
         scripts_list = th[0][1]
     elif isinstance(th, dict):
         scripts_list = th.get("scripts", [])
-    print(f"\n  酒馆助手脚本: {len(scripts_list)} 个")
+    print(f"\n  Tavern helper scripts: {len(scripts_list)}")
     for i, s in enumerate(scripts_list):
         print(f"    [{i}] {s.get('name', '')[:30]} | enabled={s.get('enabled', True)}")
 
     errors, warnings = validate_card(card_path)
     if errors:
-        print(f"\n  验证错误: {len(errors)} 个")
+        print(f"\n  Validation errors: {len(errors)}")
         for e in errors:
             print(f"    [ERROR] {e}")
     if warnings:
-        print(f"  验证警告: {len(warnings)} 个")
+        print(f"  Validation warnings: {len(warnings)}")
         for w in warnings:
             print(f"    [WARN] {w}")
     if not errors and not warnings:
-        print(f"\n  验证: [OK]")
+        print(f"\n  Validation: [OK]")
 
 
 # ============================================================
-# CLI入口
+# CLI entry
 # ============================================================
 
 def main():
     parser = argparse.ArgumentParser(
-        description="SillyTavern chara_card_v3 角色卡生成器 — 支持创建/解包/编辑/验证",
+        description="SillyTavern chara_card_v3 character card generator - supports create/decompile/edit/validate",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-示例:
-  # 从配置生成
+Examples:
+  # Generate from config
   python card-generator.py --config config.json --output card.json
 
-  # 交互式创建
+  # Interactive creation
   python card-generator.py --interactive
 
-  # 解包角色卡为可编辑配置（含MVU/状态栏检测）
+  # Decompile character card into editable config (with MVU/statusbar detection)
   python card-generator.py --decompile card.json -o template.json
 
-  # 查看角色卡概要
+  # Show character card summary
   python card-generator.py --list card.json
 
-  # 原位编辑角色卡字段
-  python card-generator.py card.json --edit --name "新名字" --description "新描述"
+  # Edit character card fields in place
+  python card-generator.py card.json --edit --name "new_name" --description "new description"
 
-  # 验证角色卡
+  # Validate character card
   python card-generator.py --validate card.json
 
-  # 提取简单模板（兼容旧参数）
+  # Extract simple template (legacy-compatible argument)
   python card-generator.py --extract existing.json -o template.json
         """
     )
 
-    parser.add_argument("card_path", nargs="?", help="角色卡JSON文件路径（编辑/列表模式用）")
-    parser.add_argument("--config", "-c", help="JSON配置文件路径")
-    parser.add_argument("--output", "-o", help="输出JSON文件路径", default="output.json")
-    parser.add_argument("--interactive", "-i", action="store_true", help="交互式创建")
-    parser.add_argument("--extract", "-e", help="从现有角色卡提取简单配置模板")
-    parser.add_argument("--decompile", "-d", help="从角色卡解包为完整可编辑配置（含MVU/状态栏检测）")
-    parser.add_argument("--validate", "-v", help="验证角色卡JSON")
-    parser.add_argument("--list", "-l", action="store_true", help="列出角色卡概要")
+    parser.add_argument("card_path", nargs="?", help="Character card JSON path (for edit/list modes)")
+    parser.add_argument("--config", "-c", help="JSON config file path")
+    parser.add_argument("--output", "-o", help="Output JSON file path", default="output.json")
+    parser.add_argument("--interactive", "-i", action="store_true", help="Interactive creation")
+    parser.add_argument("--extract", "-e", help="Extract simple config template from existing character card")
+    parser.add_argument("--decompile", "-d", help="Decompile character card into complete editable config (with MVU/statusbar detection)")
+    parser.add_argument("--validate", "-v", help="Validate character card JSON")
+    parser.add_argument("--list", "-l", action="store_true", help="List character card summary")
 
-    # 编辑模式参数
-    parser.add_argument("--edit", action="store_true", help="原位编辑角色卡字段")
-    parser.add_argument("--name", help="角色卡名称")
-    parser.add_argument("--description", help="角色描述")
-    parser.add_argument("--personality", help="人格/性格")
-    parser.add_argument("--scenario", help="场景设定")
-    parser.add_argument("--first-mes", dest="first_mes", help="默认开场消息")
-    parser.add_argument("--creator-notes", dest="creator_notes", help="作者备注")
-    parser.add_argument("--creator", help="作者名")
-    parser.add_argument("--talkativeness", help="话痨度（如 0.5）")
-    parser.add_argument("--add-greeting", dest="add_greeting", help="追加一条可选开场")
+    # Edit mode arguments
+    parser.add_argument("--edit", action="store_true", help="Edit character card fields in place")
+    parser.add_argument("--name", help="Character card name")
+    parser.add_argument("--description", help="Character description")
+    parser.add_argument("--personality", help="Personality")
+    parser.add_argument("--scenario", help="Scenario")
+    parser.add_argument("--first-mes", dest="first_mes", help="Default opening message")
+    parser.add_argument("--creator-notes", dest="creator_notes", help="Creator notes")
+    parser.add_argument("--creator", help="Author name")
+    parser.add_argument("--talkativeness", help="Talkativeness (e.g. 0.5)")
+    parser.add_argument("--add-greeting", dest="add_greeting", help="Append one alternate greeting")
     parser.add_argument("--enable-mvu", dest="enable_mvu", type=lambda x: x.lower() in ("true", "1", "yes"),
-                        help="启用/禁用MVU变量系统 (true/false)")
+                        help="Enable/disable MVU variable system (true/false)")
     parser.add_argument("--enable-statusbar", dest="enable_statusbar", type=lambda x: x.lower() in ("true", "1", "yes"),
-                        help="添加/移除状态栏美化 (true/false)")
+                        help="Add/remove status bar beautification (true/false)")
 
     args = parser.parse_args()
 
     # --list
     if args.list:
         if not args.card_path:
-            print("错误: --list 需要指定角色卡路径", file=sys.stderr)
+            print("Error: --list requires a character card path", file=sys.stderr)
             sys.exit(1)
         list_card(args.card_path)
         return
@@ -1362,9 +1362,9 @@ def main():
     # --edit
     if args.edit:
         if not args.card_path:
-            print("错误: --edit 需要指定角色卡路径", file=sys.stderr)
+            print("Error: --edit requires a character card path", file=sys.stderr)
             sys.exit(1)
-        print(f"编辑角色卡: {args.card_path}")
+        print(f"Editing character card: {args.card_path}")
         edit_card(
             args.card_path,
             name=args.name,
@@ -1379,7 +1379,7 @@ def main():
             enable_mvu=args.enable_mvu,
             enable_statusbar=args.enable_statusbar,
         )
-        print("编辑完成")
+        print("Edit complete")
         if args.list:
             list_card(args.card_path)
         return
@@ -1388,29 +1388,29 @@ def main():
     if args.decompile:
         out = args.output if args.output != "output.json" else args.decompile.replace(".json", "_config.json")
         path = decompile_card(args.decompile, out)
-        print(f"配置已解包到: {path}")
+        print(f"Config decompiled to: {path}")
         return
 
-    # --extract (兼容旧参数，简单提取)
+    # --extract (legacy-compatible, simple extraction)
     if args.extract:
         out = args.output if args.output != "output.json" else args.extract.replace(".json", "_template.json")
         path = extract_template(args.extract, out)
-        print(f"模板已提取到: {path}")
+        print(f"Template extracted to: {path}")
         return
 
     # --validate
     if args.validate:
         errors, warnings = validate_card(args.validate)
         if errors:
-            print("错误:")
+            print("Errors:")
             for e in errors:
                 print(f"  [ERROR] {e}")
         if warnings:
-            print("警告:")
+            print("Warnings:")
             for w in warnings:
                 print(f"  [WARN] {w}")
         if not errors and not warnings:
-            print("验证通过 [OK]")
+            print("Validation passed [OK]")
         return 1 if errors else 0
 
     # --interactive
@@ -1425,7 +1425,7 @@ def main():
         builder = CardBuilder()
         config.apply_to(builder)
         builder.save(args.output)
-        print(f"角色卡已生成: {args.output}")
+        print(f"Character card generated: {args.output}")
         return
 
     parser.print_help()
