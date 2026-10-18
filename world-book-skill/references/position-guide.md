@@ -4,27 +4,27 @@ Sourced from SillyTavern `public/scripts/world-info.js:855-864`.
 
 | Value | Label | JS Constant | Description |
 |-------|-------|-------------|-------------|
-| 0 | ↑Char | `world_info_position.before` | 角色定义之前 — Before character definitions |
-| 1 | ↓Char | `world_info_position.after` | 角色定义之后 — After character definitions |
-| 2 | ↑AT | `world_info_position.ANTop` | Author's Note 之前 — Before Author's Note |
-| 3 | ↓AT | `world_info_position.ANBottom` | Author's Note 之后 — After Author's Note |
-| 4 | @D | `world_info_position.atDepth` | 指定深度处 — At specific depth in chat |
-| 5 | ↑EM | `world_info_position.EMTop` | 示例消息之前 — Before Example Messages |
-| 6 | ↓EM | `world_info_position.EMBottom` | 示例消息之后 — After Example Messages |
-| 7 | Outlet | `world_info_position.outlet` | 输出到指定 Outlet — Requires `--outlet-name` |
+| 0 | ↑Char | `world_info_position.before` | charactertranslated text — Before character definitions |
+| 1 | ↓Char | `world_info_position.after` | charactertranslated text — After character definitions |
+| 2 | ↑AT | `world_info_position.ANTop` | Author's Note translated text — Before Author's Note |
+| 3 | ↓AT | `world_info_position.ANBottom` | Author's Note translated text — After Author's Note |
+| 4 | @D | `world_info_position.atDepth` | translated text — At specific depth in chat |
+| 5 | ↑EM | `world_info_position.EMTop` | exampletranslated text — Before Example Messages |
+| 6 | ↓EM | `world_info_position.EMBottom` | exampletranslated text — After Example Messages |
+| 7 | Outlet | `world_info_position.outlet` | outputtranslated text Outlet — Requires `--outlet-name` |
 
 ## Recommended usage
 
 | Entry type | Position | Reason |
 |------------|----------|--------|
-| 世界观总纲、背景设定、社会规则 | 0 (↑Char) | AI needs world framework before character info |
-| 角色速览 (multi-character) | 0 (↑Char) | Macro-level: what characters exist |
-| 角色详细信息 (all) | 1 (↓Char) | Supplements character description, placed after it |
-| NPC 详情 | 1 (↓Char) | Supports character details, keyword-triggered |
-| 场景/事件/物品 | 1 (↓Char) | Specific details, keyword-triggered |
-| 写作规范/指导 | 2 (↑AT) | Writing rules injected into system prompt area |
-| 二次解释 (behavior correction) | 4 (@D, depth=0) | Last thing AI reads → strongest influence. role=system |
-| 格式要求 for examples | 5 (↑EM) or 6 (↓EM) | Wraps example messages |
+| worldview outline, background setting, translated textrules | 0 (↑Char) | AI needs world framework before character info |
+| charactertranslated text (multi-character) | 0 (↑Char) | Macro-level: what characters exist |
+| charactertranslated text (all) | 1 (↓Char) | Supplements character description, placed after it |
+| NPC translated text | 1 (↓Char) | Supports character details, keyword-triggered |
+| scenario/translated text/item | 1 (↓Char) | Specific details, keyword-triggered |
+| translated text/translated text | 2 (↑AT) | Writing rules injected into system prompt area |
+| secondary interpretation (behavior correction) | 4 (@D, depth=0) | Last thing AI reads → strongest influence. role=system |
+| formattranslated text for examples | 5 (↑EM) or 6 (↓EM) | Wraps example messages |
 
 ## What NOT to do
 

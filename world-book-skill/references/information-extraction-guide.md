@@ -1,562 +1,549 @@
-# 二创信息提取指南
+# derivativeinformation extractiontranslated text
 
-> 本文件是二创流程的入口。用户提供小说/游戏/影视等已有作品文本时，路由至此文件执行信息提取。原创流程不走这里。
-
----
-
-## 本文内容
-
->本文是二创流程的提取指引。指引从源材料中系统性提取角色（8个维度：首次出场、外貌、身份、性格线索、关键事件、关系、能力、出场章节）、世界观（A/B/C类型判定后按地理/历史/势力/规则/社会结构分维提取）和物品/章节信息，输出 outline.txt 供后续条目编写使用。
+> translated textfiletranslated textderivativetranslated text. translated text/translated text/translated text, translated textfiletranslated textinformation extraction. originaltranslated text. 
 
 ---
 
-## 工作流程
+## This document covers
 
-### 阶段一：信息搜集
+>translated textderivativetranslated textextracttranslated text. translated textextractcharacter(8translated text: translated text, appearance, identity, personalitytranslated text, key events, relationship, ability, chapter appearance), Worldview(A/B/Ctypetranslated textgeography/history/faction/rules/translated textextract)translated textitem/chaptertranslated text, output outline.txt translated textentrywriteusage. 
 
-#### 步骤 1：判断信息来源
+---
 
-- 用户提供了小说/游戏文本文件 → 读取本地文件，进入步骤 3。
-- 用户要求使用网络搜索 → 进入步骤 2。
-- 用户既未提供文件也未要求搜索 → 询问用户是否可提供源材料，或是否需要执行网络搜索。
+## workflow
 
-#### 步骤 2：网络搜索结果处理
+### Phase 1: translated text
 
-如果执行网络搜索：
+#### steps 1: translated textsource
 
-1. 搜索关键词由用户指定或从对话中提取。
-2. 搜索得到的每条有用信息，写成简短简介（每条 50-100 字）。
-3. 所有简介合并写入一个临时 txt 文件，保存到工作目录。
-4. 后续编写条目前，先读取该 txt 文件获取信息。
+- translated text/translated textfile → readtranslated textfile, translated textsteps 3. 
+- user requestusagetranslated text → translated textsteps 2. 
+- translated textfiletranslated text → translated text, translated textneedtranslated text. 
 
-**简介写法示例：**
+#### steps 2: translated text : 
 
-```
-# 搜索结果摘要
-## 角色A
-- 身份：XX学院三年级生，风系魔法师（来源：百科页面）
-- 外貌：银灰色短发，左眼有竖贯眉眼的疤痕（来源：wiki人物页）
-- 关键事件：在XX战役中失去了左臂，后获得义肢（来源：剧情分析帖）
+1. translated textextract. 
+2. translated text, translated text(translated text 50-100 translated text). 
+3. translated text txt file, translated text. 
+4. translated textwriteentrytranslated text, translated textreadtranslated text txt filetranslated text. 
 
-## 世界观
-- XX大陆：由四个国家组成的奇幻世界，以魔力为能源（来源：设定集摘要）
-```
-
-#### 步骤 3：原文标注与行号索引
-
-如果用户提供了小说/游戏文本：
-
-1. **全文标注行号。** 计算每个章节的起止行号范围，写入索引。
+**translated textexample: **
 
 ```
-第1章: L1 - L350
-第2章: L351 - L720
-第3章: L721 - L1100
+# translated text
+## characterA
+- identity: XXtranslated text, translated text(source: translated text)
+- appearance: translated text, translated text(source: wikicharactertranslated text)
+- key events: translated textXXtranslated text, translated text(source: translated text)
+
+## Worldview
+- XXtranslated text: translated text, translated text(source: translated text)
 ```
 
-2. **首轮通读标注。** 在通读过程中用标记符标注内容类别：
+#### steps 3: original texttranslated textline numbertranslated text /translated text: 
 
-| 标记 | 含义 | 示例 |
+1. **translated textline number. ** translated textchaptertranslated textline numbertranslated text, translated text. 
+
+```
+translated text1translated text: L1 - L350
+translated text2translated text: L351 - L720
+translated text3translated text: L721 - L1100
+```
+
+2. **translated text. ** translated textmarktranslated textcontenttranslated text: 
+
+| mark | translated text | example |
 |------|------|------|
-| `[W]` | 世界观信息：虚构地理、历史、势力、规则、社会结构 | `[W] 中央神州是人族主战场` |
-| `[C]` | 角色信息：人名首次出现、外貌描写、背景事件、关系 | `[C] 仁科鸟子首次出场，金发蓝眼，168cm` |
-| `[I]` | 物品/能力/技能 | `[I] 透明左手可触碰和撕裂里世界物质` |
-| `[★]` | 重要章节：对该角色形象塑造或故事走向有决定性作用 | `[★] 第5章揭示角色身世，解释其行为动机` |
+| `[W]` | Worldviewtranslated text: translated textgeography, history, faction, rules, translated text | `[W] translated text` |
+| `[C]` | charactertranslated text: translated text, appearancetranslated text, backgroundtranslated text, relationship | `[C] translated text, translated text, 168cm` |
+| `[I]` | item/ability/translated text | `[I] translated text` |
+| `[★]` | translated textchapter: translated textcharactertranslated textstorytranslated text | `[★] translated text5translated textcharactertranslated text, translated text` |
 
-3. **角色出场标定。** 对每个出现的角色：
-   - 记录大致形象（一句话速写）
-   - 记录该角色出现的所有章节列表
+3. **charactertranslated text. ** translated textcharacter: 
+ - translated text(translated text)
+ - translated textcharactertranslated textchapterlist
 
 ```
-角色出场速览：
-- 仁科鸟子：金发蓝眼20岁女大学生，左手透明。出场：第1/3/5/7/8章
-- 纸越空鱼：黑发女大学生，右眼有特殊能力。出场：第1/2/4/6/8章
+charactertranslated text: 
+- translated text: translated text20translated text, translated text. translated text: translated text1/3/5/7/8translated text
+- translated text: translated text, translated textability. translated text: translated text1/2/4/6/8translated text
 ```
 
 ---
 
-### 阶段二：角色提取
+### Phase 2: characterextract
 
-对每个核心角色，按以下维度逐项提取。每个维度的输出格式为：
+translated textcharacter, translated textextract. translated textoutputformattranslated text: 
 
 ```
-### [维度名称]
-- 手法总结：（源材料在此维度的表现手法特点）
-- 原始例句：（1-3段原文引用，标注章节行号）
-- 禁词标记：（原文中的比喻/禁词，标注改写方案）
-- 提取结果：（剔除禁词和比喻后的白描内容，可直接转化为条目字段）
+### [translated textname]
+- translated text: (translated text)
+- translated text: (1-3translated textoriginal texttranslated text, translated textchapterline number)
+- forbidden wordsmark: (original texttranslated text/forbidden words, translated text)
+- extraction result: (translated textforbidden wordstranslated textcontent, translated textentryfield)
 ```
 
-#### 维度 1：基本信息与首次出场
+#### translated text 1: translated text
 
-**提取内容：**
-- 姓名、年龄、性别、身份定位
-- 首次出场的章节编号和行号
-- 原文中与 {{user}} 的关系描述（如适用）
+**extractcontent: **
+- translated text, age, gender, identitytranslated text
+- translated textchaptertranslated textline number
+- original texttranslated text {{user}} translated textrelationshipdescription(if applicable)
 
-**注意事项：**
-- 年龄原文没写则不估测，标记 `// 原文未提及`
-- 身份定位用一句话，不展开
+**Notetranslated text: **
+- ageoriginal texttranslated text, mark `// original texttranslated text`
+- identitytranslated text, translated text
 
-#### 维度 2：外貌特征
+#### translated text 2: appearance traits
 
-**必须参照 `character-guide.md` 的外貌规则执行：**
+**musttranslated text `character-guide.md` translated textappearancerulestranslated text: **
 
-| 规则 | 说明 |
+| rules | description |
 |------|------|
-| 不写默认特征 | 中国人不写黑发黑眼、日本人不写黑发、精灵不写尖耳、18岁不写年轻 |
-| 不写万能美人词 | "精致""白皙""好看""美丽"。遮住名字后无法认出角色的词不提取 |
-| 不写意象比喻 | "眸如星辰""晨光般暖白""银铃般清脆"→ 转化为特征白描 |
-| 只写差异特征 | 异色瞳、疤痕、纹身、义肢、特殊发色、标志性服装、体型显著偏差、习惯饰品、声线特色 |
+| do not writedefaulttraits | translated textdo not writetranslated text, translated textdo not writetranslated text, translated textdo not writetranslated text, 18translated textdo not writetranslated text |
+| do not writetranslated text | "translated text""translated text""translated text""translated text". translated textcharactertranslated textextract |
+| do not writetranslated text | "translated text""translated text""translated text"→ translated texttraitstranslated text |
+| translated texttraits | translated text, translated text, translated text, translated text, translated text, translated text, translated text, translated text, translated text |
 
-**判断标准：遮住名字，仅凭外貌描写能否认出这个角色？**
+**translated text: translated text, translated textappearancetranslated textcharacter？**
 
-**提取输出格式：**
+**extractoutputformat: **
 ```
-### 外貌特征
-- 手法总结：（源材料描写外貌的方式：侧写/对话提及/作者直述）
-- 原始例句：
-  "眸如星辰般的天青色眼眸" — 第3章 L450
-  "精致的脸蛋，白皙如瓷的皮肤" — 第1章 L20
-- 禁词标记：
-  "眸如星辰" → 比喻，剔除，改为"天青色瞳"
-  "精致的脸蛋" → 万能美人词，剔除
-  "白皙如瓷" → AI已知默认值+比喻，剔除
-- 提取结果：
-  瞳色：天青色
-  （无特殊皮肤特征，不写入 skin 字段）
-```
-
-#### 维度 3：身份定位
-
-- 年龄（如原文有明确数值）
-- 性别
-- 身份/职业/社会角色
-- 与 {{user}} 的关系定位（如适用）
-- 原文没写的不补全
-
-#### 维度 4：性格线索
-
-**核心原则：只提取原文中的行为表现，不是作者贴的性格标签。**
-
-- 原文写"她温柔" → 不提取，去找她做了什么说明她"温柔"的行为
-- 原文写"他很强大" → 不提取，去找他具体做了什么
-- 如果原文只有形容词标签没有对应行为 → 该性格不提取
-
-**提取方法：**
-1. 从对话中提取（她说什么、怎么说的）
-2. 从动作中提取（她做了什么、反复做什么）
-3. 从他人评价中提取（别人怎么看待她、但需要用行为印证）
-4. 从独处段落中提取（一个人的时候她怎么做，揭示隐藏面）
-
-**提取输出格式：**
-```
-### 性格线索
-- 手法总结：（源材料塑造性格的手法：行为描写/内心独白/他人对比）
-- 原始例句+行为依据：
-  - 核心驱动力：她最想要什么？最怕什么？
-    依据："她独自一人反复进入里世界找冴月，已经找了九个月" — 第1章 L88-L95
-    反推：她恐惧独自被留下——所有重要的人都消失了
-  - 性格特征1（描述+行为依据）：
-    原文："鸟子对空鱼说'我最喜欢你了'，口气不容置疑" — 第5章 L560
-    提取：情感表达直接——说重要的话时不犹豫、不打折扣
-  - 性格特征2：
-    原文："鸟子气冲冲找上门来" — 第8章 L1050
-    依据：空鱼找了别人没找她 → 吃醋时的行为模式
-- 禁词标记：如原文中有"带着温柔的口吻"等语气修饰 → 剔除"带着xx的口吻"，只保留对应行为
-- 提取结果：（每条性格 = 标签 + 原文行为依据）
+### appearance traits
+- translated text: (translated textappearancetranslated text: translated text/translated text/translated text)
+- translated text: 
+ "translated text" — translated text3translated text L450
+ "translated text, translated text" — translated text1translated text L20
+- forbidden wordsmark: 
+ "translated text" → translated text, translated text, changed to"translated text"
+ "translated text" → translated text, translated text
+ "translated text" → AItranslated textdefault value+translated text, translated text
+- extraction result: 
+ translated text: translated text
+ (translated texttraits, do not writetranslated text skin field)
 ```
 
-#### 维度 5：关键事件
+#### translated text 3: identitytranslated text
 
-**只提取"改变了这个角色"的关键事件。** 测试方法：删掉这条事件，角色会不会变成另外一个人？不会 → 不提取。
+- age(translated textoriginal texttranslated text)
+- gender
+- identity/translated text/translated textcharacter
+- translated text {{user}} translated textrelationshiptranslated text(if applicable)
+- original texttranslated text
 
-- 从原文中筛选转折性事件（出身、创伤、重大抉择、关键相遇）
-- 不提取流水账日常
-- 每个事件标注章节出处
+#### translated text 4: personalitytranslated text
 
-#### 维度 6：关系网络
+**translated text: translated textextractoriginal texttranslated text, is nottranslated textpersonalitytranslated text. **
 
-- 每个重要关系写出：认识方式、当前互动模式、关系动态变化
-- **写具体画面，不写抽象形容。**
-  - 不写"感情深厚" → 写"她给他做便当，连续做了三年"
-  - 不写"好朋友" → 写"每周五一起去旧书店，不说话各看各的"
-- 每种称呼交代关系定位
+- original texttranslated text"translated text" → translated textextract, translated textdescriptiontranslated text"translated text"translated text
+- original texttranslated text"translated text" → translated textextract, translated text
+- translated textoriginal texttranslated text → translated textpersonalitytranslated textextract
 
-**提取输出格式：**
+**extracttranslated text: **
+1. translated textextract(translated text, translated text)
+2. translated textextract(translated text, translated text)
+3. translated textextract(translated text, translated textneedtranslated text)
+4. translated textextract(translated text, translated texthiddentranslated text)
+
+**extractoutputformat: **
 ```
-### 关系网络
-- 原始例句（标注章节）：
-  "鸟子在草海里救下了濒死的空鱼" — 第1章 L100
-  "鸟子咬空鱼的肩膀留下印记" — 第7章 L890
-- 提取结果：
-  纸越空鱼：里世界草海中救下的第一个活人 → 从"找冴月的帮手"变成"最亲密的人"。
+### personalitytranslated text
+- translated text: (translated textpersonalitytranslated text: translated text/translated text/translated text)
+- translated text+translated text: 
+ - translated text: translated text？translated text？
+ translated text: "translated text, translated text" — translated text1translated text L88-L95
+ translated text: translated text——translated text
+ - personality traits1(description+translated text): 
+ original text: "translated text'translated text', translated text" — translated text5translated text L560
+ extract: translated text——translated text, translated text
+ - personality traits2: 
+ original text: "translated text" — translated text8translated text L1050
+ translated text: translated text → translated text
+- forbidden wordsmark: translated textoriginal texttranslated text"translated text"translated text → translated text"translated textxxtranslated text", translated text
+- extraction result: (translated textpersonality = translated text + original texttranslated text)
 ```
 
-#### 维度 7：能力与物品
+#### translated text 5: key events
 
-- 每个能力的获得方式（原文中的来源/触发事件）
-- 每个能力的具体效果（原文中实际表现出来的效果，不是"威力强大"等空泛描述）
-- 格式："触碰X可以做到Y" 而非 "拥有强大的X能力"
-- 限制和代价也写入（如"使用后左手有强烈不适感"）
+**translated textextract"translated textcharacter"translated textkey events. ** translated text: translated text, charactertranslated text？translated text → translated textextract. 
 
-#### 维度 8：出场章节总览
+- translated textoriginal texttranslated text(translated text, translated text, translated text, translated text)
+- translated textextracttranslated text
+- translated textchaptertranslated text
 
-列表格式，记录该角色在原文中出现的所有章节：
+#### translated text 6: relationshiptranslated text
+
+- translated textrelationshiptranslated text: translated text, translated text, relationshiptranslated text
+- **translated text, do not writetranslated text. **
+ - do not write"translated text" → translated text"translated text, translated text"
+ - do not write"translated text" → translated text"translated text, translated text"
+- translated textrelationshiptranslated text
+
+**extractoutputformat: **
 ```
-出场章节：
-- 第1章 L1-L350（首次出场，被救）
-- 第3章 L721-L1100（主要出场）
-- 第5章 L1500-L1800（关键章节，揭示身世）
+### relationshiptranslated text
+- translated text(translated textchapter): 
+ "translated text" — translated text1translated text L100
+ "translated text" — translated text7translated text L890
+- extraction result: 
+ translated text: translated text → translated text"translated text"translated text"translated text". 
+```
+
+#### translated text 7: abilitytranslated textitem
+
+- translated textabilitytranslated text(original texttranslated textsource/translated text)
+- translated textabilitytranslated text(original texttranslated text, is not"translated text"translated textdescription)
+- format: "translated textXtranslated textY" rather than "translated textXability"
+- translated text(translated text"usagetranslated text")
+
+#### translated text 8: chapter appearancetranslated text
+
+listformat, translated textcharactertranslated textoriginal texttranslated textchapter: 
+```
+chapter appearance: 
+- translated text1translated text L1-L350(translated text, translated text)
+- translated text3translated text L721-L1100(translated text)
+- translated text5translated text L1500-L1800(translated textchapter, translated text)
 ```
 
 ---
 
-### 阶段三：世界观提取
+### Phase 3: Worldviewextract
 
-#### 步骤 1：类型判定
+#### steps 1: typetranslated text `world-building-guide.md` translated textWorldviewtype: 
 
-参照 `world-building-guide.md` 判断世界观类型：
-
-| 类型 | 特征 | 示例 | 提取策略 |
+| type | traits | example | extracttranslated text |
 |------|------|------|---------|
-| **A** | 真实背景 | 现代日本、唐代中国、二战欧洲 | 只提取 AI 不知道的虚构部分 |
-| **B** | 小世界 | 剑与魔法、赛博朋克、丧尸末日 | 提取与 AI 已知套路的差异部分 |
-| **C** | 大世界 | 完全原创的修仙体系、星际联邦、异界 | 完整提取所有设定 |
+| **A** | translated textbackground | translated text, translated text, translated text | translated textextract AI translated text |
+| **B** | translated text | translated text, translated text, translated text | extracttranslated text AI translated text |
+| **C** | translated text | translated textoriginaltranslated text, translated text, translated text | completeextracttranslated text |
 
-**判断标准：删掉这项设定后，AI 是否还能正确表现这个世界？能 → 不提取。不能 → 提取。**
+**translated text: translated text, AI translated textcorrecttranslated text？translated text → translated textextract. translated text → extract. **
 
-#### 步骤 2：分维提取
+#### steps 2: translated textextract
 
-对以下维度逐一提取。每个维度输出格式与角色提取相同（手法总结 + 原始例句 + 提取结果）。
+translated textextract. translated textoutputformattranslated textcharacterextracttranslated text(translated text + translated text + extraction result). 
 
-**维度 1：地理与空间架构**
-- 区域划分、各区域关键特征
-- 命名方式（功能化/诗意/冷峻）
-- 只提取地理信息，去掉原文中的风景抒情
+**translated text 1: geographytranslated text**
+- translated text, translated texttraits
+- translated text(translated text/translated text/translated text)
+- translated textextractgeographytranslated text, translated textoriginal texttranslated text
 
-**维度 2：历史与时间线**
-- 影响当前世界格局的关键历史事件
-- 时代背景（技术/文明水平）
-- 只提取对当前剧情有影响的历史，不提取远古神话（除非角色会提及）
+**translated text 2: historytranslated text**
+- translated texthistorytranslated text
+- translated textbackground(translated text/translated text)
+- translated textextracttranslated texthistory, translated textextracttranslated text(translated textcharactertranslated text)
 
-**维度 3：势力与组织**
-- 名称 + 一句话定位
-- 势力间关系
-- 不展开写势力内部细节
+**translated text 3: factiontranslated text**
+- name + translated text
+- factiontranslated textrelationship
+- translated textfactiontranslated text
 
-**维度 4：规则与力量体系**
-- 力量来源（灵气/魔法/科技/神赐）
-- 等级/阶段划分（如有）
-- 核心运行逻辑
-- 自造词和专有概念的定义
+**translated text 4: rulestranslated text**
+- translated textsource(translated text/translated text/translated text/translated text)
+- translated text/phasetranslated text(if any)
+- translated text
+- translated text
 
-**维度 5：社会结构**
-- 阶层/阶级划分（如有）
-- 文化习俗（如有特殊的风俗/节日/禁忌）
-- 日常生活的差异点（AI已知社会不存在的东西）
+**translated text 5: translated text**
+- translated text/translated text(if any)
+- translated text(if anytranslated text/translated text/translated text)
+- translated text(AItranslated text)
 
-#### 步骤 3：提取时的去小说化操作
+#### steps 3: extracttranslated text
 
-| 原文写法 | 提取写法 |
+| original texttranslated text | extracttranslated text |
 |---------|---------|
-| "在这片广袤无垠的大地上，人族与妖族争斗了数千年" | 人族与妖族长期对立 |
-| "中央神州是人类最后的堡垒" | 中央神州：人族主战场 |
-| "六大仙宗是修仙界最负盛名的门派" | 六大仙宗：剑宗、丹宗、玄天宗... |
-| "充满机遇与挑战的世界" | 删除 |
-| "由...组成""存在着""分别是" | 用冒号或列表替代 |
+| "translated text, translated text" | translated text |
+| "translated text" | translated text: translated text |
+| "translated text" | translated text: translated text, translated text, translated text... |
+| "translated text" | translated text |
+| "translated text...translated text""translated text""translated text" | translated textlisttranslated text |
 
 ---
 
-### 阶段四：输出 outline.txt
+### Phase 4: output outline.txt
 
-完成阶段一到三的提取后，将所有信息整合为 outline.txt。文件命名格式：`<世界书名>_outline.txt`，存储在工作目录。
+translated textPhase 1translated textextracttranslated text, translated text outline.txt. filetranslated textformat: `<World Booktranslated text>_outline.txt`, translated text. 
 
-#### outline.txt 完整结构
+#### outline.txt completetranslated text
 
 ```yaml
-# 世界书大纲：<世界书名>
+# World Booktranslated text: <World Booktranslated text>
 
-## 思维链分析
-需求拆解:
-  显性需求: <用户明确要求的内容>
-  隐性需求: <用户未明说但需要补全的——如"轻小说转角色卡"隐含需要提取世界观>
-  冲突判断: <需求中有无矛盾？如何协调？>
+## translated text :
+ translated text: <translated textcontent>
+ translated text: <translated textneedtranslated text——translated text"light noveltranslated textCharacter Card"translated textneedextractWorldview>
+ translated text: <translated text？translated text？>
 
-条目预估:
-  世界观类型: A / B / C
-  预估核心角色数: N
-  预估条目数: 约 X 条
-  卡片类型: 单角色卡 / 多角色卡
+entrytranslated text:
+ Worldviewtype: A / B / C
+ translated textcharactertranslated text: N
+ translated textentrytranslated text: translated text X translated text type: translated textCharacter Card / translated textCharacter Card
 
 ---
 
-## 章节行号索引
-第1章: L1 - L350
-第2章: L351 - L720
-第3章: L721 - L1100
+## chapterline numbertranslated text 1translated text: L1 - L350
+translated text2translated text: L351 - L720
+translated text3translated text: L721 - L1100
 ...
 
 ---
 
-## 角色出场速览
-- <角色名>：<一句话形象>。出场章节：第1/3/5/7章
-- <角色名>：<一句话形象>。出场章节：第2/4/6章
+## charactertranslated text
+- <Character name>: <translated text>. chapter appearance: translated text1/3/5/7translated text
+- <Character name>: <translated text>. chapter appearance: translated text2/4/6translated text
 ...
 
 ---
 
-## 人物总纲
-- <角色名>：<一句话定位——她是谁、核心冲突是什么>
-- <角色名>：<一句话定位>
+## charactertranslated text
+- <Character name>: <translated text——translated text, translated text>
+- <Character name>: <translated text>
 
 ---
 
-## 世界观要素总纲
-世界观类型: A / B / C
-核心规则: <1-3句概述>
-区域: <列出虚构区域>
-势力: <列出关键势力>
-自造词: <列出需定义的专业术语>
+## Worldviewtranslated text
+Worldviewtype: A / B / C
+translated textrules: <1-3translated text>
+translated text: <translated text>
+faction: <translated textfaction>
+translated text: <translated text>
 
 ---
 
-## 重要章节标注
+## translated textchaptertranslated text
 
-### 对塑造[角色名]形象重要的章节
-- 第X章 Lxxx-Lxxx：<理由——本章揭示了该角色的什么方面>
-- 第Y章 Lxxx-Lxxx：<理由>
+### translated text[Character name]translated textchapter
+- translated textXtranslated text Lxxx-Lxxx: <translated text——translated textcharactertranslated text>
+- translated textYtranslated text Lxxx-Lxxx: <translated text>
 
-### 对整体故事走向重要的章节
-- 第X章 Lxxx-Lxxx：<理由——本章发生了什么关键转折>
-- 第Y章 Lxxx-Lxxx：<理由>
+### translated textstorytranslated textchapter
+- translated textXtranslated text Lxxx-Lxxx: <translated text——translated text>
+- translated textYtranslated text Lxxx-Lxxx: <translated text>
 
 ---
 
-## 条目规划表
-| 条目名称 | 类型 | 位置 | 激活 | 顺序 | 预估token | 依赖章节 |
+## entrytranslated text
+| entryname | type | position | translated text | order | translated texttoken | Dependencieschapter |
 |----------|------|------|------|------|-----------|---------|
-| 世界观总纲 | 世界观 | ↑Char | 蓝灯 | 1 | ~200 | - |
-| 女主·XXX | 角色 | ↓Char | 蓝灯 | 99 | ~400 | 第1/3/5章 |
-| 男主·YYY | 角色 | ↓Char | 蓝灯 | 99 | ~350 | 第2/4/6章 |
-| 物品·ZZZ | 物品 | ↓Char | 蓝灯 | 95 | ~150 | 第2/7章 |
-| 故事·第1章 | 章节 | ↓Char | 绿灯 | 201 | ~200 | 第1章 |
-| 禁词·叙事 | 禁词 | ↑AT | 蓝灯 | 1 | ~150 | - |
-| 禁词·比喻 | 禁词 | ↑AT | 蓝灯 | 2 | ~120 | - |
-| 禁词·描写 | 禁词 | ↑AT | 蓝灯 | 3 | ~150 | - |
+| worldview outline | Worldview | ↑Char | translated text | 1 | ~200 | - |
+| translated text·XXX | character | ↓Char | translated text | 99 | ~400 | translated text1/3/5translated text |
+| translated text·YYY | character | ↓Char | translated text | 99 | ~350 | translated text2/4/6translated text |
+| item·ZZZ | item | ↓Char | translated text | 95 | ~150 | translated text2/7translated text |
+| story·translated text1translated text | chapter | ↓Char | translated text | 201 | ~200 | translated text1translated text |
+| forbidden words·translated text | forbidden words | ↑AT | translated text | 1 | ~150 | - |
+| forbidden words·translated text | forbidden words | ↑AT | translated text | 2 | ~120 | - |
+| forbidden words·translated text | forbidden words | ↑AT | translated text | 3 | ~150 | - |
 ...
 ```
 
-#### outline.txt 规则
+#### outline.txt rules
 
-- **依赖章节列**：指明创建该条目时需要复读哪些章节。后续编写条目前，必须根据此列复读对应章节。
-- **复读原则**：不是全文重读，只读取指定章节的行号范围，聚焦于与该条目相关的段落。
-- **禁词条目不可省略**：每条世界书必须包含三个禁词条目。
-- **大纲写完后才可开始创建条目**，不可跳过此步骤。
+- **Dependencieschaptertranslated text**: translated textentrytranslated textneedtranslated textchapter. translated textwriteentrytranslated text, musttranslated textchapter. 
+- **translated text**: is nottranslated text, translated textreadtranslated textchaptertranslated textline numbertranslated text, translated textentrytranslated text. 
+- **forbidden wordsentrytranslated text**: translated textWorld Bookmustincludetranslated textforbidden wordsentry. 
+- **translated textentry**, translated textsteps. 
 
 ---
 
-## 详细规范
+## detailed specification
 
-### 提取维度输出格式（强制）
+### extracttranslated textoutputformat(translated text)
 
-每个提取维度必须按以下三段式输出：
+translated textextracttranslated textmusttranslated textoutput: 
 
 ```
-### [维度名称]
-- 手法总结：（1-2句，源材料在此维度的写作手法特点）
-- 原始例句：（1-3段原文引用，标注"第X章 Lxxx"出处）
-- 禁词标记：（如原文含禁词或比喻，标注改写方案）
-- 提取结果：（剔除禁词和比喻后的白描内容，可直接转化为条目字段）
+### [translated textname]
+- translated text: (1-2translated text, translated text)
+- translated text: (1-3translated textoriginal texttranslated text, translated text"translated textXtranslated text Lxxx"translated text)
+- forbidden wordsmark: (translated textoriginal texttranslated textforbidden wordstranslated text, translated text)
+- extraction result: (translated textforbidden wordstranslated textcontent, translated textentryfield)
 ```
 
-### 禁词剔除规范
+### forbidden wordstranslated text extractoriginal texttranslated text, translated textcontentmusttranslated text: 
 
-在提取原文信息时，以下内容必须剔除或转化：
-
-| 类别 | 剔除内容 | 转化方式 |
+| translated text | translated textcontent | translated text |
 |------|---------|---------|
-| 意象比喻 | "眸如星辰""晨光般暖白""嗓音如银铃""闪电般迅速" | 转化为特征白描："天青色瞳""嗓音清脆""动作极快" |
-| 万能修饰 | "精致的""白皙的""好看的""美丽的" | 直接删除，这类词放在任何角色身上都成立 |
-| 默认特征 | 中国人写黑发黑眼、18岁写年轻、精灵写尖耳 | 删除，AI数据库已有 |
-| 叙事禁词 | 一丝、一缕、一抹、不易察觉、弧度、弯起嘴角 | 删除或用具体行为替换 |
-| 性格标签 | "温柔""善良""强大""冷酷" | 转化为原文中的具体行为依据 |
-| 主观评价 | "强大的""神秘的""令人畏惧的" | 删除 |
-| 解释性描写 | "这个动作体现了他的紧张" | 删除解释，保留动作本身 |
-| 语气修饰 | "带着温柔的口吻""用严厉的语气" | 删除修饰，只保留对话内容 |
+| translated text | "translated text""translated text""translated text""translated text" | translated texttraitstranslated text: "translated text""translated text""translated text" |
+| translated text | "translated text""translated text""translated text""translated text" | translated text, translated textcharactertranslated text |
+| defaulttraits | translated text, 18translated text, translated text | translated text, AItranslated text |
+| narrative forbidden words | translated text, translated text, translated text, translated text, translated text, translated text | translated text |
+| personalitytranslated text | "translated text""translated text""translated text""translated text" | translated textoriginal texttranslated text |
+| translated text | "translated text""translated text""translated text" | translated text |
+| translated text | "translated text" | translated text, translated text |
+| translated text | "translated text""translated text" | translated text, translated textcontent |
 
-### 不能确定的信息处理规则
+### translated textrules
 
-- 原文没写的字段 → 不补全，标记 `// 原文未提及`
-- 原文写了但信息不足 → 只提取已有信息，不推断
-- 原文前后矛盾 → 以首次出场为准，后续如有变化在条目中说明"第X章后发生改变"
-- 从角色行为反推性格时 → 标注"反推"，区分于原文直接陈述
+- original texttranslated textfield → translated text, mark `// original texttranslated text`
+- original texttranslated text → translated textextracttranslated text, translated text
+- original texttranslated text → translated text, translated textif anytranslated textentrytranslated textdescription"translated textXtranslated text"
+- translated textcharactertranslated textpersonalitytranslated text → translated text"translated text", translated textoriginal texttranslated text
 
-### 信息合并规则
+### translated textrules
 
-- 同一角色/物品在多个章节出现 → 合并信息，首个出场章节为基准
-- 后续章节的信息为"补充"或"变化"，不创建重复条目
-- 如信息前后不一致 → 优先保留更详细、更晚出场的版本，说明变化过程
-
----
-
-## 自查清单
-
-完成信息提取后，逐项检查：
-
-### 信息搜集阶段
-- [ ] 用户提供的文本文件已完整读取
-- [ ] 所有章节的行号范围已标注
-- [ ] 角色形象和出场章节已标定
-- [ ] [W]/[C]/[I]/[★] 标记已标注
-- [ ] 如执行网络搜索，搜索结果摘要 txt 已创建
-
-### 角色提取阶段
-- [ ] 每个角色按全部维度完成提取（基本信息、外貌、性格、关键事件、关系、能力、出场章节）
-- [ ] 所有外表提取仅包含偏离 AI 默认值的差异特征
-- [ ] 所有意象比喻已转化为特征白描
-- [ ] "精致""白皙""好看"等万能美人词已剔除
-- [ ] 性格均有原文行为依据（无标签式性格）
-- [ ] 关系描写为具体互动物面（无"感情深厚""好朋友"等抽象形容）
-- [ ] 关键事件只提取"改变了角色"的转折事件（删除流水账）
-- [ ] 每个维度附带原始例句和章节出处
-- [ ] 遮住名字仅凭外貌特征能认出角色
-
-### 世界观提取阶段
-- [ ] 世界观类型（A/B/C）已判定
-- [ ] 提取策略与类型匹配（A 只提虚构部分、B 只提差异、C 完整提取）
-- [ ] 地理/历史/势力/规则/社会结构分维提取
-- [ ] 所有连接词和主观形容词已删除
-- [ ] 原文中的风景抒情已转化为地理信息
-- [ ] 自造词和专有概念已定义
-
-### outline.txt 阶段
-- [ ] 思维链分析完整（显性需求 + 隐性需求 + 冲突判断）
-- [ ] 章节行号索引完整
-- [ ] 人物总纲每角色一句话定位
-- [ ] 世界观要素总纲已列出
-- [ ] 重要章节已标注（含理由）
-- [ ] 条目规划表含依赖章节列
-- [ ] 禁词条目已列入规划（不可遗漏）
-- [ ] 所有 `// 原文未提及` 的字段已标注
-
-### 禁词自查
-- [ ] outline.txt 自身不含禁词（一丝/一缕/弧度/不易察觉/弯起嘴角等）
-- [ ] outline.txt 自身不含意象比喻
-- [ ] outline.txt 自身不含万能修饰
+- translated textcharacter/itemtranslated textchaptertranslated text → translated text, translated textchapter appearancetranslated text
+- translated textchaptertranslated text"translated text"translated text"translated text", translated textentry
+- translated text → translated text, translated text, descriptiontranslated text
 
 ---
 
-## 常见错误示例
+## self-checklist
 
-### 错误 1：搬运原文比喻
+translated textinformation extractiontranslated text, translated text: 
 
-原文："她的双眸如星辰般灿烂，在月光下泛着湖水般的波光。"
+### translated textphase
+- [ ] translated textfiletranslated textcompleteread
+- [ ] translated textchaptertranslated textline numbertranslated text
+- [ ] charactertranslated textchapter appearancetranslated text
+- [ ] [W]/[C]/[I]/[★] marktranslated text
+- [ ] translated text, translated text txt translated text
 
-提取：
-"她的双眸如星辰般灿烂，在月光下泛着湖水般的波光。"
+### characterextractphase
+- [ ] translated textcharactertranslated textalltranslated textextract(translated text, appearance, personality, key events, relationship, ability, chapter appearance)
+- [ ] translated textextracttranslated textincludetranslated text AI default valuetranslated texttraits
+- [ ] translated texttraitstranslated text
+- [ ] "translated text""translated text""translated text"translated text
+- [ ] personalitytranslated textoriginal texttranslated text(translated textpersonality)
+- [ ] relationshiptranslated text(translated text"translated text""translated text"translated text)
+- [ ] key eventstranslated textextract"translated textcharacter"translated text(translated text)
+- [ ] translated textchaptertranslated text
+- [ ] translated textappearance traitstranslated textcharacter
 
-正确：
-- 禁忌标记："如星辰般灿烂"→ 意象比喻，剔除。"湖水般的波光"→ 意象比喻，剔除。
-- 提取结果：瞳色：天青色。眼神明亮。
+### Worldviewextractphase
+- [ ] Worldviewtype(A/B/C)translated text
+- [ ] extracttranslated texttypetranslated text(A translated text, B translated text, C completeextract)
+- [ ] geography/history/faction/rules/translated textextract
+- [ ] translated text
+- [ ] original texttranslated textgeographytranslated text
+- [ ] translated text
 
----
+### outline.txt phase
+- [ ] translated textcomplete(translated text + translated text + translated text)
+- [ ] chapterline numbertranslated textcomplete
+- [ ] charactertranslated textcharactertranslated text
+- [ ] Worldviewtranslated text
+- [ ] translated textchaptertranslated text(translated text)
+- [ ] entrytranslated textDependencieschaptertranslated text
+- [ ] forbidden wordsentrytranslated text(translated text)
+- [ ] translated text `// original texttranslated text` translated textfieldtranslated text
 
-### 错误 2：提取万能美人描写
-
-原文："女孩长着精致的脸蛋，白皙的皮肤在灯光下近乎透明，一双桃花眼勾人心魄。"
-
-提取：
-"外貌：精致的脸蛋，白皙皮肤，桃花眼。"
-
-正确：
-- 禁忌标记："精致的脸蛋"→ 万能美人词，删除。"白皙的皮肤"→ AI默认值，删除。"勾人心魄"→ 主观评价，删除。
-- 提取结果：眼型：桃花眼。（仅此一项是具体特征，其余不提取）
-
----
-
-### 错误 3：性格写成标签
-
-原文叙述：她帮助了一个摔倒的小孩，把自己的伞给了路边淋雨的流浪汉，每月定期去动物收容所做义工。
-
-提取：
-"性格：善良。"
-
-正确：
-"性格：看见摔倒的小孩会停下扶起（第3章 L420）。下雨天把自己的伞给了路边的流浪汉（第5章 L680）。每月去动物收容所做义工（第8章 L1200）。"
-
----
-
-### 错误 4：关系写成抽象形容
-
-原文叙述：她和空鱼一起经历了数次里世界探险，鸟子救了空鱼的命，空鱼帮鸟子找到了冴月的下落。
-
-提取：
-"鸟子和空鱼：关系很好，是重要的伙伴。"
-
-正确：
-"仁科鸟子 → 纸越空鱼：里世界草海中救下的第一个活人（第1章 L100）。鸟子咬空鱼肩膀留印记（第7章 L890）。空鱼帮鸟子找到冴月下落（第12章 L1800）。"
+### forbidden wordsself-check
+- [ ] outline.txt translated textforbidden words(translated text/translated text/translated text/translated text/translated text)
+- [ ] outline.txt translated text
+- [ ] outline.txt translated text
 
 ---
 
-### 错误 5：提取 AI 已知信息
+## common error examples
 
-原文：22岁日本女性，黑色长发，皮肤白净。
+### error 1: translated textoriginal texttranslated text
 
-提取：
-"外貌：22岁日本女性，黑色长发，皮肤白净。"
+original text: "translated text, translated text. "
 
-正确：
-- 禁忌标记：日本人 → 黑发是默认，"皮肤白净"→22岁女生默认。
-- 提取结果：无特殊外貌特征，不写入外貌字段。
+extract: 
+"translated text, translated text. "
 
----
-
-### 错误 6：补全原文没有的信息
-
-原文只提到了角色的姓名、年龄、职业，没有提及家庭背景。
-
-提取：
-"背景：出身于普通家庭，父母都是上班族，从小在城市的公寓里长大。"
-
-正确：
-"背景：// 原文未提及"
+correct: 
+- translated textmark: "translated text"→ translated text, translated text. "translated text"→ translated text, translated text. 
+- extraction result: translated text: translated text. translated text. 
 
 ---
 
-### 错误 7：世界观提取保留小说叙述
+### error 2: extracttranslated text
 
-原文："在这片被众神遗弃的大地上，人类在废墟中艰难求生。旧世界的荣光已经消逝，留下的只有无尽的荒原和破碎的钢铁森林。"
+original text: "translated text, translated text, translated text. "
 
-提取：
-"世界观：在众神遗弃的大地上，人类艰难求生，旧世界荣光已逝。"
+extract: 
+"appearance: translated text, translated text, translated text. "
 
-正确：
-- 禁忌标记："被众神遗弃"→ 主观形容。"艰难求生"→ 小说叙述。"旧世界的荣光""无尽的荒原""破碎的钢铁森林"→ 意象描写。
-- 提取结果：背景：后末日废土。地表：荒原和旧时代都市遗迹。文明水平：已退化至部落级。
-
----
-
-### 错误 8：条目规划遗漏禁词条目
-
-条目规划表中只有角色条目和世界观条目，没有禁词条目行。
-
-正确：
-条目规划表必须包含以下三行：
-| 禁词·叙事 | 禁词 | ↑AT | 蓝灯 | 1 |
-| 禁词·比喻 | 禁词 | ↑AT | 蓝灯 | 2 |
-| 禁词·描写 | 禁词 | ↑AT | 蓝灯 | 3 |
+correct: 
+- translated textmark: "translated text"→ translated text, translated text. "translated text"→ AIdefault value, translated text. "translated text"→ translated text, translated text. 
+- extraction result: translated text: translated text. (translated texttraits, translated textextract)
 
 ---
 
-### 错误 9：复读环节被跳过
+### error 3: personalitytranslated text
 
-在大纲写好后，直接凭记忆和首轮通读的印象开始写条目，没有根据"依赖章节"列重新阅读对应章节。
+original texttranslated text: translated text, translated text, translated text. 
 
-后果：外貌描写记混（第1章是短发，第5章剪了，写成第5章还是短发）；关系动态遗漏（第3章发生了关系转折，写成"一直如此"）。
+extract: 
+"personality: translated text. "
 
-正确：
-1. 查阅大纲"条目规划表"中该条目的"依赖章节"列
-2. 仅读取指定章节的行号范围
-3. 聚焦于该条目相关段落（不是全文重读）
-4. 趁原文信息新鲜在上下文中时，立即写入条目
+correct: 
+"personality: translated text(translated text3translated text L420). translated text(translated text5translated text L680). translated text(translated text8translated text L1200). "
+
+---
+
+### error 4: relationshiptranslated text
+
+original texttranslated text: translated text, translated text, translated text. 
+
+extract: 
+"translated text: relationshiptranslated text, translated text. "
+
+correct: 
+"translated text → translated text: translated text(translated text1translated text L100). translated text(translated text7translated text L890). translated text(translated text12translated text L1800). "
+
+---
+
+### error 5: extract AI translated text
+
+original text: 22translated text, translated text, translated text. 
+
+extract: 
+"appearance: 22translated text, translated text, translated text. "
+
+correct: 
+- translated textmark: translated text → translated textdefault, "translated text"→22translated textdefault. 
+- extraction result: translated textappearance traits, do not writetranslated textappearancefield. 
+
+---
+
+### error 6: translated textoriginal texttranslated text
+
+original texttranslated textcharactertranslated text, age, translated text, translated textbackground. 
+
+extract: 
+"background: translated text, translated text, translated text. "
+
+correct: 
+"background: // original texttranslated text"
+
+---
+
+### error 7: Worldviewextracttranslated text
+
+original text: "translated text, translated text. translated text, translated text. "
+
+extract: 
+"Worldview: translated text, translated text, translated text. "
+
+correct: 
+- translated textmark: "translated text"→ translated text. "translated text"→ translated text. "translated text""translated text""translated text"→ translated text. 
+- extraction result: background: translated text. translated text: translated text. translated text: translated text. 
+
+---
+
+### error 8: entrytranslated textforbidden wordsentry
+
+entrytranslated textcharacterentrytranslated textWorldviewentry, translated textforbidden wordsentrytranslated text. 
+
+correct: 
+entrytranslated textmustincludetranslated text: 
+| forbidden words·translated text | forbidden words | ↑AT | translated text | 1 |
+| forbidden words·translated text | forbidden words | ↑AT | translated text | 2 |
+| forbidden words·translated text | forbidden words | ↑AT | translated text | 3 |
+
+---
+
+### error 9: translated text , translated textentry, translated text"Dependencieschapter"translated textchapter. 
+
+consequences: appearancetranslated text(translated text1translated text, translated text5translated text, translated text5translated text); relationshiptranslated text(translated text3translated textrelationshiptranslated text, translated text"translated text"). 
+
+correct: 
+1. translated text"entrytranslated text"translated textentrytranslated text"Dependencieschapter"translated text
+2. translated textreadtranslated textchaptertranslated textline numbertranslated text
+3. translated textentrytranslated text(is nottranslated text)
+4. translated textoriginal texttranslated text, translated textentry

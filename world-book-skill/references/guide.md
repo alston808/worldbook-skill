@@ -1,200 +1,196 @@
-# 场景路由器
+# scenariorouter
 
-> 本文档帮助模型在开始工作前自行判断任务类型，然后读取对应的 reference 文件。必须在读取本文件后再根据任务类型读取对应参考文件，不可跳过。
+> translated texttype, translated textreadtranslated text reference file. musttranslated textreadtranslated textfiletranslated texttypereadtranslated textreferencefile, translated text. 
 
 ---
 
-## 第零步：核心判断
+## translated text: translated text **original**translated text**derivative**: 
 
-先判断用户是**原创**还是**二创**：
-
-| 维度 | 原创 | 二创 |
+| translated text | original | derivative |
 |------|------|------|
-| 素材来源 | 无原文，靠交互式提问搜集 | 轻小说/游戏解包/网络搜索 |
-| 入口 | 类型 1 / 3 | 类型 2（先提取再分流） |
-| 建议模式 | Plan 模式 | 直接执行 |
+| translated textsource | translated textoriginal text, translated text | light novel/translated textunpack/translated text |
+| translated text | type 1 / 3 | type 2(translated textextracttranslated text) |
+| translated text | Plan translated text | translated text |
 
-> **所有任务类型均须同时读取 `references/card-generator-guide.md`，了解三个脚本的完整用法、config.json 格式和酒馆兼容性约束。不可跳过，不可凭记忆使用脚本，不可直接写入SillyTavern的世界书/角色卡json格式**
-
----
-
-## 任务类型识别
-
-### 类型 1：原创角色卡
-
-触发关键词：写卡、角色卡、人物设定、生成角色、创建角色、设计角色
-
-需要读取的 reference：
-- `references/character-card-guide.md` — 角色卡编写（世界书条目 + 开场白）
-- `references/character-guide.md` — 角色条目结构模板
-- `references/world-building-guide.md` — 世界观设计
-- `references/world-book-guide.md` — 世界书条目化
-- `references/config-guide.md` — 配置规则
-- `references/position-guide.md` — 注入位置
-- `references/card-generator-guide.md` — 脚本使用指引
-
-如用户要求 MVU → 追加读取 `references/mvu-guide.md`
-如用户要求 EJS → 追加读取 `references/ejs-guide.md`（EJS 依赖 MVU，需先确认 MVU）
-如用户要求 HTML 美化 → 追加读取 `references/html-beautify-guide.md`
-
-完成后 → 禁词扫描 → 读 `references/writing-optimization-guide.md`
+> **translated texttypetranslated textread `references/card-generator-guide.md`, translated textscripttranslated textcompletetranslated text, config.json formattranslated text. translated text, translated textusagescript, translated textSillyTaverntranslated textWorld Book/Character Cardjsonformat**
 
 ---
 
-### 类型 2：二创提取 → 角色卡 / 世界书
+## translated texttypetranslated text
 
-触发关键词：轻小说、小说、转角色卡、根据原文、根据小说、转化、提取、原作、游戏、文本转化、原文、网络搜索
+### type 1: originalCharacter Card
 
-需要读取的 reference：
-- `references/information-extraction-guide.md` — 信息提取流程（必读，第一步）
-- `references/card-generator-guide.md` — 脚本使用指引（必读，生成 JSON 前必须读）
-- 提取完成后按产出分流：
-  - 有角色人设 → 追加读 `references/character-card-guide.md` + `references/character-guide.md`
-  - 有世界观信息 → 追加读 `references/world-building-guide.md` + `references/world-book-guide.md`
-  - 有物品/能力 → 追加读 `references/world-book-guide.md`（物品条目规范）
+trigger keywords: translated text, Character Card, charactertranslated text, generatecharacter, translated textcharacter, translated textcharacter
+
+needreadtranslated text reference: 
+- `references/character-card-guide.md` — Character Cardwrite(World Bookentry + greeting)
+- `references/character-guide.md` — characterentrytranslated text
+- `references/world-building-guide.md` — Worldviewtranslated text
+- `references/world-book-guide.md` — World Bookentry conversion
+- `references/config-guide.md` — configurationrules
+- `references/position-guide.md` — translated textposition
+- `references/card-generator-guide.md` — scriptusagetranslated text user request MVU → additional readtranslated text `references/mvu-guide.md`
+translated textuser request EJS → additional readtranslated text `references/ejs-guide.md`(EJS Dependencies MVU, translated textconfirm MVU)
+translated textuser request HTML beautification → additional readtranslated text `references/html-beautify-guide.md`
+
+translated text → forbidden-word scan → translated text `references/writing-optimization-guide.md`
+
+---
+
+### type 2: derivativeextract → Character Card / World Book
+
+trigger keywords: light novel, translated text, translated textCharacter Card, translated textoriginal text, translated text, translated text, extract, translated text, translated text, translated text, original text, translated text
+
+needreadtranslated text reference: 
+- `references/information-extraction-guide.md` — information extractiontranslated text(translated text, translated text)
+- `references/card-generator-guide.md` — scriptusagetranslated text(translated text, generate JSON translated textmusttranslated text)
+- extracttranslated text: 
+ - translated textcharactertranslated text → additional read `references/character-card-guide.md` + `references/character-guide.md`
+ - translated textWorldviewtranslated text → additional read `references/world-building-guide.md` + `references/world-book-guide.md`
+ - translated textitem/ability → additional read `references/world-book-guide.md`(itementrytranslated text)
 - `references/config-guide.md`
 - `references/position-guide.md`
 
-完成后 → 禁词扫描 → 读 `references/writing-optimization-guide.md`
+translated text → forbidden-word scan → translated text `references/writing-optimization-guide.md`
 
 ---
 
-### 类型 3：纯世界观设计 + 世界书
+### type 3: translated textWorldviewtranslated text + World Book
 
-触发关键词：世界观、设定集、规则书、魔法体系、修炼体系、势力设定、地理设定、世界规则
+trigger keywords: Worldview, translated text, rulestranslated text, translated text, translated text, factiontranslated text, geographytranslated text, translated textrules
 
-需要读取的 reference：
-- `references/world-building-guide.md` — 世界观设计（先做概念层）
-- `references/world-book-guide.md` — 世界书条目化（再做落地层）
+needreadtranslated text reference: 
+- `references/world-building-guide.md` — Worldviewtranslated text(translated text)
+- `references/world-book-guide.md` — World Bookentry conversion(translated text)
 - `references/config-guide.md`
 - `references/position-guide.md`
-- `references/card-generator-guide.md` — 脚本使用指引
+- `references/card-generator-guide.md` — scriptusagetranslated text
 
 ---
 
-### 类型 4：物品 / 能力 / 装备
+### type 4: item / ability / equipment
 
-触发关键词：武器、道具、装备、技能、能力、功法、魔法、物品、神器、防具、消耗品
+trigger keywords: translated text, translated text, equipment, translated text, ability, translated text, translated text, item, translated text, translated text, translated text
 
-需要读取的 reference：
-- `references/world-book-guide.md` — 物品条目编写规范
-- `references/world-building-guide.md` — 物品挂靠的世界观背景
+needreadtranslated text reference: 
+- `references/world-book-guide.md` — itementrywritetranslated text
+- `references/world-building-guide.md` — itemtranslated textWorldviewbackground
 - `references/config-guide.md`
 - `references/position-guide.md`
-- `references/card-generator-guide.md` — 脚本使用指引
+- `references/card-generator-guide.md` — scriptusagetranslated text
 
 ---
 
-### 类型 5：文风提取 / 文风设定
+### type 5: translated textextract / translated text
 
-触发关键词：文风、写作风格、文笔、笔风、语言风格、模仿写作
+trigger keywords: translated text, translated text, translated text, translated text, translated text, translated text
 
-需要读取的 reference：
-- `references/information-extraction-guide.md` — 从原文提取文风特征
-- `references/writing-optimization-guide.md` — 禁词扫描
+needreadtranslated text reference: 
+- `references/information-extraction-guide.md` — translated textoriginal textextracttranslated texttraits
+- `references/writing-optimization-guide.md` — forbidden-word scan
 - `references/config-guide.md`
 - `references/position-guide.md`
 - `references/card-generator-guide.md`
 
-提取后输出为世界书条目，挂绿灯触发。
+extracttranslated textoutputtranslated textWorld Bookentry, translated text. 
 
 ---
 
-### 类型 6：故事 / 章节提取
+### type 6: story / chapterextract
 
-触发关键词：故事线、章节、总结故事、提取章节、剧情提取、每章总结
+trigger keywords: storytranslated text, chapter, translated textstory, extractchapter, translated textextract, translated text
 
-需要读取的 reference：
-- `references/information-extraction-guide.md` — 标注章节行号、重要章节
-- `references/world-book-guide.md` — 故事/章节条目格式与配置
+needreadtranslated text reference: 
+- `references/information-extraction-guide.md` — translated textchapterline number, translated textchapter
+- `references/world-book-guide.md` — story/chapterentryformattranslated textconfiguration
 - `references/config-guide.md`
 - `references/position-guide.md`
 - `references/card-generator-guide.md`
 
-每章一条世界书条目，绿灯关键词触发，scanDepth=2。写入前必须复读对应章节原文。
+translated textWorld Bookentry, translated text, scanDepth=2. translated textmusttranslated textchapteroriginal text. 
 
 ---
 
-### 类型 7：修改已有世界书
+### type 7: modifytranslated textWorld Book
 
-触发关键词：修改、更新、编辑、添加条目、删除条目、调整
+trigger keywords: modify, update, edit, translated textentry, translated textentry, translated text
 
-需要读取的 reference：
-- 先用 `python scripts/query.py <世界书路径> --brief` 查看现有条目
-- 根据要修改的内容类型，读取对应的 reference（参考类型 1-4）
+needreadtranslated text reference: 
+- translated text `python scripts/query.py <World Bookpath> --brief` translated textentry
+- translated textmodifytranslated textcontenttype, readtranslated text reference(referencetype 1-4)
 - `references/config-guide.md`
 
 ---
 
-### 类型 8：MVU ZOD 变量系统
+### type 8: MVU ZOD variable system
 
-触发关键词：MVU、ZOD、变量、好感度系统、数值系统
+trigger keywords: MVU, ZOD, variable, Affinitytranslated text, translated text
 
-需要读取的 reference：
+needreadtranslated text reference: 
 - `references/mvu-guide.md`
 - `references/config-guide.md`
 - `references/position-guide.md`
 
 ---
 
-### 类型 9：EJS 动态内容
+### type 9: EJS dynamic content
 
-触发关键词：EJS、动态内容、多阶段、调色盘、条件控制
+trigger keywords: EJS, dynamic content, translated textphase, translated text, translated text
 
-需要读取的 reference：
+needreadtranslated text reference: 
 - `references/ejs-guide.md`
-- `references/mvu-guide.md` — EJS 必须有 MVU 才能用
+- `references/mvu-guide.md` — EJS musttranslated text MVU translated text
 - `references/config-guide.md`
 - `references/position-guide.md`
 
 ---
 
-### 类型 10：HTML 前端美化
+### type 10: HTML front-end beautification
 
-触发关键词：美化、HTML、前端、状态栏、界面、UI、开场选择器
+trigger keywords: beautification, HTML, translated text, status bar, translated text, UI, translated text
 
-需要读取的 reference：
+needreadtranslated text reference: 
 - `references/html-beautify-guide.md`
-- 如涉及 MVU 状态栏 → 追加读 `references/mvu-guide.md`
+- translated text MVU status bar → additional read `references/mvu-guide.md`
 
 ---
 
-### 类型 11：禁词扫描 / 写作优化
+### type 11: forbidden-word scan / translated text
 
-触发关键词：自查、检查禁词、扫描、写作优化、润色
+trigger keywords: self-check, translated textforbidden words, translated text, translated text, translated text
 
-需要读取的 reference：
+needreadtranslated text reference: 
 - `references/writing-optimization-guide.md`
 
 ---
 
-## 决策流程
+## translated text
 
 ```
-用户输入 → 判断原创/二创
-  ├─ 原创 → 角色卡？ → 类型1 → character-card-guide.md → 禁词扫描
-  │        世界书？ → 类型3 → world-building-guide.md → world-book-guide.md
-  │        文风？   → 类型5 → information-extraction-guide.md
-  │        章节？   → 类型6 → information-extraction-guide.md → world-book-guide.md
-  │
-  └─ 二创 → 类型2 → information-extraction-guide.md
-            → 提取产出分流：
-              ├─ 角色人设 → character-card-guide.md
-              ├─ 世界观 → world-building-guide.md → world-book-guide.md
-              ├─ 物品 → world-book-guide.md
-              ├─ 文风 → 世界书条目
-              └─ 章节 → world-book-guide.md
-            → 禁词扫描 → writing-optimization-guide.md
+translated textinput → translated textoriginal/derivative
+ ├─ original → Character Card？ → type1 → character-card-guide.md → forbidden-word scan
+ │ World Book？ → type3 → world-building-guide.md → world-book-guide.md
+ │ translated text？ → type5 → information-extraction-guide.md
+ │ chapter？ → type6 → information-extraction-guide.md → world-book-guide.md
+ │
+ └─ derivative → type2 → information-extraction-guide.md
+ → extracttranslated text: 
+ ├─ charactertranslated text → character-card-guide.md
+ ├─ Worldview → world-building-guide.md → world-book-guide.md
+ ├─ item → world-book-guide.md
+ ├─ translated text → World Bookentry
+ └─ chapter → world-book-guide.md
+ → forbidden-word scan → writing-optimization-guide.md
 ```
 
 ---
 
-## 执行原则
+## translated text
 
-1. 先读 reference，再动手。不凭记忆写
-2. 每个任务类型都必须读 `config-guide.md`、`position-guide.md` 和 **`card-generator-guide.md`（所有脚本参数、config.json 格式、酒馆兼容性约束均在此文件，不读即无法正确运行脚本），不得跳过、自行写入SillyTavern的角色卡/世界书格式JSON**
-3. 二创任务必须先读 `information-extraction-guide.md`
-4. 修改任务先用 `query.py --brief` 查看，再确定改什么
-5. 所有产出物在完成后必须读 `writing-optimization-guide.md` 做禁词扫描
-6. MVU/EJS/HTML 仅用户明确要求时启用，不主动建议
-7. EJS 依赖 MVU，用户要 EJS 时必须先确认 MVU 已启用
+1. translated text reference, translated text. translated text
+2. translated texttypetranslated textmusttranslated text `config-guide.md`, `position-guide.md` translated text **`card-generator-guide.md`(translated textscriptparameters, config.json format, translated textfile, translated textcorrecttranslated textscript), translated text, translated textSillyTaverntranslated textCharacter Card/World BookformatJSON**
+3. derivativetranslated textmusttranslated text `information-extraction-guide.md`
+4. modifytranslated text `query.py --brief` translated text, translated text
+5. translated textmusttranslated text `writing-optimization-guide.md` translated textforbidden-word scan
+6. MVU/EJS/HTML translated textenabled, translated text
+7. EJS Dependencies MVU, translated text EJS translated textmusttranslated textconfirm MVU translated textenabled
